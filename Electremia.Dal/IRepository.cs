@@ -7,11 +7,11 @@ namespace Electremia.Dal
     /// <summary>
     /// CRUD operations.
     /// </summary>
-    interface IRepository
+    internal interface IRepository<in T> where T : class 
     {
         int GetByID(int id);
-        void Add();
-        void Update();
-        void Delete();
+        bool Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Electremia.Model\Electremia.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Memory\" />
+  </ItemGroup>
+
 </Project>
