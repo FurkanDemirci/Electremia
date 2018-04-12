@@ -9,7 +9,7 @@ namespace Electremia.Dal
     /// </summary>
     internal interface IRepository<in T> where T : class 
     {
-        int GetByID(int id);
+        object GetByID(int id);
         bool Add(T entity);
         void Update(T entity);
         void Delete(T entity);

@@ -34,7 +34,7 @@ namespace Electremia.Dal.Sql
             return null;
         }
 
-        public int GetByID(int id)
+        public object GetByID(int id)
         {
             throw new NotImplementedException();
         }
