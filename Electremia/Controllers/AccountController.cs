@@ -43,6 +43,7 @@ namespace Electremia.Controllers
             }
 
             return View();
+
         }
 
         public IActionResult Register()
