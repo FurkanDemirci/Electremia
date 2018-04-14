@@ -10,11 +10,11 @@ namespace Electremia.Controllers
 {
     public class AccountController : Controller
     {
-        private AccountServices accountServices;
+        private readonly AccountServices _accountServices;
 
         public AccountController()
         {
-            accountServices = new AccountServices();
+            _accountServices = new AccountServices();
         }
         
         public IActionResult Index()
@@ -35,7 +35,7 @@ namespace Electremia.Controllers
                 @ViewData["Error"] = "Don't leave empty!";
             }
 
-            var user = accountServices.Login(model);
+            var user = _accountServices.Login(model);
 
             if (user != null)
             {
@@ -60,10 +60,11 @@ namespace Electremia.Controllers
                 return View();
             }
 
-            var registered = accountServices.Register(model);
+            var registered = _accountServices.Register(model);
             if (!registered)
             {
                 ViewData["Error"] = "Something went wrong!";
+                return View();
             }
 
             ViewData["Worked"] = "Account successfully made!";

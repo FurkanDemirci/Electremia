@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using Electremia.Dal.Repositories;
 using Electremia.Dal.Sql;
 using Electremia.Model.Models;
 using Electremia.Model.ViewModels;
@@ -10,26 +11,20 @@ namespace Electremia.Logic.Services
 {
     public class AccountServices
     {
-        private AccountSqlRepository repo;
+        private readonly AccountRepository _repo;
 
         public AccountServices()
         {
-            repo = new AccountSqlRepository
-            {
-                ConnectionString = 
-                    new SqlConnection("Data Source=mssql.fhict.local;Initial Catalog=dbi388198;Persist Security Info=True;User ID=dbi388198;Password=Demirci1")
-            };
-    }
+            _repo = new AccountRepository(new AccountSqlContext());
+        }
 
         public User Login(LoginViewModel model)
         {
-            var user = repo.GetByUsername(model.Username);
-
+            var user = _repo.GetByUsername(model.Username);
             if (user == null)
             {
                 return null;
             }
-
             return user.Password != model.Password ? null : user;
         }
 
@@ -42,7 +37,7 @@ namespace Electremia.Logic.Services
                 Firstname = model.Firstname,
                 Lastname = model.Lastname
             };
-            return repo.Add(user);
+            return _repo.Add(user);
         }
     }
 }
