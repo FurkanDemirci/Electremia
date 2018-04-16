@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Electremia.Dal.Interfaces
 {
+    /// <summary>
+    /// CRUD Operations
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IRepository<T>
     {
         T GetById(int id);
