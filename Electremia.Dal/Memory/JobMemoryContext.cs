@@ -1,30 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Electremia.Dal.Interfaces;
-using Electremia.Dal.Repositories;
 using Electremia.Model.Models;
 
-namespace Electremia.Dal.Sql
+namespace Electremia.Dal.Memory
 {
-    public class PostSqlContext : Connection, IRepository<Post>
+    public class JobMemoryContext : IJobRepository
     {
-        public Post GetById(int id)
+        public Job GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Add(Post entity)
+        public bool Add(Job entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Post entity)
+        public bool Update(Job entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(Post entity)
+        public bool Delete(Job entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Job> GetAll(int id)
         {
             throw new NotImplementedException();
         }

@@ -88,7 +88,7 @@ namespace Electremia.Dal.Sql
         public bool Update(User entity)
         {
             const string query =
-                "UPDATE [User] SET Firstname = {0}, Lastname = {1}, Username = {2}, Password = {3}, ProfilePicture = {4}, CoverPicture = {5}, Certificate = {6}, Active = 1, Admin = 0 WHERE UserID = {7} ";
+                "UPDATE [User] SET Firstname = '{0}', Lastname = '{1}', Username = '{2}', Password = '{3}', ProfilePicture = '{4}', CoverPicture = '{5}', Certificate = '{6}', Active = 1, Admin = 0 WHERE UserID = {7} ";
             var queryFull =
                 string.Format(query, entity.Firstname, entity.Lastname, entity.Username, entity.Password,
                     entity.ProfilePicture, entity.CoverPicture, entity.Certificate, entity.UserId);

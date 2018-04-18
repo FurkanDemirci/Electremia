@@ -1,4 +1,4 @@
-﻿namespace Electremia.Model.ViewModels
+﻿namespace Electremia.ViewModels
 {
     public class RegisterViewModel
     {

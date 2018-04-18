@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Electremia.Model.ViewModels
+﻿namespace Electremia.ViewModels
 {
     public class LoginViewModel
     {

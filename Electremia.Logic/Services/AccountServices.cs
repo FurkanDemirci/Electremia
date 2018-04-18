@@ -6,7 +6,6 @@ using Electremia.Dal.Memory;
 using Electremia.Dal.Repositories;
 using Electremia.Dal.Sql;
 using Electremia.Model.Models;
-using Electremia.Model.ViewModels;
 
 namespace Electremia.Logic.Services
 {
@@ -16,10 +15,10 @@ namespace Electremia.Logic.Services
 
         public AccountServices()
         {
-            _repo = new AccountRepository(new AccountSqlContext());
+           _repo = new AccountRepository(new AccountSqlContext());
         }
 
-        public User Login(LoginViewModel model)
+        public User Login(User model)
         {
             var user = _repo.GetByUsername(model.Username);
             if (user == null)
@@ -29,16 +28,26 @@ namespace Electremia.Logic.Services
             return user.Password != model.Password ? null : user;
         }
 
-        public bool Register(RegisterViewModel model)
+        public bool Register(User model)
         {
-            var user = new User
-            {
-                Username = model.Username,
-                Password = model.Password,
-                Firstname = model.Firstname,
-                Lastname = model.Lastname
-            };
-            return _repo.Add(user);
+            return _repo.Add(model);
+        }
+
+        public bool Edit(User model)
+        {
+            return _repo.Update(model);
+        }
+
+        public User GetAccount(string username)
+        {
+            var user = _repo.GetByUsername(username);
+            return user ?? null;
+        }
+
+        public User GetAccount(int id)
+        {
+            var user = _repo.GetById(id);
+            return user ?? null;
         }
     }
 }

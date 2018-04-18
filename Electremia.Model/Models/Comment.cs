@@ -4,11 +4,12 @@
     {
         public int CommentId { get; set; }
         public int UserId { get; set; }
-        private string _text;
+        public int[] Likes { get; set; }
+        public string Text { get; }
 
         public Comment(string text)
         {
-            _text = text;
+            Text = text;
         }
     }
 }

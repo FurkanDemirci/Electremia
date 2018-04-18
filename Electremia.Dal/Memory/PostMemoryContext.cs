@@ -27,5 +27,10 @@ namespace Electremia.Dal.Memory
         {
             throw new NotImplementedException();
         }
+
+        public Post GetByTitle(string title)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
