@@ -34,7 +34,7 @@ namespace Electremia.Dal.Sql
                     }
                 }
             }
-
+            MSSQLConnectionString.Close();
             return user;
         }
 
@@ -61,7 +61,7 @@ namespace Electremia.Dal.Sql
                     }
                 }
             }
-
+            MSSQLConnectionString.Close();
             return user;
         }
 
@@ -76,10 +76,12 @@ namespace Electremia.Dal.Sql
                 try
                 {
                     command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
                     return true;
                 }
                 catch
                 {
+                    MSSQLConnectionString.Close();
                     return false;
                 }
             }
@@ -98,10 +100,12 @@ namespace Electremia.Dal.Sql
                 try
                 {
                     command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
                     return true;
                 }
                 catch
                 {
+                    MSSQLConnectionString.Close();
                     return false;
                 }
             }
@@ -117,10 +121,12 @@ namespace Electremia.Dal.Sql
                 try
                 {
                     command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
                     return true;
                 }
                 catch
                 {
+                    MSSQLConnectionString.Close();
                     return false;
                 }
             }

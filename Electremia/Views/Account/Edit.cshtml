@@ -1,4 +1,5 @@
-﻿@using Electremia.ViewModels
+﻿@using Electremia.Model.Models
+@using Electremia.ViewModels
 @model EditAccountViewModel
 @{
     ViewData["Title"] = "Account Page";
@@ -8,55 +9,101 @@
     <div class="row">
         <h2>Edit account</h2>
         <form method="post">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label asp-for="@Model.User.ProfilePicture"></label>
-                    <input asp-for="@Model.User.ProfilePicture" class="form-control" readonly />
-                    <input type="file" id="ProfilePicture">
-                    <p class="help-block">Upload new profile picture.</p>
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <h4>Account</h4>
+                    <div class="form-group">
+                        <label asp-for="@Model.User.UserId"></label>
+                        <input asp-for="@Model.User.UserId" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.User.Username"></label>
+                        <input asp-for="@Model.User.Username" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.User.Password"></label>
+                        <input asp-for="@Model.User.Password" type="password" placeholder="Leave empty if you dont want to change it." class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.User.Firstname"></label>
+                        <input asp-for="@Model.User.Firstname" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.User.Lastname"></label>
+                        <input asp-for="@Model.User.Lastname" class="form-control"/>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="@Model.User.CoverPicture"></label>
-                    <input asp-for="@Model.User.CoverPicture" class="form-control" readonly />
-                    <input type="file" id="CoverPicture">
-                    <p class="help-block">Upload new cover picture.</p>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.User.Jobs"></label>
-                    <input asp-for="@Model.User.Jobs.Count" class="form-control" readonly />
-                </div>
-@*                <div class="form-group">*@
-@*                    <label asp-for="@Model.User.Firstname"></label>*@
-@*                    <input asp-for="@Model.User.Firstname" class="form-control" />*@
-@*                </div>*@
-@*                <div class="form-group">*@
-@*                    <label asp-for="@Model.User.Lastname"></label>*@
-@*                    <input asp-for="@Model.User.Lastname" class="form-control" />*@
-@*                </div>*@
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label asp-for="@Model.User.UserId"></label>
-                    <input asp-for="@Model.User.UserId" class="form-control" readonly />
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.User.Username"></label>
-                    <input asp-for="@Model.User.Username" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.User.Password"></label>
-                    <input asp-for="@Model.User.Password" type="password" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.User.Firstname"></label>
-                    <input asp-for="@Model.User.Firstname" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.User.Lastname"></label>
-                    <input asp-for="@Model.User.Lastname" class="form-control" />
+                <div class="col-lg-6">
+                    <h4>Pictures</h4>
+                    <div class="form-group">
+                        <label asp-for="@Model.User.ProfilePicture"></label>
+                        <input asp-for="@Model.User.ProfilePicture" class="form-control" readonly/>
+                        <input type="file" id="ProfilePicture">
+                        <p class="help-block">Upload new profile picture or leave empty if you dont want to change it.</p>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.User.CoverPicture"></label>
+                        <input asp-for="@Model.User.CoverPicture" class="form-control" readonly/>
+                        <input type="file" id="CoverPicture">
+                        <p class="help-block">Upload new cover picture or leave empty if you dont want to change it.</p>
+                    </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-info">Submit</button>
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <h4>Jobs</h4>
+                    @{
+                        for (int i = 0; i < @Model.User.Jobs.Count; i++)
+                        {
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><input asp-for="@Model.User.Jobs[i].JobId" class="form-control" readonly /></div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.User.Jobs[i].Name"></label>
+                                        <input asp-for="@Model.User.Jobs[i].Name" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@Model.User.Jobs[i].Position"></label>
+                                        <input asp-for="@Model.User.Jobs[i].Position" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@Model.User.Jobs[i].Description"></label>
+                                        <input asp-for="@Model.User.Jobs[i].Description" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="col-lg-6">
+                    <h4>Schools</h4>
+                    @{
+                        for (int i = 0; i < @Model.User.Schools.Count; i++)
+                        {
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><input asp-for="@Model.User.Schools[i].SchoolId" class="form-control" readonly /></div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.User.Schools[i].Name"></label>
+                                        <input asp-for="@Model.User.Schools[i].Name" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@Model.User.Schools[i].Years"></label>
+                                        <input asp-for="@Model.User.Schools[i].Years" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@Model.User.Schools[i].AttendedFor"></label>
+                                        <input asp-for="@Model.User.Schools[i].AttendedFor" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-lg-12 text-center">
+                <button type="submit" class="btn btn-info">Submit</button>
+            </div>
         </form>
     </div>
     <div class="col-lg-12 text-center">

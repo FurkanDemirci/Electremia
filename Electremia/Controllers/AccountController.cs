@@ -84,7 +84,8 @@ namespace Electremia.Controllers
             }
             
             var jobs = _jobServices.GetAll(id);
-            var model = new EditAccountViewModel(user, jobs);
+            var schools = _schoolServices.GetAll(id);
+            var model = new EditAccountViewModel(user, (List<Job>)jobs, (List<School>)schools);
             return View(model);
         }
 
@@ -92,16 +93,27 @@ namespace Electremia.Controllers
         public IActionResult Edit(EditAccountViewModel model)
         {
             var accountUpdated = _accountServices.Edit(model.User);
-            var jobUpdated = _jobServices.Add(model.User.Jobs);
+            //var jobUpdated = _jobServices.Add(model.User.Jobs);
 
+            var jobUpdated = true;
             if ((!accountUpdated) || (!jobUpdated))
             {
                 ViewData["Error"] = "Update failed";
-                return View();
+                return View(model);
+            }
+
+            if (model.User.Jobs == null)
+            {
+                model.User.Jobs = new List<Job>();
+            }
+
+            if (model.User.Schools == null)
+            {
+                model.User.Schools = new List<School>();
             }
 
             ViewData["Worked"] = "Account successfully updated!";
-            return View();
+            return View(model);
         }
     }
 }

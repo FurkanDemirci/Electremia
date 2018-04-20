@@ -35,6 +35,11 @@ namespace Electremia.Logic.Services
 
         public bool Edit(User model)
         {
+            var user = _repo.GetById(model.UserId);
+            if (model.Password == null)
+            {
+                model.Password = user.Password;
+            }
             return _repo.Update(model);
         }
 

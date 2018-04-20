@@ -11,11 +11,12 @@ namespace Electremia.ViewModels
 
         public EditAccountViewModel() { }
 
-        public EditAccountViewModel(User user, IEnumerable<Job> jobs)
+        public EditAccountViewModel(User user, List<Job> jobs, List<School> schools)
 
         {
             User = user;
-            User.Jobs = (List<Job>)jobs;
+            User.Jobs = jobs;
+            User.Schools = schools;
         }
     }
 }

@@ -26,6 +26,7 @@ namespace Electremia.Logic.Services
             return _repo.Add(model);
         }
 
+        // Add(model)
         public bool Add(List<Job> jobs)
         {
             foreach (var job in jobs)
@@ -37,7 +38,8 @@ namespace Electremia.Logic.Services
             }
             return true;
         }
-        // Add(model)
+        
+        // Edit
         // Edit(model)
         // Delete(model)
     }

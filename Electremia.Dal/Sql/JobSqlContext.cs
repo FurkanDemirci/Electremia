@@ -16,7 +16,22 @@ namespace Electremia.Dal.Sql
 
         public bool Add(Job entity)
         {
-            throw new NotImplementedException();
+            const string query =
+                "INSERT INTO [Job](UserId, Name, Position, Description, StartDate, EndDate, Active) VALUES({0}, '{1}', '{2}', '{3}', {4}, {5}, 1)";
+            var queryFull = string.Format(query, entity.UserId, entity.Name, entity.Position, entity.Description, entity.StartDate, entity.EndDate);
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand(queryFull, MSSQLConnectionString))
+            {
+                try
+                {
+                    command.ExecuteNonQuery();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         }
 
         public bool Update(Job entity)
@@ -32,7 +47,7 @@ namespace Electremia.Dal.Sql
         public IEnumerable<Job> GetAll(int id)
         {
             const string query =
-                "SELECT JobID, Name, Position, Description, StartDate, EndDate FROM [Job] WHERE UserID = {0} AND Active = 1";
+                "SELECT * FROM [Job] WHERE UserID = {0}";
             var queryFull = string.Format(query, id);
             List<Job> jobs = new List<Job>();
             Job job = null;
@@ -46,11 +61,12 @@ namespace Electremia.Dal.Sql
                         job = new Job
                         {
                             JobId = reader.GetInt32(0),
-                            Name = reader.GetString(1),
-                            Position = reader.GetString(2),
-                            Description = reader.GetString(3),
-                            StartDate = reader.GetDateTime(4),
-                            EndDate = reader.GetDateTime(5)
+                            UserId = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Position = reader.GetString(3),
+                            Description = reader.GetString(4),
+                            StartDate = reader.GetDateTime(5),
+                            EndDate = reader.GetDateTime(6)
                         };
                         jobs.Add(job);
                     }
