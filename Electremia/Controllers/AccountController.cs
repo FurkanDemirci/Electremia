@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Electremia.Logic;
 using Electremia.Logic.Services;
 using Electremia.Model.Models;
 using Electremia.ViewModels;
@@ -13,23 +14,11 @@ namespace Electremia.Controllers
 {
     public class AccountController : Controller
     {
-        public static IConfiguration Configuration { get; set; }
+        private readonly Factory _factory;
 
-        private readonly AccountServices _accountServices;
-        private readonly JobServices _jobServices;
-        private readonly SchoolServices _schoolServices;
-
-        public AccountController()
+        public AccountController(IConfiguration config)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-            Configuration = builder.Build();
-            var context = Configuration.GetSection("Database")["Type"];
-
-            _accountServices = new AccountServices(context);
-            _jobServices = new JobServices(context);
-            _schoolServices = new SchoolServices(context);
+            _factory = new Factory(config);
         }
         
         public IActionResult Index()
@@ -45,12 +34,14 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
+            var accountServices = _factory.AccountService();
+
             if ((model.Username == null) || (model.Password == null))
             {
                 @ViewData["Error"] = "Don't leave empty!";
             }
 
-            var user = _accountServices.Login(new User{ Username = model.Username, Password = model.Password});
+            var user = accountServices.Login(new User{ Username = model.Username, Password = model.Password});
 
             if (user != null)
             {
@@ -68,13 +59,15 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
+            var accountServices = _factory.AccountService();
+
             if ((model.Username == null) || (model.Password == null) || (model.Firstname == null) || (model.Lastname == null))
             {
                 ViewData["Error"] = "Don't leave empty!";
                 return View();
             }
 
-            var registered = _accountServices.Register(new User{ Firstname = model.Firstname, Lastname = model.Lastname, Username = model.Username, Password = model.Password});
+            var registered = accountServices.Register(new User{ Firstname = model.Firstname, Lastname = model.Lastname, Username = model.Username, Password = model.Password});
             if (!registered)
             {
                 ViewData["Error"] = "Something went wrong!";
@@ -87,14 +80,18 @@ namespace Electremia.Controllers
 
         public IActionResult Edit(int id)
         {
-            var user = _accountServices.GetAccount(id);
+            var accountServices = _factory.AccountService();
+            var jobServices = _factory.JobService();
+            var schoolServices= _factory.SchoolService();
+
+            var user = accountServices.GetAccount(id);
             if (user == null)
             {
                 return NotFound(id);
             }
             
-            var jobs = _jobServices.GetAll(id);
-            var schools = _schoolServices.GetAll(id);
+            var jobs = jobServices.GetAll(id);
+            var schools = schoolServices.GetAll(id);
             var model = new EditAccountViewModel(user, (List<Job>)jobs, (List<School>)schools);
             return View(model);
         }
@@ -102,7 +99,9 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult Edit(EditAccountViewModel model)
         {
-            var accountUpdated = _accountServices.Edit(model.User);
+            var accountServices = _factory.AccountService();
+
+            var accountUpdated = accountServices.Edit(model.User);
             //var jobUpdated = _jobServices.Add(model.User.Jobs);
 
             var jobUpdated = true;

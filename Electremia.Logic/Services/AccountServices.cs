@@ -10,17 +10,9 @@ namespace Electremia.Logic.Services
     {
         private readonly AccountRepository _repo;
 
-        public AccountServices(string context)
+        public AccountServices(AccountRepository repo)
         {
-            switch (context)
-            {
-                case "MSSQL":
-                    _repo = new AccountRepository(new AccountSqlContext());
-                    break;
-                default:
-                    _repo = new AccountRepository(new AccountMemoryContext());
-                    break;
-            }
+            _repo = repo;
         }
 
         public User Login(User model)

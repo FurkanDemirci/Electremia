@@ -9,17 +9,9 @@ namespace Electremia.Logic.Services
     {
         private readonly Repository<Post> _repo;
 
-        public PostServices(string context)
+        public PostServices(Repository<Post> repo)
         {
-            switch (context)
-            {
-                case "MSSQL":
-                    _repo = new Repository<Post>(new PostSqlContext());
-                    break;
-                default:
-                    _repo = new Repository<Post>(new PostMemoryContext());
-                    break;
-            } 
+            _repo = repo;
         }
 
         // GetPost(id)

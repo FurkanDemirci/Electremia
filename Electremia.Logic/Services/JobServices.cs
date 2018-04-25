@@ -10,17 +10,9 @@ namespace Electremia.Logic.Services
     {
         private readonly JobRepository _repo;
 
-        public JobServices(string context)
+        public JobServices(JobRepository repo)
         {
-            switch (context)
-            {
-                case "MSSQL":
-                    _repo = new JobRepository(new JobSqlContext());
-                    break;
-                default:
-                    _repo = new JobRepository(new JobMemoryContext());
-                    break;
-            }
+            _repo = repo;
         }
 
         // GetAll(id)

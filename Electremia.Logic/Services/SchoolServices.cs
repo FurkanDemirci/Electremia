@@ -10,17 +10,9 @@ namespace Electremia.Logic.Services
     {
         private readonly SchoolRepository _repo;
 
-        public SchoolServices(string context)
+        public SchoolServices(SchoolRepository repo)
         {
-            switch (context)
-            {
-                case "MSSQL":
-                    _repo = new SchoolRepository(new SchoolSqlContext());
-                    break;
-                default:
-                    _repo = new SchoolRepository(new SchoolMemoryContext());
-                    break;
-            }
+            _repo = repo;
         }
 
         public IEnumerable<School> GetAll(int id)
