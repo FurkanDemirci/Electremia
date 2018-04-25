@@ -7,9 +7,17 @@ namespace Electremia.Logic.Services
     {
         private readonly Repository<Like> _repo;
 
-        public LikeServices()
+        public LikeServices(string context)
         {
-            
+            //switch (context)
+            //{
+            //    case "MSSQL":
+            //        _repo = new Repository<Like>();
+            //        break;
+            //    default:
+            //        _repo = new Repository<Like>();
+            //        break;
+            //}
         }
 
         // GetLikes(id)

@@ -7,9 +7,17 @@ namespace Electremia.Logic.Services
     {
         private readonly Repository<Relationship> _repo;
 
-        public FriendServices()
+        public FriendServices(string context)
         {
-
+            //switch (context)
+            //{
+            //    case "MSSQL":
+            //        _repo = new Repository<Relationship>();
+            //        break;
+            //    default:
+            //        _repo = new Repository<Relationship>();
+            //        break;
+            //}
         }
 
         // GetFriends(id)

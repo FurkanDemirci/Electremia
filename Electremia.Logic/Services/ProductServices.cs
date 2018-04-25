@@ -7,9 +7,17 @@ namespace Electremia.Logic.Services
     {
         private readonly Repository<Product> _repo;
 
-        public ProductServices()
+        public ProductServices(string context)
         {
-            
+            //switch (context)
+            //{
+            //    case "MSSQL":
+            //        _repo = new Repository<Product>();
+            //        break;
+            //    default:
+            //        _repo = new Repository<Product>();
+            //        break;
+            //}
         }
 
         // GetProduct(id)

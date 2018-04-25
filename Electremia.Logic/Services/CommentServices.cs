@@ -7,9 +7,17 @@ namespace Electremia.Logic.Services
     {
         private readonly Repository<Comment> _repo;
 
-        public CommentServices()
+        public CommentServices(string context)
         {
-            
+            //switch (context)
+            //{
+            //    case "MSSQL":
+            //        _repo = new Repository<Comment>();
+            //        break;
+            //    default:
+            //        _repo = new Repository<Comment>();
+            //        break;
+            //}
         }
 
         // GetComments(id)

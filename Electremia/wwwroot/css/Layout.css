@@ -5,3 +5,13 @@
     display: block;
     margin: 7px;
 }
+
+.AccountStyle {
+    font-weight: bold;
+    font-size: 20px;
+    color: #9C27B0 !important;
+}
+
+.AccountStyle:hover {
+    color: #721782 !important;
+}

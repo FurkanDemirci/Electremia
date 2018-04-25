@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Text;
-using Electremia.Dal.Memory;
+﻿using Electremia.Dal.Memory;
 using Electremia.Dal.Repositories;
 using Electremia.Dal.Sql;
 using Electremia.Model.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Electremia.Logic.Services
 {
@@ -13,9 +10,17 @@ namespace Electremia.Logic.Services
     {
         private readonly AccountRepository _repo;
 
-        public AccountServices()
+        public AccountServices(string context)
         {
-           _repo = new AccountRepository(new AccountSqlContext());
+            switch (context)
+            {
+                case "MSSQL":
+                    _repo = new AccountRepository(new AccountSqlContext());
+                    break;
+                default:
+                    _repo = new AccountRepository(new AccountMemoryContext());
+                    break;
+            }
         }
 
         public User Login(User model)

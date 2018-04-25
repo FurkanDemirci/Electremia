@@ -1,4 +1,5 @@
-﻿using Electremia.Dal.Repositories;
+﻿using Electremia.Dal.Memory;
+using Electremia.Dal.Repositories;
 using Electremia.Dal.Sql;
 using Electremia.Model.Models;
 
@@ -8,9 +9,17 @@ namespace Electremia.Logic.Services
     {
         private readonly Repository<Post> _repo;
 
-        public PostServices()
+        public PostServices(string context)
         {
-            _repo = new Repository<Post>(new PostSqlContext());   
+            switch (context)
+            {
+                case "MSSQL":
+                    _repo = new Repository<Post>(new PostSqlContext());
+                    break;
+                default:
+                    _repo = new Repository<Post>(new PostMemoryContext());
+                    break;
+            } 
         }
 
         // GetPost(id)

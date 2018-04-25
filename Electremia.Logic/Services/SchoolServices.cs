@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Electremia.Dal.Memory;
 using Electremia.Dal.Repositories;
 using Electremia.Dal.Sql;
 using Electremia.Model.Models;
@@ -9,9 +10,17 @@ namespace Electremia.Logic.Services
     {
         private readonly SchoolRepository _repo;
 
-        public SchoolServices()
+        public SchoolServices(string context)
         {
-            _repo = new SchoolRepository(new SchoolSqlContext());
+            switch (context)
+            {
+                case "MSSQL":
+                    _repo = new SchoolRepository(new SchoolSqlContext());
+                    break;
+                default:
+                    _repo = new SchoolRepository(new SchoolMemoryContext());
+                    break;
+            }
         }
 
         public IEnumerable<School> GetAll(int id)

@@ -1,25 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Electremia.Logic.Services;
 using Electremia.Model.Models;
 using Electremia.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Electremia.Controllers
 {
     public class AccountController : Controller
     {
+        public static IConfiguration Configuration { get; set; }
+
         private readonly AccountServices _accountServices;
         private readonly JobServices _jobServices;
         private readonly SchoolServices _schoolServices;
 
         public AccountController()
         {
-            _accountServices = new AccountServices();
-            _jobServices = new JobServices();
-            _schoolServices = new SchoolServices();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            Configuration = builder.Build();
+            var context = Configuration.GetSection("Database")["Type"];
+
+            _accountServices = new AccountServices(context);
+            _jobServices = new JobServices(context);
+            _schoolServices = new SchoolServices(context);
         }
         
         public IActionResult Index()

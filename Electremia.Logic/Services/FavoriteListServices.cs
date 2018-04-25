@@ -7,9 +7,17 @@ namespace Electremia.Logic.Services
     {
         private readonly Repository<FavoriteList> _repo;
 
-        public FavoriteListServices()
+        public FavoriteListServices(string context)
         {
-            
+            //switch (context)
+            //{
+            //    case "MSSQL":
+            //        _repo = new Repository<FavoriteList>();
+            //        break;
+            //    default:
+            //        _repo = new Repository<FavoriteList>();
+            //        break;
+            //}
         }
 
         // GetList(id)

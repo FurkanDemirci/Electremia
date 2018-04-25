@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Electremia.Dal.Memory;
 using Electremia.Dal.Repositories;
 using Electremia.Dal.Sql;
 using Electremia.Model.Models;
@@ -9,9 +10,17 @@ namespace Electremia.Logic.Services
     {
         private readonly JobRepository _repo;
 
-        public JobServices()
+        public JobServices(string context)
         {
-            _repo = new JobRepository(new JobSqlContext());
+            switch (context)
+            {
+                case "MSSQL":
+                    _repo = new JobRepository(new JobSqlContext());
+                    break;
+                default:
+                    _repo = new JobRepository(new JobMemoryContext());
+                    break;
+            }
         }
 
         // GetAll(id)
