@@ -11,15 +11,9 @@ namespace Electremia.Controllers
 {
     public class HomeController : Controller
     {
-        public static IConfiguration Configuration { get; set; }
-
-        public HomeController()
+        public HomeController(IConfiguration config)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-            Configuration = builder.Build();
-            var context = Configuration.GetSection("Database")["Type"];
+            
         }
 
         public IActionResult Index()

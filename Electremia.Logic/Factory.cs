@@ -21,52 +21,34 @@ namespace Electremia.Logic
             _context = config.GetSection("Database")["Type"];
         }
 
-        #region AccountService
-        private IAccountRepository NewAccountRepository()
+        public AccountServices AccountService()
         {
             switch (_context)
             {
                 case "MSSQL":
-                    return new AccountSqlContext();
-                case "Memory":
-                    return new AccountMemoryContext();
-                default:
-                    throw new NotImplementedException();
+                    return new AccountServices(new AccountRepository(new AccountSqlContext()));
+                default: throw new NotImplementedException();
             }
         }
-        public AccountServices AccountService() => new AccountServices(new AccountRepository(NewAccountRepository()));
-        #endregion
 
-        #region JobService
-        private IJobRepository NewJobRepository()
+        public JobServices JobService()
         {
             switch (_context)
             {
                 case "MSSQL":
-                    return new JobSqlContext();
-                case "Memory":
-                    return new JobMemoryContext();
-                default:
-                    throw new NotImplementedException();
+                    return new JobServices(new JobRepository(new JobSqlContext()));
+                default: throw new NotImplementedException();
             }
         }
-        public JobServices JobService() => new JobServices(new JobRepository(NewJobRepository()));
-        #endregion
 
-        #region SchoolService
-        private ISchoolRepository NewSchoolRepository()
+        public SchoolServices SchoolService()
         {
             switch (_context)
             {
                 case "MSSQL":
-                    return new SchoolSqlContext();
-                case "Memory":
-                    return new SchoolMemoryContext();
-                default:
-                    throw new NotImplementedException();
+                    return new SchoolServices(new SchoolRepository(new SchoolSqlContext()));
+                default: throw new NotImplementedException();
             }
         }
-        public SchoolServices SchoolService() => new SchoolServices(new SchoolRepository(NewSchoolRepository()));
-        #endregion
     }
 }
