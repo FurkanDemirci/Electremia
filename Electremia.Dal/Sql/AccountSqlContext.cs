@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
@@ -38,13 +39,39 @@ namespace Electremia.Dal.Sql
             return user;
         }
 
-        public User GetById(int id)
+        public User GetByLogin(string username, string password)
         {
-            const string query = "SELECT * FROM [User] WHERE UserID = {0} AND Active = 1";
-            var queryFull = string.Format(query, id);
             User user = null;
             MSSQLConnectionString.Open();
-            using (var command = new SqlCommand(queryFull, MSSQLConnectionString))
+            using (var command = new SqlCommand("dbo.spUser_CheckUsrAndPass", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Username" , SqlDbType.VarChar).Value = username;
+                command.Parameters.AddWithValue("@Password", SqlDbType.VarChar).Value = password;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        user = new User
+                        {
+                            UserId = reader.GetInt32(0),
+                            Firstname = reader.GetString(1),
+                            Lastname = reader.GetString(2),
+                            Username = reader.GetString(3),
+                            Password = reader.GetString(4),
+                        };
+                    }
+                }
+            }
+            MSSQLConnectionString.Close();
+            return user;
+        }
+
+        public User GetById(int id)
+        {
+            User user = null;
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spUser_GetById " + id, MSSQLConnectionString))
             {
                 using (var reader = command.ExecuteReader())
                 {

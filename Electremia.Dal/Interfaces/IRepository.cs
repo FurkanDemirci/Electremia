@@ -10,9 +10,9 @@ namespace Electremia.Dal.Interfaces
     /// <typeparam name="T"></typeparam>
     public interface IRepository<T>
     {
-        T GetById(int id);
-        bool Add(T entity);
-        bool Update(T entity);
-        bool Delete(T entity);
+        T GetById(int id); // READ
+        bool Add(T entity); // CREATE
+        bool Update(T entity); // UPDATE
+        bool Delete(T entity); // DELLETE
     }
 }

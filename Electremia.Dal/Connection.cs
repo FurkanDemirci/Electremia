@@ -5,8 +5,10 @@ using System.Text;
 
 namespace Electremia.Dal
 {
+    //TODO Dit kan via de config file.
     public abstract class Connection
     {
+        // Hard coded connectionstring.
         public readonly SqlConnection MSSQLConnectionString;
 
         protected Connection()

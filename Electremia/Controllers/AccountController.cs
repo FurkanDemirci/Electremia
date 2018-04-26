@@ -14,6 +14,7 @@ namespace Electremia.Controllers
 {
     public class AccountController : Controller
     {
+        // The factory is created to gain access to the logic.
         private readonly Factory _factory;
 
         public AccountController(IConfiguration config)
@@ -80,6 +81,7 @@ namespace Electremia.Controllers
 
         public IActionResult Edit(int id)
         {
+            //TODO Gebruik stored procedures om de volledige user te krijgen.
             var accountServices = _factory.AccountService();
             var jobServices = _factory.JobService();
             var schoolServices= _factory.SchoolService();
@@ -99,6 +101,7 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult Edit(EditAccountViewModel model)
         {
+            //TODO Gebruik je logic om alles te updaten wat gewijzigd of toegevoegd is.
             var accountServices = _factory.AccountService();
 
             var accountUpdated = accountServices.Edit(model.User);

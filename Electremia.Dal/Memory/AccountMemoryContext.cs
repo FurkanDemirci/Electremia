@@ -32,5 +32,10 @@ namespace Electremia.Dal.Memory
         {
             throw new NotImplementedException();
         }
+
+        public User GetByLogin(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
