@@ -13,13 +13,12 @@ namespace Electremia.Dal.Sql
     {
         public User GetByUsername(string username)
         {
-            const string query =
-                "SELECT UserID, Firstname, Lastname, Username, Password FROM [User] WHERE Username = '{0}' AND Active = 1";
-            var queryFull = string.Format(query, username);
             User user = null;
             MSSQLConnectionString.Open();
-            using (var command = new SqlCommand(queryFull, MSSQLConnectionString))
+            using (var command = new SqlCommand("dbo.spUser_GetByUsername", MSSQLConnectionString))
             {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Username", SqlDbType.VarChar).Value = username;
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -31,6 +30,11 @@ namespace Electremia.Dal.Sql
                             Lastname = reader.GetString(2),
                             Username = reader.GetString(3),
                             Password = reader.GetString(4),
+                            ProfilePicture = reader.GetString(5),
+                            CoverPicture = reader.GetString(6),
+                            Certificate = reader.GetString(7),
+                            Active = reader.GetBoolean(8),
+                            Admin = reader.GetBoolean(9)
                         };
                     }
                 }
@@ -59,6 +63,11 @@ namespace Electremia.Dal.Sql
                             Lastname = reader.GetString(2),
                             Username = reader.GetString(3),
                             Password = reader.GetString(4),
+                            ProfilePicture = reader.GetString(5),
+                            CoverPicture = reader.GetString(6),
+                            Certificate = reader.GetString(7),
+                            Active = reader.GetBoolean(8),
+                            Admin = reader.GetBoolean(9)
                         };
                     }
                 }
@@ -71,8 +80,10 @@ namespace Electremia.Dal.Sql
         {
             User user = null;
             MSSQLConnectionString.Open();
-            using (var command = new SqlCommand("dbo.spUser_GetById " + id, MSSQLConnectionString))
+            using (var command = new SqlCommand("dbo.spUser_GetById", MSSQLConnectionString))
             {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -84,6 +95,11 @@ namespace Electremia.Dal.Sql
                             Lastname = reader.GetString(2),
                             Username = reader.GetString(3),
                             Password = reader.GetString(4),
+                            ProfilePicture = reader.GetString(5),
+                            CoverPicture = reader.GetString(6),
+                            Certificate = reader.GetString(7),
+                            Active = reader.GetBoolean(8),
+                            Admin = reader.GetBoolean(9)
                         };
                     }
                 }
@@ -94,12 +110,20 @@ namespace Electremia.Dal.Sql
 
         public bool Add(User entity)
         {
-            const string query =
-                "INSERT INTO [User](Firstname, Lastname, Username, Password, Active, Admin) VALUES('{0}', '{1}', '{2}', '{3}', 1, 0)";
-            var queryFull = string.Format(query, entity.Firstname, entity.Lastname, entity.Username, entity.Password);
             MSSQLConnectionString.Open();
-            using (var command = new SqlCommand(queryFull, MSSQLConnectionString))
+            using (var command = new SqlCommand("dbo.spUser_AddUser", MSSQLConnectionString))
             {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Firstname", SqlDbType.VarChar).Value = entity.Firstname;
+                command.Parameters.AddWithValue("@Lastname", SqlDbType.VarChar).Value = entity.Lastname;
+                command.Parameters.AddWithValue("@Username", SqlDbType.VarChar).Value = entity.Username;
+                command.Parameters.AddWithValue("@Password", SqlDbType.VarChar).Value = entity.Password;
+                command.Parameters.AddWithValue("@ProfilePicture", SqlDbType.VarChar).Value = "";
+                command.Parameters.AddWithValue("@CoverPicture", SqlDbType.VarChar).Value = "";
+                command.Parameters.AddWithValue("@Certificate", SqlDbType.VarChar).Value = entity.Certificate;
+                command.Parameters.AddWithValue("@Active", SqlDbType.Bit).Value = 1;
+                command.Parameters.AddWithValue("@Admin", SqlDbType.Bit).Value = 0;
+
                 try
                 {
                     command.ExecuteNonQuery();
@@ -157,6 +181,76 @@ namespace Electremia.Dal.Sql
                     return false;
                 }
             }
+        }
+
+        public User GetFullUser(int id)
+        {
+            User user = null;
+            var jobs = new List<Job>();
+            var schools = new List<School>();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spUser_GetFullUser", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        user = new User
+                        {
+                            UserId = reader.GetInt32(0),
+                            Firstname = reader.GetString(1),
+                            Lastname = reader.GetString(2),
+                            Username = reader.GetString(3),
+                            Password = reader.GetString(4),
+                            ProfilePicture = reader.GetString(5),
+                            CoverPicture = reader.GetString(6),
+                            Certificate = reader.GetString(7),
+                            Active = reader.GetBoolean(8),
+                            Admin = reader.GetBoolean(9)
+                        };
+                    }
+
+                    reader.NextResult();
+
+                    while (reader.Read())
+                    {
+                        var job = new Job
+                        {
+                            JobId = reader.GetInt32(0),
+                            UserId = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Position = reader.GetString(3),
+                            Description = reader.GetString(4),
+                            StartDate = reader.GetDateTime(5),
+                            EndDate = reader.GetDateTime(6)
+                        };
+                        jobs.Add(job);
+                    }
+
+                    reader.NextResult();
+
+                    while (reader.Read())
+                    {
+                        var school = new School
+                        {
+                            SchoolId = reader.GetInt32(0),
+                            UserId = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Years = reader.GetInt32(3),
+                            AttendedFor = reader.GetString(4)
+                        };
+                        schools.Add(school);
+                    }
+                }
+            }
+
+            if (user == null) return null;
+            user.Jobs = jobs;
+            user.Schools = schools;
+            MSSQLConnectionString.Close();
+            return user;
         }
     }
 }

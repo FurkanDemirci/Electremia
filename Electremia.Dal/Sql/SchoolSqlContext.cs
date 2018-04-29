@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using Electremia.Dal.Interfaces;
 using Electremia.Model.Models;
@@ -20,6 +21,27 @@ namespace Electremia.Dal.Sql
 
         public bool Update(School entity)
         {
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spSchool_UpdateById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.SchoolId;
+                command.Parameters.AddWithValue("@Name", SqlDbType.VarChar).Value = entity.Name;
+                command.Parameters.AddWithValue("@Years", SqlDbType.Int).Value = entity.Years;
+                command.Parameters.AddWithValue("@AttendedFor", SqlDbType.VarChar).Value = entity.AttendedFor;
+                
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
             throw new NotImplementedException();
         }
 

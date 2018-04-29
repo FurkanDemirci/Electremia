@@ -7,5 +7,7 @@ namespace Electremia.Dal.Interfaces
         User GetByUsername(string username);
 
         User GetByLogin(string username, string password);
+
+        User GetFullUser(int id);
     }
 }

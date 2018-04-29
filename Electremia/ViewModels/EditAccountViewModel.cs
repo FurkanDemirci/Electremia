@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Electremia.Dal.Repositories;
 using Electremia.Logic.Services;
 using Electremia.Model.Models;
@@ -11,12 +12,9 @@ namespace Electremia.ViewModels
 
         public EditAccountViewModel() { }
 
-        public EditAccountViewModel(User user, List<Job> jobs, List<School> schools)
-
+        public EditAccountViewModel(User user)
         {
             User = user;
-            User.Jobs = jobs;
-            User.Schools = schools;
         }
     }
 }

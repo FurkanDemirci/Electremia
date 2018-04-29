@@ -40,8 +40,19 @@ namespace Electremia.Logic.Services
             return true;
         }
         
-        // Edit
         // Edit(model)
+        public bool Edit(List<Job> jobs)
+        {
+            foreach (var job in jobs)
+            {
+                if (!_repo.Update(job))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         // Delete(model)
     }
 }

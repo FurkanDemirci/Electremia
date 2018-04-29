@@ -35,13 +35,13 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
-            var accountServices = _factory.AccountService();
-
-            if ((model.Username == null) || (model.Password == null))
+            if (!ModelState.IsValid)
             {
-                @ViewData["Error"] = "Don't leave empty!";
+                ViewData["Error"] = "Not all fields are filled correctly!";
+                return View();
             }
 
+            var accountServices = _factory.AccountService();
             var user = accountServices.Login(new User{ Username = model.Username, Password = model.Password});
 
             if (user != null)
@@ -60,69 +60,63 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewData["Error"] = "Not all fields are filled correctly!";
+                return View();
+            }
+
             var accountServices = _factory.AccountService();
 
-            if ((model.Username == null) || (model.Password == null) || (model.Firstname == null) || (model.Lastname == null))
+            var user = new User
             {
-                ViewData["Error"] = "Don't leave empty!";
-                return View();
-            }
+                Firstname = model.Firstname,
+                Lastname = model.Lastname,
+                Username = model.Username,
+                Password = model.Password,
+                Certificate = model.Certificate
+            };
+            var registered = accountServices.Register(user);
 
-            var registered = accountServices.Register(new User{ Firstname = model.Firstname, Lastname = model.Lastname, Username = model.Username, Password = model.Password});
             if (!registered)
             {
-                ViewData["Error"] = "Something went wrong!";
+                ViewData["Error"] = "Username already exists.";
                 return View();
             }
-
             ViewData["Worked"] = "Account successfully made!";
             return View();
         }
 
         public IActionResult Edit(int id)
         {
-            //TODO Gebruik stored procedures om de volledige user te krijgen.
             var accountServices = _factory.AccountService();
-            var jobServices = _factory.JobService();
-            var schoolServices= _factory.SchoolService();
+            var fullUser = accountServices.GetFullUser(id);
 
-            var user = accountServices.GetAccount(id);
-            if (user == null)
-            {
-                return NotFound(id);
-            }
-            
-            var jobs = jobServices.GetAll(id);
-            var schools = schoolServices.GetAll(id);
-            var model = new EditAccountViewModel(user, (List<Job>)jobs, (List<School>)schools);
+            if (fullUser == null) return NotFound(id);
+            var model = new EditAccountViewModel(fullUser);
             return View(model);
+
         }
 
         [HttpPost]
         public IActionResult Edit(EditAccountViewModel model)
         {
-            //TODO Gebruik je logic om alles te updaten wat gewijzigd of toegevoegd is.
-            var accountServices = _factory.AccountService();
+            //TODO Controleer voor leeg gelaten velden.
+            var accountService = _factory.AccountService();
+            var jobService = _factory.JobService();
+            var schoolService = _factory.SchoolService();
 
-            var accountUpdated = accountServices.Edit(model.User);
-            //var jobUpdated = _jobServices.Add(model.User.Jobs);
-
-            var jobUpdated = true;
-            if ((!accountUpdated) || (!jobUpdated))
-            {
-                ViewData["Error"] = "Update failed";
-                return View(model);
-            }
+            accountService.Edit(model.User);
 
             if (model.User.Jobs == null)
-            {
                 model.User.Jobs = new List<Job>();
-            }
+            else
+                jobService.Edit(model.User.Jobs);
 
             if (model.User.Schools == null)
-            {
                 model.User.Schools = new List<School>();
-            }
+            else
+                schoolService.Edit(model.User.Schools);
 
             ViewData["Worked"] = "Account successfully updated!";
             return View(model);

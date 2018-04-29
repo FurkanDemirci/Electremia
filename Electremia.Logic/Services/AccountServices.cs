@@ -26,7 +26,7 @@ namespace Electremia.Logic.Services
         /// <returns>User</returns>
         public User Login(User model)
         {
-            //TODO password hashen en controleren of alles goed is ingevuld.
+            //TODO Controleren of alles goed is ingevuld.
             return _repo.GetByLogin(model.Username, model.Password = PasswordHasher(model.Password));
         }
 
@@ -37,7 +37,13 @@ namespace Electremia.Logic.Services
         /// <returns>Bool</returns>
         public bool Register(User model)
         {
-            //TODO Password hashen en controleren of de username niet bestaat.
+            // Check if username exists.
+            if (GetUser(model.Username) != null)
+            {
+                return false;
+            }
+
+            // Password hashing.
             model.Password = PasswordHasher(model.Password);
             return _repo.Add(model);
         }
@@ -50,10 +56,14 @@ namespace Electremia.Logic.Services
         public bool Edit(User model)
         {
             var user = _repo.GetById(model.UserId);
-            if (model.Password == null)
+
+            if (model.Password != null)
             {
-                model.Password = user.Password;
+                model.Password = PasswordHasher(model.Password);
+                return _repo.Update(model);
             }
+
+            model.Password = user.Password;
             return _repo.Update(model);
         }
 
@@ -62,7 +72,7 @@ namespace Electremia.Logic.Services
         /// </summary>
         /// <param name="username">string username</param>
         /// <returns>User</returns>
-        public User GetAccount(string username)
+        public User GetUser(string username)
         {
             var user = _repo.GetByUsername(username);
             return user ?? null;
@@ -71,12 +81,22 @@ namespace Electremia.Logic.Services
         /// <summary>
         /// Get account by id.
         /// </summary>
-        /// <param name="id">int id</param>
+        /// <param name="id">int userId</param>
         /// <returns>User</returns>
-        public User GetAccount(int id)
+        public User GetUser(int id)
         {
             var user = _repo.GetById(id);
             return user ?? null;
+        }
+
+        /// <summary>
+        /// Get the user with jobs and schools.
+        /// </summary>
+        /// <param name="id">int userId</param>
+        /// <returns>User filled with jobs and schools</returns>
+        public User GetFullUser(int id)
+        {
+            return _repo.GetFullUser(id);
         }
 
         /// <summary>
@@ -86,8 +106,8 @@ namespace Electremia.Logic.Services
         /// <returns>string hashed password</returns>
         private string PasswordHasher(string password)
         {
-            byte[] passwordData = Encoding.UTF8.GetBytes(password);
-            SHA256Managed sha = new SHA256Managed();
+            var passwordData = Encoding.UTF8.GetBytes(password);
+            var sha = new SHA256Managed();
             var hashed = sha.ComputeHash(passwordData);
             return Convert.ToBase64String(hashed);
         }

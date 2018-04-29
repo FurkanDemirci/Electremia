@@ -22,6 +22,11 @@ namespace Electremia.Dal.Repositories
             return RightContext().GetByLogin(username, password);
         }
 
+        public User GetFullUser(int id)
+        {
+            return RightContext().GetFullUser(id);
+        }
+
         private IAccountRepository RightContext()
         {
             switch (Context)

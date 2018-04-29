@@ -22,7 +22,20 @@ namespace Electremia.Logic.Services
 
         // GetSchools(id)
         // Add(model)
+
         // Edit(model)
+        public bool Edit(List<School> schools)
+        {
+            foreach (var school in schools)
+            {
+                if (!_repo.Update(school))
+                {
+                    return false;
+                }                
+            }
+            return true;
+        }
+
         // Delete(model)
     }
 }

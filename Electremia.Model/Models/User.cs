@@ -13,6 +13,7 @@ namespace Electremia.Model.Models
 		public string CoverPicture { get; set; }
 		public string Certificate { get; set; }
 		public bool Active { get; set; }
+	    public bool Admin { get; set; }
 		public List<Job> Jobs { get; set; }
 		public List<School> Schools { get; set; }
 		public List<Relationship> Relationships { get; set; }

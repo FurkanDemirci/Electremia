@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using Electremia.Dal.Interfaces;
 using Electremia.Model.Models;
@@ -36,7 +37,29 @@ namespace Electremia.Dal.Sql
 
         public bool Update(Job entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spJob_UpdateById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.JobId;
+                command.Parameters.AddWithValue("@Name", SqlDbType.VarChar).Value = entity.Name;
+                command.Parameters.AddWithValue("@Position", SqlDbType.VarChar).Value = entity.Position;
+                command.Parameters.AddWithValue("@Description", SqlDbType.VarChar).Value = entity.Description;
+                command.Parameters.AddWithValue("@StartDate", SqlDbType.DateTime).Value = entity.StartDate;
+                command.Parameters.AddWithValue("@EndDate", SqlDbType.DateTime).Value = entity.EndDate;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
 
         public bool Delete(Job entity)

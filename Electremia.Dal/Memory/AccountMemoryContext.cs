@@ -37,5 +37,10 @@ namespace Electremia.Dal.Memory
         {
             throw new NotImplementedException();
         }
+
+        public User GetFullUser(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

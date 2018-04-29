@@ -5,6 +5,8 @@
     ViewData["Title"] = "Account Page";
 }
 
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
+
 <div class="container">
     <div class="row">
         <h2>Edit account</h2>
@@ -14,36 +16,48 @@
                     <h4>Account</h4>
                     <div class="form-group">
                         <label asp-for="@Model.User.UserId"></label>
-                        <input asp-for="@Model.User.UserId" class="form-control" readonly/>
+                        <input asp-for="@Model.User.UserId" class="form-control" readonly />
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.User.Username"></label>
-                        <input asp-for="@Model.User.Username" class="form-control"/>
+                        <input asp-for="@Model.User.Username" class="form-control" data-val="true" data-val-required="The Username field is required." />
+                        <span class="text-danger field-validation-valid"
+                              asp-validation-for="@Model.User.Username" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.User.Password"></label>
-                        <input asp-for="@Model.User.Password" type="password" placeholder="Leave empty if you dont want to change it." class="form-control"/>
+                        <input asp-for="@Model.User.Password" type="password" placeholder="Leave empty if you dont want to change it." class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.User.Firstname"></label>
-                        <input asp-for="@Model.User.Firstname" class="form-control"/>
+                        <input asp-for="@Model.User.Firstname" class="form-control" data-val="true" data-val-required="The Firstname field is required." />
+                        <span class="text-danger field-validation-valid"
+                              asp-validation-for="@Model.User.Firstname" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.User.Lastname"></label>
-                        <input asp-for="@Model.User.Lastname" class="form-control"/>
+                        <input asp-for="@Model.User.Lastname" class="form-control" data-val="true" data-val-required="The Lastname field is required." />
+                        <span class="text-danger field-validation-valid"
+                              asp-validation-for="@Model.User.Lastname" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.User.Certificate"></label>
+                        <input asp-for="@Model.User.Certificate" class="form-control" data-val="true" data-val-required="The Certificate field is required." />
+                        <span class="text-danger field-validation-valid"
+                              asp-validation-for="@Model.User.Certificate" data-valmsg-replace="true"></span>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <h4>Pictures</h4>
                     <div class="form-group">
                         <label asp-for="@Model.User.ProfilePicture"></label>
-                        <input asp-for="@Model.User.ProfilePicture" class="form-control" readonly/>
+                        <input asp-for="@Model.User.ProfilePicture" class="form-control" readonly />
                         <input type="file" id="ProfilePicture">
                         <p class="help-block">Upload new profile picture or leave empty if you dont want to change it.</p>
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.User.CoverPicture"></label>
-                        <input asp-for="@Model.User.CoverPicture" class="form-control" readonly/>
+                        <input asp-for="@Model.User.CoverPicture" class="form-control" readonly />
                         <input type="file" id="CoverPicture">
                         <p class="help-block">Upload new cover picture or leave empty if you dont want to change it.</p>
                     </div>
@@ -60,15 +74,33 @@
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label asp-for="@Model.User.Jobs[i].Name"></label>
-                                        <input asp-for="@Model.User.Jobs[i].Name" class="form-control"/>
+                                        <input asp-for="@Model.User.Jobs[i].Name" class="form-control" data-val="true" data-val-required="The Name field is required." />
+                                        <span class="text-danger field-validation-valid"
+                                              asp-validation-for="@Model.User.Jobs[i].Name" data-valmsg-replace="true"></span>
                                     </div>
                                     <div class="form-group">
                                         <label asp-for="@Model.User.Jobs[i].Position"></label>
-                                        <input asp-for="@Model.User.Jobs[i].Position" class="form-control"/>
+                                        <input asp-for="@Model.User.Jobs[i].Position" class="form-control" data-val="true" data-val-required="The Position field is required." />
+                                        <span class="text-danger field-validation-valid"
+                                              asp-validation-for="@Model.User.Jobs[i].Position" data-valmsg-replace="true"></span>
                                     </div>
                                     <div class="form-group">
                                         <label asp-for="@Model.User.Jobs[i].Description"></label>
-                                        <input asp-for="@Model.User.Jobs[i].Description" class="form-control"/>
+                                        <input asp-for="@Model.User.Jobs[i].Description" class="form-control" data-val="true" data-val-required="The Description field is required." />
+                                        <span class="text-danger field-validation-valid"
+                                              asp-validation-for="@Model.User.Jobs[i].Description" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@Model.User.Jobs[i].StartDate"></label>
+                                        <input asp-for="@Model.User.Jobs[i].StartDate" class="form-control" data-val="true" data-val-required="The StartDate field is required." />
+                                        <span class="text-danger field-validation-valid"
+                                              asp-validation-for="@Model.User.Jobs[i].StartDate" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@Model.User.Jobs[i].EndDate"></label>
+                                        <input asp-for="@Model.User.Jobs[i].EndDate" class="form-control" data-val="true" data-val-required="The EndDate field is required." />
+                                        <span class="text-danger field-validation-valid"
+                                              asp-validation-for="@Model.User.Jobs[i].EndDate" data-valmsg-replace="true"></span>
                                     </div>
                                 </div>
                             </div>
@@ -85,15 +117,21 @@
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label asp-for="@Model.User.Schools[i].Name"></label>
-                                        <input asp-for="@Model.User.Schools[i].Name" class="form-control"/>
+                                        <input asp-for="@Model.User.Schools[i].Name" class="form-control" data-val="true" data-val-required="The Name field is required." />
+                                        <span class="text-danger field-validation-valid"
+                                              asp-validation-for="@Model.User.Schools[i].Name" data-valmsg-replace="true"></span>
                                     </div>
                                     <div class="form-group">
                                         <label asp-for="@Model.User.Schools[i].Years"></label>
-                                        <input asp-for="@Model.User.Schools[i].Years" class="form-control"/>
+                                        <input asp-for="@Model.User.Schools[i].Years" class="form-control" data-val="true" data-val-required="The Years field is required." />
+                                        <span class="text-danger field-validation-valid"
+                                              asp-validation-for="@Model.User.Schools[i].Years" data-valmsg-replace="true"></span>
                                     </div>
                                     <div class="form-group">
                                         <label asp-for="@Model.User.Schools[i].AttendedFor"></label>
-                                        <input asp-for="@Model.User.Schools[i].AttendedFor" class="form-control"/>
+                                        <input asp-for="@Model.User.Schools[i].AttendedFor" class="form-control" data-val="true" data-val-required="The AttendedFor field is required." />
+                                        <span class="text-danger field-validation-valid"
+                                              asp-validation-for="@Model.User.Schools[i].AttendedFor" data-valmsg-replace="true"></span>
                                     </div>
                                 </div>
                             </div>
@@ -111,3 +149,6 @@
         <h6>@ViewData["Worked"]</h6>
     </div>
 </div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
