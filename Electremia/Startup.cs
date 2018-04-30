@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +25,14 @@ namespace Electremia
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            // Adding authentication cookies.
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(option =>
+                {
+                    option.LoginPath = new PathString("/Account/Login");
+                    option.AccessDeniedPath = "/Account/Unauthorized";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,6 +47,9 @@ namespace Electremia
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            // Set for use.
+            app.UseAuthentication();
 
             app.UseStaticFiles();
 

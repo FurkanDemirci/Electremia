@@ -6,10 +6,16 @@
     margin: 7px;
 }
 
+.NavUser {
+    font-size: 15px;
+}
+
+.NavUserText {
+    padding-right: 10px;
+}
+
 .AccountStyle {
-    font-weight: bold;
-    font-size: 20px;
-    color: #9C27B0 !important;
+    padding-left: 10px;
 }
 
 .AccountStyle:hover {

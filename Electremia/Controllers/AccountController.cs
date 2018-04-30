@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Electremia.Logic;
 using Electremia.Logic.Services;
 using Electremia.Model.Models;
 using Electremia.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -21,9 +25,19 @@ namespace Electremia.Controllers
         {
             _factory = new Factory(config);
         }
-        
+
+        //TODO Dit is een test voor authenticatie.
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
+
         {
+            /* Getting values back from claims(Cookie).
+             * Identity or claims enumerable.
+             * Used for test purpose.
+             */
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
             return View();
         }
 
@@ -33,7 +47,7 @@ namespace Electremia.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -42,13 +56,44 @@ namespace Electremia.Controllers
             }
 
             var accountServices = _factory.AccountService();
-            var user = accountServices.Login(new User{ Username = model.Username, Password = model.Password});
+            var user = accountServices.Login(new User { Username = model.Username, Password = model.Password });
 
-            if (user != null)
+            // Creating claims for user authentication.
+            if (user == null) return View();
+            var claims = new List<Claim>
             {
-                @ViewData["Worked"] = "Successfully logged in!";
+                new Claim(ClaimTypes.Name, model.Username),
+                new Claim(ClaimTypes.Sid, user.UserId.ToString())
+            };
+
+            // Adding Admin if true.
+            if (user.Admin)
+            {
+                var claim = new Claim(ClaimTypes.Role, "Admin");
+                claims.Add(claim);
             }
 
+            // Setting claims.
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties();
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
+            //TODO Naar feed? page redirecten.
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Unauthorized()
+        {
             return View();
         }
 
@@ -95,7 +140,6 @@ namespace Electremia.Controllers
             if (fullUser == null) return NotFound(id);
             var model = new EditAccountViewModel(fullUser);
             return View(model);
-
         }
 
         [HttpPost]
