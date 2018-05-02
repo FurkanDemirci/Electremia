@@ -118,8 +118,8 @@ namespace Electremia.Dal.Sql
                 command.Parameters.AddWithValue("@Lastname", SqlDbType.VarChar).Value = entity.Lastname;
                 command.Parameters.AddWithValue("@Username", SqlDbType.VarChar).Value = entity.Username;
                 command.Parameters.AddWithValue("@Password", SqlDbType.VarChar).Value = entity.Password;
-                command.Parameters.AddWithValue("@ProfilePicture", SqlDbType.VarChar).Value = "";
-                command.Parameters.AddWithValue("@CoverPicture", SqlDbType.VarChar).Value = "";
+                command.Parameters.AddWithValue("@ProfilePicture", SqlDbType.VarChar).Value = "Blank-profile.png";
+                command.Parameters.AddWithValue("@CoverPicture", SqlDbType.VarChar).Value = "Blank-cover.png";
                 command.Parameters.AddWithValue("@Certificate", SqlDbType.VarChar).Value = entity.Certificate;
                 command.Parameters.AddWithValue("@Active", SqlDbType.Bit).Value = 1;
                 command.Parameters.AddWithValue("@Admin", SqlDbType.Bit).Value = 0;
@@ -140,14 +140,22 @@ namespace Electremia.Dal.Sql
 
         public bool Update(User entity)
         {
-            const string query =
-                "UPDATE [User] SET Firstname = '{0}', Lastname = '{1}', Username = '{2}', Password = '{3}', ProfilePicture = '{4}', CoverPicture = '{5}', Certificate = '{6}', Active = 1, Admin = 0 WHERE UserID = {7} ";
-            var queryFull =
-                string.Format(query, entity.Firstname, entity.Lastname, entity.Username, entity.Password,
-                    entity.ProfilePicture, entity.CoverPicture, entity.Certificate, entity.UserId);
             MSSQLConnectionString.Open();
-            using (var command = new SqlCommand(queryFull, MSSQLConnectionString))
+            using (var command = new SqlCommand("dbo.spUser_UpdateById", MSSQLConnectionString))
             {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.UserId;
+                command.Parameters.AddWithValue("@Firstname", SqlDbType.VarChar).Value = entity.Firstname;
+                command.Parameters.AddWithValue("@Lastname", SqlDbType.VarChar).Value = entity.Lastname;
+                command.Parameters.AddWithValue("@Username", SqlDbType.VarChar).Value = entity.Username;
+                command.Parameters.AddWithValue("@Password", SqlDbType.VarChar).Value = entity.Password;
+                command.Parameters.AddWithValue("@ProfilePicture", SqlDbType.VarChar).Value = entity.ProfilePicture;
+                command.Parameters.AddWithValue("@CoverPicture", SqlDbType.VarChar).Value = entity.CoverPicture;
+                command.Parameters.AddWithValue("@Certificate", SqlDbType.VarChar).Value = entity.Certificate;
+                //TODO Active en Admin moet verandert kunnen worden.
+                command.Parameters.AddWithValue("@Active", SqlDbType.Bit).Value = 1;
+                command.Parameters.AddWithValue("@Admin", SqlDbType.Bit).Value = 0;
+
                 try
                 {
                     command.ExecuteNonQuery();

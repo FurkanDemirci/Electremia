@@ -2,7 +2,8 @@
 {
     public class Relationship
     {
-        public int UserIdRelation { get; set; }
+        public int UserID_one { get; set; }
+        public int UserID_two { get; set; }
         public int Status { get; set; }
         public int ActionUserId { get; set; }
     }

@@ -50,5 +50,15 @@ namespace Electremia.Logic
                 default: throw new NotImplementedException();
             }
         }
+
+        public FriendServices FriendService()
+        {
+            switch (_context)
+            {
+                case "MSSQL":
+                    return new FriendServices(new RelationshipRepository(new RelationshipSqlContext()));
+                default: throw new NotImplementedException();
+            }
+        }
     }
 }

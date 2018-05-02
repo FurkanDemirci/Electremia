@@ -1,0 +1,151 @@
+﻿@using Electremia.ViewModels
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Account Page";
+}
+
+<link href="~/css/Account.css" rel="stylesheet"/>
+
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1>Profile <small>Account information </small></h1>
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-4">
+                <div class="thumbnail">
+                    <img class="ProfileStyle" src="~/images/@Model.ProfilePicture"/>
+                    <div class="caption">
+                        <h3>@Model.Firstname @Model.Lastname</h3>
+                        @{
+                            if (Model.Admin)
+                            {
+                                <p>Administrator</p>
+                            }
+                            else
+                            {
+                                <p>Regular user</p>
+                            }
+                        }
+                        <p>
+                            @{
+                                if (Model.Username != User.Identity.Name)
+                                {
+                                    <form asp-controller="Relationship" asp-action="AddFriend" method="post">
+                                        <input type="text" name="username" value="@Model.Username" hidden />
+                                        <input type="number" name="id" value="@Model.UserId" hidden />
+                                        <button class="btn btn-info" type="submit">Add friend</button>
+                                    </form>
+                                }
+                                @ViewData["FriendRequest"];
+                                if ((Model.Username == User.Identity.Name) && (!Model.Admin))
+                                {
+                                    <a class="btn btn-info" asp-area="" asp-controller="Account" asp-action="Edit">Edit</a>
+                                }
+                                else if (Model.Admin)
+                                {
+                                    <form asp-controller="Account" asp-action="Edit" method="get">
+                                        <input type="number" name="id" value="@Model.UserId" readonly/>
+                                        <button type="submit">Edit</button>
+                                    </form>
+                                }
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <img class="CoverStyle" src="~/images/@Model.CoverPicture"/>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Profile information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        <h4>
+                            <label asp-for="@Model.Username"></label>
+                        </h4>
+                        @Model.Username
+                        <hr/>
+                    </div>
+                    <div class="col-lg-6">
+                        <h4>
+                            <label asp-for="@Model.Certificate"></label>
+                        </h4>
+                        @Model.Certificate
+                        <hr/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Jobs</h3>
+                </div>
+                <div class="panel-body">
+                    @{
+                        foreach (var job in Model.Jobs)
+                        {
+                            <div class="col-lg-6">
+                                <h5>
+                                    <label asp-for="@job.Name"></label>
+                                </h5>
+                                <span>@job.Name</span>
+                                <h5>
+                                    <label asp-for="@job.Position"></label>
+                                </h5>
+                                <span>@job.Position</span>
+                                <h5>
+                                    <label asp-for="@job.Description"></label>
+                                </h5>
+                                <span>@job.Description</span>
+                                <h5>
+                                    <label asp-for="@job.StartDate"></label>
+                                </h5>
+                                <span>@job.StartDate</span>
+                                <h5>
+                                    <label asp-for="@job.EndDate"></label>
+                                </h5>
+                                <span>@job.EndDate</span>
+                                <hr/>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Schools</h3>
+                </div>
+                <div class="panel-body">
+                    @{
+                        foreach (var school in Model.Schools)
+                        {
+                            <div class="col-lg-6">
+                                <h5>
+                                    <label asp-for="@school.Name"></label>
+                                </h5>
+                                <span>@school.Name</span>
+                                <h5>
+                                    <label asp-for="@school.AttendedFor"></label>
+                                </h5>
+                                <span>@school.AttendedFor</span>
+                                <h5>
+                                    <label asp-for="@school.Years"></label>
+                                </h5>
+                                <span>@school.Years</span>
+                                <hr/>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

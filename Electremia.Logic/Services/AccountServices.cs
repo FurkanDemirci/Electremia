@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Electremia.Dal.Memory;
@@ -22,30 +23,70 @@ namespace Electremia.Logic.Services
         /// <summary>
         /// Login method to gain access to the website. 
         /// </summary>
-        /// <param name="model">User</param>
+        /// <param name="username">string username</param>
+        /// <param name="password">string password</param>
         /// <returns>User</returns>
-        public User Login(User model)
+        public User Login(string username, string password)
         {
-            //TODO Controleren of alles goed is ingevuld.
-            return _repo.GetByLogin(model.Username, model.Password = PasswordHasher(model.Password));
+            // Checking for null values.
+            if ((username == null) || (password == null))
+                throw new ExceptionHandler("NotImplemented", "Not all fields are inserted");
+            // Checking if user exists.
+            var user = _repo.GetByLogin(username, password = PasswordHasher(password));
+            if (user == null)
+                throw new ExceptionHandler("User", "User not found");
+            return user;
         }
 
         /// <summary>
-        /// Register method to add an account.
+        /// Creating new user.
         /// </summary>
-        /// <param name="model">User</param>
-        /// <returns>Bool</returns>
-        public bool Register(User model)
+        /// <param name="firstname">string firstname</param>
+        /// <param name="lastname">string lastname</param>
+        /// <param name="username">string username</param>
+        /// <param name="password">string password</param>
+        /// <param name="certificate">string certificate</param>
+        public void Register(string firstname, string lastname, string username, string password, string certificate)
         {
+            // Checking for null values.
+            if ((firstname == null) || (lastname == null) || (username == null) || (password == null) || (certificate == null))
+                throw new ExceptionHandler("NotImplemented", "Not all fields are inserted");
+            
+            // Creating User model.
+            var model = new User
+            {
+                Firstname = firstname,
+                Lastname = lastname,
+                Username = username,
+                Password = password,
+                Certificate = certificate,
+            };
+
             // Check if username exists.
             if (GetUser(model.Username) != null)
+                throw new ExceptionHandler("Exist", "Username already exists");
+
+            var count = 0;
+            foreach (var c in model.Password)
             {
-                return false;
+                if (char.IsDigit(c))
+                {
+                    count++;
+                }
             }
+
+            // Password validation.
+            if (!model.Password.Any(char.IsUpper))
+                throw new ExceptionHandler("Password", "Password must contain atleast one uppercase");
+            if (count < 4)
+                throw new ExceptionHandler("Password", "Password must contain atleast 4 numbers");
 
             // Password hashing.
             model.Password = PasswordHasher(model.Password);
-            return _repo.Add(model);
+
+            // Update to database.
+            if (!_repo.Add(model))
+                throw new ExceptionHandler("Database", "Couldn't add to the database");
         }
 
         /// <summary>
@@ -55,13 +96,18 @@ namespace Electremia.Logic.Services
         /// <returns>Bool</returns>
         public bool Edit(User model)
         {
+            if (model == null)
+                throw new ExceptionHandler("NotImplemented", "User model not implemented");
             var user = _repo.GetById(model.UserId);
+            if (user == null)
+                throw new ExceptionHandler("Database", "User not found");
 
             if (model.Password != null)
-            {
                 model.Password = PasswordHasher(model.Password);
-                return _repo.Update(model);
-            }
+            if (model.ProfilePicture == null)
+                model.ProfilePicture = user.ProfilePicture;
+            if (model.CoverPicture == null)
+                model.CoverPicture = user.CoverPicture;
 
             model.Password = user.Password;
             return _repo.Update(model);
@@ -74,6 +120,9 @@ namespace Electremia.Logic.Services
         /// <returns>User</returns>
         public User GetUser(string username)
         {
+            if (username == null)
+                throw new ExceptionHandler("NotImplemented", "Username not implemented");
+
             var user = _repo.GetByUsername(username);
             return user ?? null;
         }
@@ -85,6 +134,9 @@ namespace Electremia.Logic.Services
         /// <returns>User</returns>
         public User GetUser(int id)
         {
+            if (id == 0)
+                throw new ExceptionHandler("NotImplemented", "Id not implemented");
+
             var user = _repo.GetById(id);
             return user ?? null;
         }
@@ -96,6 +148,9 @@ namespace Electremia.Logic.Services
         /// <returns>User filled with jobs and schools</returns>
         public User GetFullUser(int id)
         {
+            if (id == 0)
+                throw new ExceptionHandler("NotImplemented", "Id not implemented");
+
             return _repo.GetFullUser(id);
         }
 
