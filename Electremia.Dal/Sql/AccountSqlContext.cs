@@ -153,8 +153,8 @@ namespace Electremia.Dal.Sql
                 command.Parameters.AddWithValue("@CoverPicture", SqlDbType.VarChar).Value = entity.CoverPicture;
                 command.Parameters.AddWithValue("@Certificate", SqlDbType.VarChar).Value = entity.Certificate;
                 //TODO Active en Admin moet verandert kunnen worden.
-                command.Parameters.AddWithValue("@Active", SqlDbType.Bit).Value = 1;
-                command.Parameters.AddWithValue("@Admin", SqlDbType.Bit).Value = 0;
+                command.Parameters.AddWithValue("@Active", SqlDbType.Bit).Value = entity.Active;
+                command.Parameters.AddWithValue("@Admin", SqlDbType.Bit).Value = entity.Admin;
 
                 try
                 {

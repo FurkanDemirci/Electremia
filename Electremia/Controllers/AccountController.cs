@@ -214,23 +214,13 @@ namespace Electremia.Controllers
             if (model.CoverFormFile != null)
                 model.User.CoverPicture = FileUpload(model.CoverFormFile);
 
-            try
-            {
-                accountService.Edit(model.User);
-            }
-            catch (ExceptionHandler e)
-            {
-                return BadRequest(e.Message);
-            }
+            try { accountService.Edit(model.User); }
+            catch (ExceptionHandler e) { return BadRequest(e.Message); }
             
-            if (model.User.Jobs == null)
-                model.User.Jobs = new List<Job>();
-            else
+            // Check if jobs and schools aren't empty.
+            if (model.User.Jobs.Count != 0)
                 jobService.Edit(model.User.Jobs);
-
-            if (model.User.Schools == null)
-                model.User.Schools = new List<School>();
-            else
+            if (model.User.Schools.Count != 0)
                 schoolService.Edit(model.User.Schools);
 
             ViewData["Worked"] = "Account successfully updated!";

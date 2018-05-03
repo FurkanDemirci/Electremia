@@ -1,5 +1,7 @@
 ﻿@using Electremia.ViewModels;
-@model List<RelationshipViewModel>
+@model RequestsViewModel
+
+<link href="~/css/Requests.css" rel="stylesheet"/>
 
 <div class="page-header">
     <h1>Requests <small>Received and sended</small></h1>
@@ -9,24 +11,58 @@
         <div class="col-lg-6">
             <h4>Received</h4>
             @{
-                foreach (var relationshipViewModel in Model)
+                foreach (var relationshipViewModel in Model.RelationshipViewModelsPending)
                 {
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <h4>@relationshipViewModel.Username</h4>
-                            <span>Send you a friend request.</span>
-                            <button class="btn btn-info">Accept</button>
-                            <button class="btn btn-danger">Delete</button>
+                            <div class="col-lg-6">
+                                <h4>@relationshipViewModel.Username</h4>
+                                <span>Send you a friend request.</span>
+                            </div>
+                            <div class="col-lg-6">
+                                <form method="post">
+                                    <input type="number" name="id" value="@relationshipViewModel.Relationship.ActionUserId" hidden />
+                                    <input type="number" name="type" value="1" hidden />
+                                    <button type="submit" class="btn btn-info">Accept</button>
+                                </form>
+                                <form method="post">
+                                    <input type="number" name="id" value="@relationshipViewModel.Relationship.ActionUserId" hidden />
+                                    <input type="number" name="type" value="3" hidden />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                
+                            </div>
                         </div>
                     </div>
+                }
+                if (ViewData["Message1"] != null)
+                {
+                    <div class="alert alert-info" role="alert">@ViewData["Message1"]</div>
                 }
             }
         </div>
         <div class="col-lg-6">
             <h4>Sended</h4>
+            @{
+                foreach (var relationshipViewModel in Model.RelationshipViewModelsSended)
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <h4>@relationshipViewModel.Username</h4>
+                                <span>Not yet accepted.</span>
+                            </div>
+                            <div class="panelDiv col-lg-6">
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (ViewData["Message2"] != null)
+                {
+                    <div class="alert alert-info" role="alert">@ViewData["Message2"]</div>
+                }
+            }
         </div>
     </div>
 </div>
-
-
-@ViewData["Message"]

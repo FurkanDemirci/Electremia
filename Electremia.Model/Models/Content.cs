@@ -17,5 +17,11 @@ namespace Electremia.Model.Models
         public int[] Likes { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Picture> Pictures { get; set; }
+
+        protected Content()
+        {
+            Comments = new List<Comment>();
+            Pictures = new List<Picture>();
+        }
     }
 }

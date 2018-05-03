@@ -76,5 +76,33 @@ namespace Electremia.Dal.Sql
             MSSQLConnectionString.Close();
             return relationshipsUsr;
         }
+
+        public Dictionary<string, Relationship> GetSended(int id)
+        {
+            var relationshipsUsr = new Dictionary<string, Relationship>();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spRelationship_GetSendedById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var relationship = new Relationship
+                        {
+                            UserID_one = reader.GetInt32(0),
+                            UserID_two = reader.GetInt32(1),
+                            Status = reader.GetInt32(2),
+                            ActionUserId = reader.GetInt32(3)
+                        };
+                        var username = reader.GetString(4);
+                        relationshipsUsr.Add(username, relationship);
+                    }
+                }
+            }
+            MSSQLConnectionString.Close();
+            return relationshipsUsr;
+        }
     }
 }

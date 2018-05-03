@@ -31,5 +31,10 @@ namespace Electremia.Dal.Memory
         {
             throw new NotImplementedException();
         }
+
+        public Dictionary<string, Relationship> GetSended(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -30,5 +30,10 @@ namespace Electremia.Dal.Repositories
         {
             return RightContext().GetPending(id);
         }
+
+        public Dictionary<string, Relationship> GetSended(int id)
+        {
+            return RightContext().GetSended(id);
+        }
     }
 }

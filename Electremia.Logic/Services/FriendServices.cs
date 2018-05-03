@@ -25,6 +25,16 @@ namespace Electremia.Logic.Services
             return result;
         }
 
+        public Dictionary<string, Relationship> GetSended(int id)
+        {
+            if (id <= 0)
+                throw new ExceptionHandler("NotImplemented", "Id is not implemented");
+            var result = _repo.GetSended(id);
+            if (result.Count == 0)
+                throw new ExceptionHandler("Result", "No results found");
+            return result;
+        }
+
         // Add(model)
 
         /// <summary>
@@ -65,6 +75,41 @@ namespace Electremia.Logic.Services
         }
 
         // Edit(model)
+        public bool SetAccept(int id1, int id2, int type)
+        {
+            //TODO Nog niet klaar.
+            Relationship relationship = new Relationship
+            {
+
+            };
+            return _repo.Update(relationship);
+        }
         // Delete(model)
+
+        private Relationship SetIdOrder(int id1, int id2)
+        {
+            int userIdOne;
+            int userIdTwo;
+
+            // Lowest number must be userIdOne.
+            if (id1 < id2)
+            {
+                userIdOne = id1;
+                userIdTwo = id2;
+            }
+            else
+            {
+                userIdOne = id2;
+                userIdTwo = id1;
+            }
+
+            var relationship = new Relationship
+            {
+                UserID_one = userIdOne,
+                UserID_two = userIdTwo,
+            };
+
+            return relationship;
+        }
     }
 }

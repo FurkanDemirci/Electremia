@@ -63,28 +63,56 @@ namespace Electremia.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             var claims = identity.Claims.ToList();
             var friendServices = _factory.FriendService();
+            var requests = new RequestsViewModel();
 
+            try { requests.RelationshipViewModelsPending = RelationshipDicToList(friendServices.GetPending(Convert.ToInt32(claims[1].Value))); }
+            catch (ExceptionHandler e) { ViewData["Message1"] = e.Message; }
+            try { requests.RelationshipViewModelsSended = RelationshipDicToList(friendServices.GetSended(Convert.ToInt32(claims[1].Value))); }
+            catch (ExceptionHandler e) { ViewData["Message2"] = e.Message; }
+
+            return View(requests);
+        }
+
+        [HttpPost]
+        public IActionResult Requests(int id, int type)
+        {
+            Status action = (Status) type;
+            var identity = (ClaimsIdentity)User.Identity;
+            var claims = identity.Claims.ToList();
+            var friendServices = _factory.FriendService();
+
+            friendServices.SetAccept(Convert.ToInt32(claims[1].Value), id, type);
+
+            return RedirectToAction("Requests", "Relationship");
+        }
+
+        private enum Status
+        {
+            NotImplemented = -1,
+            Pending,
+            Accept,
+            Block,
+            Delete
+        }
+
+        /// <summary>
+        /// Converts given relationship dictionary to List of RelationshipViewModel.
+        /// </summary>
+        /// <param name="resultDictionary">Dictionary string and Relationship</param>
+        /// <returns>List of RelationshipViewModel</returns>
+        private List<RelationshipViewModel> RelationshipDicToList(Dictionary<string, Relationship> resultDictionary)
+        {
             var relationships = new List<RelationshipViewModel>();
-            try
+            foreach (var relationship in resultDictionary)
             {
-                var results = friendServices.GetPending(Convert.ToInt32(claims[1].Value));
-                foreach (var relationship in results)
+                var relationshipViewModel = new RelationshipViewModel
                 {
-                    var relationshipViewModel = new RelationshipViewModel
-                    {
-                        Relationship = relationship.Value,
-                        Username = relationship.Key
-                    };
-                    relationships.Add(relationshipViewModel);
-                }
+                    Relationship = relationship.Value,
+                    Username = relationship.Key
+                };
+                relationships.Add(relationshipViewModel);
             }
-            catch (ExceptionHandler e)
-            {
-                ViewData["Message"] = e.Message;
-                return View();
-            }
-
-            return View(relationships);
+            return relationships;
         }
     }
 }

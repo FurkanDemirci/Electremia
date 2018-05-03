@@ -10,5 +10,10 @@ namespace Electremia.Model.Models
         public string Title { get; set; }
         public DateTime DateTime { get; set; }
         public List<Favorite> Favorites { get; set; }
+
+        public FavoriteList()
+        {
+            Favorites = new List<Favorite>();
+        }
     }
 }

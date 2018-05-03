@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Security.Cryptography;
 using System.Text;
 using Electremia.Dal.Memory;
@@ -108,6 +109,10 @@ namespace Electremia.Logic.Services
                 model.ProfilePicture = user.ProfilePicture;
             if (model.CoverPicture == null)
                 model.CoverPicture = user.CoverPicture;
+
+            // Admin and Active values.
+            model.Admin = user.Admin;
+            model.Active = user.Active;
 
             model.Password = user.Password;
             return _repo.Update(model);
