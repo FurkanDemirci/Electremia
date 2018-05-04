@@ -27,6 +27,19 @@ namespace Electremia.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult Friends()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            var claims = identity.Claims.ToList();
+            var friendServices = _factory.FriendService();
+            List<RelationshipViewModel> friends;
+
+            try { friends = RelationshipDicToList(friendServices.GetAllFriends(Convert.ToInt32(claims[1].Value))); }
+            catch (ExceptionHandler e) { ViewData["Message"] = e.Message; friends = new List<RelationshipViewModel>();}
+
+            return View(friends);
+        }
+
         public IActionResult AddFriend()
         {
             return View();
@@ -40,10 +53,7 @@ namespace Electremia.Controllers
             var friendServices = _factory.FriendService();
 
             bool added;
-            try
-            {
-                added = friendServices.AddFriend(Convert.ToInt32(claims[1].Value), id);
-            }
+            try { added = friendServices.AddFriend(Convert.ToInt32(claims[1].Value), id); }
             catch (ExceptionHandler e)
             {
                 ViewData["Message"] = e.Message;
@@ -74,25 +84,34 @@ namespace Electremia.Controllers
         }
 
         [HttpPost]
-        public IActionResult Requests(int id, int type)
+        public IActionResult Requests(int id1, int id2, int type)
         {
-            Status action = (Status) type;
             var identity = (ClaimsIdentity)User.Identity;
             var claims = identity.Claims.ToList();
             var friendServices = _factory.FriendService();
+            var userId = Convert.ToInt32(claims[1].Value);
 
-            friendServices.SetAccept(Convert.ToInt32(claims[1].Value), id, type);
+            // Checks if id2 is the userId.
+            if ((id1 != userId) && (id1 != 0))
+                id2 = id1;
+
+            // Switch between Accept or Delete.
+            switch (type)
+            {
+                case 1:
+                    try { friendServices.SetAccept(userId, id2); }
+                    catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
+                    break;
+                case 2:
+                    try { friendServices.Delete(userId, id2); }
+                    catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
+                    break;
+                default:
+                    TempData["Message"] = "No valid type given";
+                    break;
+            }
 
             return RedirectToAction("Requests", "Relationship");
-        }
-
-        private enum Status
-        {
-            NotImplemented = -1,
-            Pending,
-            Accept,
-            Block,
-            Delete
         }
 
         /// <summary>

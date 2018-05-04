@@ -27,7 +27,8 @@ namespace Electremia.Logic
             {
                 case "MSSQL":
                     return new AccountServices(new AccountRepository(new AccountSqlContext()));
-                default: throw new NotImplementedException();
+                default: 
+                    return new AccountServices(new AccountRepository(new AccountMemoryContext()));
             }
         }
 
@@ -37,7 +38,8 @@ namespace Electremia.Logic
             {
                 case "MSSQL":
                     return new JobServices(new JobRepository(new JobSqlContext()));
-                default: throw new NotImplementedException();
+                default: 
+                    return new JobServices(new JobRepository(new JobMemoryContext()));
             }
         }
 
@@ -47,7 +49,8 @@ namespace Electremia.Logic
             {
                 case "MSSQL":
                     return new SchoolServices(new SchoolRepository(new SchoolSqlContext()));
-                default: throw new NotImplementedException();
+                default: 
+                    return new SchoolServices(new SchoolRepository(new SchoolMemoryContext()));
             }
         }
 
@@ -57,7 +60,8 @@ namespace Electremia.Logic
             {
                 case "MSSQL":
                     return new FriendServices(new RelationshipRepository(new RelationshipSqlContext()));
-                default: throw new NotImplementedException();
+                default: 
+                    return new FriendServices(new RelationshipRepository(new RelationshipMemoryContext()));
             }
         }
     }

@@ -8,6 +8,7 @@ namespace Electremia.Dal.Interfaces
         //GetAll pending
         Dictionary<string, Relationship> GetPending(int id);
         Dictionary<string, Relationship> GetSended(int id);
+        Dictionary<string, Relationship> GetFriends(int id);
         //GetAll blocked
         //GetAll declined
     }

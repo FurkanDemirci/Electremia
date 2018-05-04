@@ -6,6 +6,7 @@
 <div class="page-header">
     <h1>Requests <small>Received and sended</small></h1>
 </div>
+@TempData["Message"]
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
@@ -20,17 +21,20 @@
                                 <span>Send you a friend request.</span>
                             </div>
                             <div class="col-lg-6">
-                                <form method="post">
-                                    <input type="number" name="id" value="@relationshipViewModel.Relationship.ActionUserId" hidden />
-                                    <input type="number" name="type" value="1" hidden />
-                                    <button type="submit" class="btn btn-info">Accept</button>
-                                </form>
-                                <form method="post">
-                                    <input type="number" name="id" value="@relationshipViewModel.Relationship.ActionUserId" hidden />
-                                    <input type="number" name="type" value="3" hidden />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                                
+                                <div class="panelDiv col-lg-6">
+                                    <form method="post">
+                                        <input type="number" name="id2" value="@relationshipViewModel.Relationship.ActionUserId" hidden />
+                                        <input type="number" name="type" value="1" hidden />
+                                        <button type="submit" class="btn btn-info">Accept</button>
+                                    </form>
+                                </div>
+                                <div class="panelDiv col-lg-6">
+                                    <form method="post">
+                                        <input type="number" name="id2" value="@relationshipViewModel.Relationship.ActionUserId" hidden />
+                                        <input type="number" name="type" value="2" hidden />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,8 +56,15 @@
                                 <h4>@relationshipViewModel.Username</h4>
                                 <span>Not yet accepted.</span>
                             </div>
-                            <div class="panelDiv col-lg-6">
-                                <button class="btn btn-danger">Delete</button>
+                            <div class="col-lg-6">
+                                <div class="panelDiv col-lg-12">
+                                    <form method="post">
+                                        <input type="number" name="id1" value="@relationshipViewModel.Relationship.UserID_one" hidden />
+                                        <input type="number" name="id2" value="@relationshipViewModel.Relationship.UserID_two" hidden />
+                                        <input type="number" name="type" value="2" hidden />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

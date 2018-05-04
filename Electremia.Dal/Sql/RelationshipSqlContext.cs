@@ -41,12 +41,49 @@ namespace Electremia.Dal.Sql
 
         public bool Update(Relationship entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spRelationship_UpdateById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id1", SqlDbType.Int).Value = entity.UserID_one;
+                command.Parameters.AddWithValue("@Id2", SqlDbType.Int).Value = entity.UserID_two;
+                command.Parameters.AddWithValue("@Status", SqlDbType.Int).Value = entity.Status;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
 
         public bool Delete(Relationship entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spRelationship_DeleteById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id1", SqlDbType.Int).Value = entity.UserID_one;
+                command.Parameters.AddWithValue("@Id2", SqlDbType.Int).Value = entity.UserID_two;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
 
         public Dictionary<string, Relationship> GetPending(int id)
@@ -82,6 +119,34 @@ namespace Electremia.Dal.Sql
             var relationshipsUsr = new Dictionary<string, Relationship>();
             MSSQLConnectionString.Open();
             using (var command = new SqlCommand("dbo.spRelationship_GetSendedById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var relationship = new Relationship
+                        {
+                            UserID_one = reader.GetInt32(0),
+                            UserID_two = reader.GetInt32(1),
+                            Status = reader.GetInt32(2),
+                            ActionUserId = reader.GetInt32(3)
+                        };
+                        var username = reader.GetString(4);
+                        relationshipsUsr.Add(username, relationship);
+                    }
+                }
+            }
+            MSSQLConnectionString.Close();
+            return relationshipsUsr;
+        }
+
+        public Dictionary<string, Relationship> GetFriends(int id)
+        {
+            var relationshipsUsr = new Dictionary<string, Relationship>();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spRelationship_GetFriendsById", MSSQLConnectionString))
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;

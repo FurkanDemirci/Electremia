@@ -35,5 +35,10 @@ namespace Electremia.Dal.Repositories
         {
             return RightContext().GetSended(id);
         }
+
+        public Dictionary<string, Relationship> GetFriends(int id)
+        {
+            return RightContext().GetFriends(id);
+        }
     }
 }

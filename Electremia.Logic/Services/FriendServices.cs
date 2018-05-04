@@ -15,6 +15,16 @@ namespace Electremia.Logic.Services
         }
 
         // GetFriends(id)
+        public Dictionary<string, Relationship> GetAllFriends(int id)
+        {
+            if (id <= 0)
+                throw new ExceptionHandler("NotImplemented", "Id is not implemented");
+            var result = _repo.GetFriends(id);
+            if (result.Count == 0)
+                throw new ExceptionHandler("Result", "No results found");
+            return result;
+        }
+
         public Dictionary<string, Relationship> GetPending(int id)
         {
             if (id <= 0)
@@ -35,8 +45,6 @@ namespace Electremia.Logic.Services
             return result;
         }
 
-        // Add(model)
-
         /// <summary>
         /// Add friend with status "Pending".
         /// </summary>
@@ -49,42 +57,35 @@ namespace Electremia.Logic.Services
             if ((id1 <= 0) || (id2 <= 0))
                 throw new ExceptionHandler("NotImplemented", "Not all values are implementend");
 
-            int userIdOne;
-            int userIdTwo;
-
-            // Lowest number must be userIdOne.
-            if (id1 < id2)
-            {
-                userIdOne = id1;
-                userIdTwo = id2;
-            }
-            else
-            {
-                userIdOne = id2;
-                userIdTwo = id1;
-            }
-
-            var relationship = new Relationship
-            {
-                UserID_one = userIdOne,
-                UserID_two = userIdTwo,
-                ActionUserId = id1
-            };
-
-            return _repo.Add(relationship);
+            var model = SetIdOrder(id1, id2);
+            model.ActionUserId = id1;
+            return _repo.Add(model);
         }
 
         // Edit(model)
-        public bool SetAccept(int id1, int id2, int type)
+        public void SetAccept(int id1, int id2)
         {
-            //TODO Nog niet klaar.
-            Relationship relationship = new Relationship
-            {
+            if ((id1 <= 0) || (id2 <= 0))
+                throw new ExceptionHandler("NotImplemented", "Not all values are inserted");
 
-            };
-            return _repo.Update(relationship);
+            var model = SetIdOrder(id1, id2);
+            model.Status = 1;
+
+            if (!_repo.Update(model))
+                throw new ExceptionHandler("Database", "Could not update the relationship");
         }
+
         // Delete(model)
+        public void Delete(int id1, int id2)
+        {
+            if ((id1 <= 0) || (id2 <= 0))
+                throw new ExceptionHandler("NotImplemented", "Not all values are inserted");
+
+            var model = SetIdOrder(id1, id2);
+
+            if (!_repo.Delete(model))
+                throw new ExceptionHandler("Database", "Could not delete the relationship");
+        }
 
         private Relationship SetIdOrder(int id1, int id2)
         {
