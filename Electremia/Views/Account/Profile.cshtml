@@ -29,7 +29,7 @@
                         }
                         <p>
                             @{
-                                if (Model.Username != User.Identity.Name)
+                                if (!Model.IsFriendsWith)
                                 {
                                     <form asp-controller="Relationship" asp-action="AddFriend" method="post">
                                         <input type="text" name="username" value="@Model.Username" hidden />

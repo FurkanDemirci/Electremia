@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Electremia.Logic;
+using Electremia.Logic.Services;
 using Electremia.Model.Models;
 using Electremia.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -19,14 +20,25 @@ namespace Electremia.Controllers
 {
     public class AccountController : Controller
     {
-        // The factory is created to gain access to the logic.
-        private readonly Factory _factory;
+        // The services that's going to be needed.
+        private readonly AccountServices _accountServices;
+        private readonly JobServices _jobServices;
+        private readonly SchoolServices _schoolServices;
+        private readonly FriendServices _friendServices;
+
+        // Getting the HostingEnviroment for media purposes.
         private readonly IHostingEnvironment _environment;
 
         public AccountController(IConfiguration config, IHostingEnvironment environment)
         {
             _environment = environment;
-            _factory = new Factory(config);    
+            var factory = new Factory(config);
+
+            // Services using for AccountController:
+            _accountServices = factory.AccountService();
+            _jobServices = factory.JobService();
+            _schoolServices = factory.SchoolService();
+            _friendServices = factory.FriendService();
         }
 
         [Authorize]
@@ -49,39 +61,19 @@ namespace Electremia.Controllers
                 return View();
             }
 
-            var accountServices = _factory.AccountService();
             User user;
-            try
-            {
-                user = accountServices.Login(model.Username, model.Password);
-            }
+            try { user = _accountServices.Login(model.Username, model.Password); }
             catch (ExceptionHandler e)
             {
                 ViewData["Message"] = e.Message;
                 return View();
             }
 
-            // Creating claims for user authentication.
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, model.Username),
-                new Claim(ClaimTypes.Sid, user.UserId.ToString())
-            };
-
-            // Adding Admin if true.
-            if (user.Admin)
-            {
-                var claim = new Claim(ClaimTypes.Role, "Admin");
-                claims.Add(claim);
-            }
-
-            // Setting claims.
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties();
+            var cookies = user.Admin ? new Cookies(user.Username, user.UserId.ToString(), "Admin") : new Cookies(user.Username, user.UserId.ToString());
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
+                cookies.ClaimsPrincipal(),
+                cookies.AuthProperties());
 
             //TODO Naar feed? page redirecten.
             return RedirectToAction("Index", "Home");
@@ -107,17 +99,13 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
-            var accountServices = _factory.AccountService();
             if (!ModelState.IsValid)
             {
                 ViewData["Message"] = "Not all fields are filled correctly!";
                 return View();
             }
 
-            try
-            {
-                accountServices.Register(model.Firstname, model.Lastname, model.Username, model.Password, model.Certificate);
-            }
+            try { _accountServices.Register(model.Firstname, model.Lastname, model.Username, model.Password, model.Certificate); }
             catch (ExceptionHandler e)
             {
                 ViewData["Message"] = e.Message;
@@ -135,15 +123,15 @@ namespace Electremia.Controllers
                 usr = User.Identity.Name;
 
             User fullUser;
-            var accountServices = _factory.AccountService();
-            try
+            var isFriendsWith = true;
+
+            try { fullUser = _accountServices.GetFullUser(_accountServices.GetUser(usr).UserId); }
+            catch (ExceptionHandler e) { return BadRequest(e.Message); }
+
+            if (usr != User.Identity.Name)
             {
-                var user = accountServices.GetUser(usr);
-                fullUser = accountServices.GetFullUser(user.UserId);
-            }
-            catch (ExceptionHandler e)
-            {
-                return BadRequest(e.Message);
+                try { isFriendsWith = _friendServices.CheckRelationship(Cookies.GetId(User), fullUser.UserId); }
+                catch (ExceptionHandler e) { return BadRequest(e.Message); }
             }
 
             var profile = new ProfileViewModel
@@ -157,7 +145,8 @@ namespace Electremia.Controllers
                 Certificate = fullUser.Certificate,
                 Admin = fullUser.Admin,
                 Jobs = fullUser.Jobs,
-                Schools = fullUser.Schools
+                Schools = fullUser.Schools,
+                IsFriendsWith = isFriendsWith
             };
 
             return View(profile);
@@ -166,32 +155,17 @@ namespace Electremia.Controllers
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            var claims = identity.Claims.ToList();
-
             if (id != 0)
             {
-                if (claims.Count != 3)
-                {
+                if (Cookies.GetRole(User) != "Admin")
                     return RedirectToAction("Unauthorized", "Account");
-                }               
             }
             else
-            {
-                id = Convert.ToInt32(claims[1].Value);
-            }
-
-            var accountServices = _factory.AccountService();
+                id = Cookies.GetId(User);
 
             User fullUser;
-            try
-            {
-                fullUser = accountServices.GetFullUser(id);
-            }
-            catch (ExceptionHandler e)
-            {
-                return BadRequest(e.Message);
-            }
+            try { fullUser = _accountServices.GetFullUser(id); }
+            catch (ExceptionHandler e) { return BadRequest(e.Message); }
 
             if (fullUser == null) return NotFound(id);
             var model = new EditAccountViewModel(fullUser);
@@ -202,11 +176,7 @@ namespace Electremia.Controllers
         [Authorize]
         public IActionResult Edit(EditAccountViewModel model)
         {
-            //TODO Controleer voor leeg gelaten velden.
-            var accountService = _factory.AccountService();
-            var jobService = _factory.JobService();
-            var schoolService = _factory.SchoolService();
-
+            // TODO Foto's worden nu geupload naar wwwroot maar dit moet worden geuploaden naar cloud.
             // Profile picture upload.
             if (model.ProfileFormFile != null)
                 model.User.ProfilePicture = FileUpload(model.ProfileFormFile);
@@ -214,14 +184,14 @@ namespace Electremia.Controllers
             if (model.CoverFormFile != null)
                 model.User.CoverPicture = FileUpload(model.CoverFormFile);
 
-            try { accountService.Edit(model.User); }
+            try { _accountServices.Edit(model.User); }
             catch (ExceptionHandler e) { return BadRequest(e.Message); }
             
             // Check if jobs and schools aren't empty.
             if (model.User.Jobs.Count != 0)
-                jobService.Edit(model.User.Jobs);
+                _jobServices.Edit(model.User.Jobs);
             if (model.User.Schools.Count != 0)
-                schoolService.Edit(model.User.Schools);
+                _schoolServices.Edit(model.User.Schools);
 
             ViewData["Worked"] = "Account successfully updated!";
             return View(model);

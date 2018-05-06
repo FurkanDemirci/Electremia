@@ -40,5 +40,10 @@ namespace Electremia.Dal.Repositories
         {
             return RightContext().GetFriends(id);
         }
+
+        public bool CheckRelationship(Relationship relationship)
+        {
+            return RightContext().CheckRelationship(relationship);
+        }
     }
 }

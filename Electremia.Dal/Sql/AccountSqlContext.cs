@@ -172,6 +172,7 @@ namespace Electremia.Dal.Sql
 
         public bool Delete(User entity)
         {
+            //TODO Nog niet klaar.
             const string query = "DELETE FROM [User] WHERE UserID = 6";
             var queryFull = string.Format(query, entity.UserId);
             MSSQLConnectionString.Open();

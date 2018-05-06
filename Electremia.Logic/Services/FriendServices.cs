@@ -14,6 +14,16 @@ namespace Electremia.Logic.Services
             _repo = repo;
         }
 
+        public bool CheckRelationship(int id1, int id2)
+        {
+            // Check for empty values.
+            if ((id1 <= 0) || (id2 <= 0))
+                throw new ExceptionHandler("NotImplemented", "Not all values are implementend");
+
+            var model = SetIdOrder(id1, id2);
+            return _repo.CheckRelationship(model);
+        }
+
         // GetFriends(id)
         public Dictionary<string, Relationship> GetAllFriends(int id)
         {

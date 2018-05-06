@@ -1,6 +1,8 @@
 ﻿@using Electremia.ViewModels
 @model List<RelationshipViewModel>
 
+<link href="~/css/Relationship.css" rel="stylesheet" />
+
 <div class="page-header">
     <h1>Friends <small>Your friends list</small></h1>
 </div>
@@ -21,7 +23,8 @@
                             <div class="col-lg-6">
                                 <div class="panelDiv col-lg-12">
                                     <form method="post">
-                                        <input type="number" name="id" value="0" hidden />
+                                        <input type="number" name="id1" value="@relationshipViewModel.Relationship.UserID_one" hidden />
+                                        <input type="number" name="id2" value="@relationshipViewModel.Relationship.UserID_two" hidden />
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </div>

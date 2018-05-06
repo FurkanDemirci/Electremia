@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Electremia.Logic;
+using Electremia.Logic.Services;
 using Electremia.Model.Models;
 using Electremia.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -15,11 +16,12 @@ namespace Electremia.Controllers
     [Authorize]
     public class RelationshipController : Controller
     {
-        private readonly Factory _factory;
+        private readonly FriendServices _friendServices;
 
         public RelationshipController(IConfiguration config)
         {
-            _factory = new Factory(config);
+            var factory = new Factory(config);
+            _friendServices = factory.FriendService();
         }
 
         public IActionResult Index()
@@ -29,15 +31,27 @@ namespace Electremia.Controllers
 
         public IActionResult Friends()
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            var claims = identity.Claims.ToList();
-            var friendServices = _factory.FriendService();
             List<RelationshipViewModel> friends;
 
-            try { friends = RelationshipDicToList(friendServices.GetAllFriends(Convert.ToInt32(claims[1].Value))); }
+            try { friends = RelationshipDicToList(_friendServices.GetAllFriends(Cookies.GetId(User))); }
             catch (ExceptionHandler e) { ViewData["Message"] = e.Message; friends = new List<RelationshipViewModel>();}
 
             return View(friends);
+        }
+
+        [HttpPost]
+        public IActionResult Friends(int id1, int id2)
+        {
+            var userId = Cookies.GetId(User);
+
+            if (id1 != userId)
+                id2 = id1;
+
+            TempData["Message"] = "Deleted successfully";
+            try { _friendServices.Delete(userId, id2); }
+            catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
+
+            return RedirectToAction("Friends", "Relationship");
         }
 
         public IActionResult AddFriend()
@@ -48,12 +62,8 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult AddFriend(string username, int id)
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            var claims = identity.Claims.ToList();
-            var friendServices = _factory.FriendService();
-
             bool added;
-            try { added = friendServices.AddFriend(Convert.ToInt32(claims[1].Value), id); }
+            try { added = _friendServices.AddFriend(Cookies.GetId(User), id); }
             catch (ExceptionHandler e)
             {
                 ViewData["Message"] = e.Message;
@@ -70,14 +80,11 @@ namespace Electremia.Controllers
 
         public IActionResult Requests()
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            var claims = identity.Claims.ToList();
-            var friendServices = _factory.FriendService();
             var requests = new RequestsViewModel();
 
-            try { requests.RelationshipViewModelsPending = RelationshipDicToList(friendServices.GetPending(Convert.ToInt32(claims[1].Value))); }
+            try { requests.RelationshipViewModelsPending = RelationshipDicToList(_friendServices.GetPending(Cookies.GetId(User))); }
             catch (ExceptionHandler e) { ViewData["Message1"] = e.Message; }
-            try { requests.RelationshipViewModelsSended = RelationshipDicToList(friendServices.GetSended(Convert.ToInt32(claims[1].Value))); }
+            try { requests.RelationshipViewModelsSended = RelationshipDicToList(_friendServices.GetSended(Cookies.GetId(User))); }
             catch (ExceptionHandler e) { ViewData["Message2"] = e.Message; }
 
             return View(requests);
@@ -86,24 +93,22 @@ namespace Electremia.Controllers
         [HttpPost]
         public IActionResult Requests(int id1, int id2, int type)
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            var claims = identity.Claims.ToList();
-            var friendServices = _factory.FriendService();
-            var userId = Convert.ToInt32(claims[1].Value);
+            var userId = Cookies.GetId(User);
 
             // Checks if id2 is the userId.
             if ((id1 != userId) && (id1 != 0))
                 id2 = id1;
 
+            TempData["Message"] = "Deleted successfully";
             // Switch between Accept or Delete.
             switch (type)
             {
                 case 1:
-                    try { friendServices.SetAccept(userId, id2); }
+                    try { _friendServices.SetAccept(userId, id2); }
                     catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
                     break;
                 case 2:
-                    try { friendServices.Delete(userId, id2); }
+                    try { _friendServices.Delete(userId, id2); }
                     catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
                     break;
                 default:
@@ -115,7 +120,7 @@ namespace Electremia.Controllers
         }
 
         /// <summary>
-        /// Converts given relationship dictionary to List of RelationshipViewModel.
+        /// Converts given relationship dictionary to List of RelationshipViewModels.
         /// </summary>
         /// <param name="resultDictionary">Dictionary string and Relationship</param>
         /// <returns>List of RelationshipViewModel</returns>

@@ -15,5 +15,6 @@ namespace Electremia.ViewModels
         public bool Admin { get; set; }
         public List<Job> Jobs { get; set; }
         public List<School> Schools { get; set; }
+        public bool IsFriendsWith { get; set; }
     }
 }

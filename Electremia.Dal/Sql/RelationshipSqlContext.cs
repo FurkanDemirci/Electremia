@@ -169,5 +169,24 @@ namespace Electremia.Dal.Sql
             MSSQLConnectionString.Close();
             return relationshipsUsr;
         }
+
+        public bool CheckRelationship(Relationship relationship)
+        {
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spRelationship_CheckById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id1", SqlDbType.Int).Value = relationship.UserID_one;
+                command.Parameters.AddWithValue("@Id2", SqlDbType.Int).Value = relationship.UserID_two;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
