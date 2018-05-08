@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Electremia.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,14 @@ namespace Electremia.Controllers
         public IActionResult CreateContent()
         {
             //TODO Creëer alle soorten content (Post en Product) en stuur het op.
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult CreateContent(CreateContentViewModel model)
+        {
+            //TODO Upload content naar database.
             return View();
         }
     }
