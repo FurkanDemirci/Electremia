@@ -32,21 +32,23 @@
                                 if (!Model.IsFriendsWith)
                                 {
                                     <form asp-controller="Relationship" asp-action="AddFriend" method="post">
-                                        <input type="text" name="username" value="@Model.Username" hidden />
-                                        <input type="number" name="id" value="@Model.UserId" hidden />
+                                        <input type="text" name="username" value="@Model.Username" hidden/>
+                                        <input type="number" name="id" value="@Model.UserId" hidden/>
                                         <button class="btn btn-info" type="submit">Add friend</button>
                                     </form>
                                 }
-                                @ViewData["FriendRequest"];
-                                if ((Model.Username == User.Identity.Name) && (!Model.Admin))
+
+                                @TempData["Message"]
+                                ;
+                                if (Model.Username == User.Identity.Name)
                                 {
                                     <a class="btn btn-info" asp-area="" asp-controller="Account" asp-action="Edit">Edit</a>
                                 }
-                                else if (Model.Admin)
+                                else if (Cookies.GetRole(User) == "Admin")
                                 {
                                     <form asp-controller="Account" asp-action="Edit" method="get">
                                         <input type="number" name="id" value="@Model.UserId" readonly/>
-                                        <button type="submit">Edit</button>
+                                        <button class="btn btn-info" type="submit">Edit</button>
                                     </form>
                                 }
                             }

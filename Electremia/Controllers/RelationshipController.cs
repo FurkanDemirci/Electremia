@@ -71,11 +71,11 @@ namespace Electremia.Controllers
             }
 
             if (added)
-                ViewData["Message"] = "Succesfully send request";
+                TempData["Message"] = "Succesfully send request";
             else
-                ViewData["Message"] = "Couldn't send request";
+                TempData["Message"] = "Failed to send friend request";
 
-            return View();
+            return RedirectToAction("Profile", "Account", new {usr = username});
         }
 
         public IActionResult Requests()
@@ -99,15 +99,16 @@ namespace Electremia.Controllers
             if ((id1 != userId) && (id1 != 0))
                 id2 = id1;
 
-            TempData["Message"] = "Deleted successfully";
             // Switch between Accept or Delete.
             switch (type)
             {
                 case 1:
+                    TempData["Message"] = "Accepted successfully";
                     try { _friendServices.SetAccept(userId, id2); }
                     catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
                     break;
                 case 2:
+                    TempData["Message"] = "Deleted successfully";
                     try { _friendServices.Delete(userId, id2); }
                     catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
                     break;

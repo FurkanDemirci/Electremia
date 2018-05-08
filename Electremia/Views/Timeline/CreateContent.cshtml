@@ -1,0 +1,104 @@
+﻿@using Electremia.ViewModels
+@model CreateContentViewModel
+@{ ViewData["Title"] = "Create content Page"; }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
+<div class="page-header">
+    <h1>Create content page <small>Create your content </small></h1>
+</div>
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a href="#post" data-toggle="tab" aria-expanded="true">Post</a>
+    </li>
+    <li class="">
+        <a href="#product" data-toggle="tab" aria-expanded="false">Product</a>
+    </li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="post">
+        <div class="page-header">
+            <h4>Create post <small>See bottom for preview </small></h4>
+        </div>
+        <div class="jumbotron">
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="PostViewModel.Title"></label>
+                    <input asp-for="PostViewModel.Title" class="form-control" data-val="true" placeholder="Title">
+                    <span asp-validation-for="PostViewModel.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PostViewModel.Description"></label>
+                    <input asp-for="PostViewModel.Description" class="form-control" data-val="true" placeholder="Description">
+                    <span asp-validation-for="PostViewModel.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>File input</label>
+                    <input type="file">
+                    <p class="help-block">Example block-level help text here.</p>
+                </div>
+                <button type="reset" class="btn btn-default">Reset</button>
+                <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3">
+                <div class="media center-block">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" src="~/images/post.png"/>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" id="mediaTitle">...</h4>
+                        <p id="mediaDescription">...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="product">
+        <div class="page-header">
+            <h4>Create product <small>See bottom for preview </small></h4>
+        </div>
+        <div class="jumbotron">
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="ProductViewModel.Title"></label>
+                    <input asp-for="ProductViewModel.Title" class="form-control" data-val="true" placeholder="Title">
+                    <span asp-validation-for="ProductViewModel.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductViewModel.Description"></label>
+                    <input asp-for="ProductViewModel.Description" class="form-control" data-val="true" placeholder="Description">
+                    <span asp-validation-for="ProductViewModel.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductViewModel.Price" class="control-label"></label>
+                    <div class="input-group">
+                        <span class="input-group-addon">€</span>
+                        <input asp-for="ProductViewModel.Price" class="form-control" data-val="true">
+                        <span asp-validation-for="ProductViewModel.Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>File input</label>
+                    <input type="file">
+                    <p class="help-block">Example block-level help text here.</p>
+                </div>
+                <button type="reset" class="btn btn-default">Reset</button>
+                <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+//    $(document).ready(function() {
+//        $('#PostTitle').onchange(function() {
+//            var title = $(this).val();
+//            alert(title);
+//        });
+//    });
+</script>

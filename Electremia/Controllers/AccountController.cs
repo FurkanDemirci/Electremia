@@ -75,8 +75,7 @@ namespace Electremia.Controllers
                 cookies.ClaimsPrincipal(),
                 cookies.AuthProperties());
 
-            //TODO Naar feed? page redirecten.
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Timeline");
         }
 
         public async Task<IActionResult> Logout()
