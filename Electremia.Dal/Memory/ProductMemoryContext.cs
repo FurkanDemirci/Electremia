@@ -1,34 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Electremia.Dal.Interfaces;
 using Electremia.Model.Models;
 
 namespace Electremia.Dal.Memory
 {
-    public class PostMemoryContext : IPostRepository
+    public class ProductMemoryContext : IProductRepository
     {
-        public Post GetById(int id)
+        public Product GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        int IPostRepository.Add(Post entity)
+        int IProductRepository.Add(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool Add(Post entity)
+        public bool Add(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Post entity)
+        public bool Update(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(Post entity)
+        public bool Delete(Product entity)
         {
             throw new NotImplementedException();
         }

@@ -20,8 +20,7 @@ namespace Electremia.Controllers
 
         public RelationshipController(IConfiguration config)
         {
-            var factory = new Factory(config);
-            _friendServices = factory.FriendService();
+            _friendServices = new Factory(config).FriendService();
         }
 
         public IActionResult Index()

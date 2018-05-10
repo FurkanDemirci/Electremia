@@ -32,13 +32,12 @@ namespace Electremia.Controllers
         public AccountController(IConfiguration config, IHostingEnvironment environment)
         {
             _environment = environment;
-            var factory = new Factory(config);
 
             // Services using for AccountController:
-            _accountServices = factory.AccountService();
-            _jobServices = factory.JobService();
-            _schoolServices = factory.SchoolService();
-            _friendServices = factory.FriendService();
+            _accountServices = new Factory(config).AccountService();
+            _jobServices = new Factory(config).JobService();
+            _schoolServices = new Factory(config).SchoolService();
+            _friendServices = new Factory(config).FriendService();
         }
 
         [Authorize]

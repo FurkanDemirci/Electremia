@@ -118,6 +118,7 @@ namespace Electremia.Dal.Sql
                 command.Parameters.AddWithValue("@Lastname", SqlDbType.VarChar).Value = entity.Lastname;
                 command.Parameters.AddWithValue("@Username", SqlDbType.VarChar).Value = entity.Username;
                 command.Parameters.AddWithValue("@Password", SqlDbType.VarChar).Value = entity.Password;
+                //TODO Pictures zijn hard-coded.
                 command.Parameters.AddWithValue("@ProfilePicture", SqlDbType.VarChar).Value = "Blank-profile.png";
                 command.Parameters.AddWithValue("@CoverPicture", SqlDbType.VarChar).Value = "Blank-cover.png";
                 command.Parameters.AddWithValue("@Certificate", SqlDbType.VarChar).Value = entity.Certificate;

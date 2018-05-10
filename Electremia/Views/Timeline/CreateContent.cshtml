@@ -5,6 +5,7 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
 
+@ViewData["Message"]
 <div class="page-header">
     <h1>Create content page <small>Create your content </small></h1>
 </div>
@@ -22,7 +23,7 @@
             <h4>Create post <small>See bottom for preview </small></h4>
         </div>
         <div class="jumbotron">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label asp-for="PostViewModel.Title"></label>
                     <input asp-for="PostViewModel.Title" class="form-control" data-val="true" placeholder="Title">
@@ -34,9 +35,10 @@
                     <span asp-validation-for="PostViewModel.Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>File input</label>
-                    <input type="file">
-                    <p class="help-block">Example block-level help text here.</p>
+                    <label asp-for="PostViewModel.Picture"></label>
+                    <input asp-for="PostViewModel.Picture" class="form-control" accept="image/*" multiple />
+                    <img src="~/images/post.png"/>
+                    <p class="help-block">Upload images for your post's.</p>
                 </div>
                 <button type="reset" class="btn btn-default">Reset</button>
                 <button type="submit" class="btn btn-info">Submit</button>
@@ -63,7 +65,7 @@
             <h4>Create product <small>See bottom for preview </small></h4>
         </div>
         <div class="jumbotron">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label asp-for="ProductViewModel.Title"></label>
                     <input asp-for="ProductViewModel.Title" class="form-control" data-val="true" placeholder="Title">
@@ -83,9 +85,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>File input</label>
-                    <input type="file">
-                    <p class="help-block">Example block-level help text here.</p>
+                    <label asp-for="ProductViewModel.Picture"></label>
+                    <input asp-for="ProductViewModel.Picture" class="form-control" accept="image/*" multiple />
+                    <img src="~/images/post.png" />
+                    <p class="help-block">Upload images of your product</p>
                 </div>
                 <button type="reset" class="btn btn-default">Reset</button>
                 <button type="submit" class="btn btn-info">Submit</button>

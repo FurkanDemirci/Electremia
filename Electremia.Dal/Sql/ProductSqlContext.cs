@@ -1,35 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using Electremia.Dal.Interfaces;
-using Electremia.Dal.Repositories;
 using Electremia.Model.Models;
 
 namespace Electremia.Dal.Sql
 {
-    public class PostSqlContext : Connection, IPostRepository
+    public class ProductSqlContext : Connection, IProductRepository
     {
-        public Post GetById(int id)
+        public Product GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        int IPostRepository.Add(Post entity)
+        int IProductRepository.Add(Product entity)
         {
-            var postId = -1;
+            var productId = -1;
             MSSQLConnectionString.Open();
-            using (var command = new SqlCommand("dbo.spPost_Add", MSSQLConnectionString))
+            using (var command = new SqlCommand("dbo.spProduct_Add", MSSQLConnectionString))
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.UserId;
                 command.Parameters.AddWithValue("@Title", SqlDbType.VarChar).Value = entity.Title;
                 command.Parameters.AddWithValue("@Description", SqlDbType.VarChar).Value = entity.Description;
+                command.Parameters.AddWithValue("@Price", SqlDbType.Decimal).Value = entity.Price;
 
                 try
                 {
-                    postId = Convert.ToInt32(command.ExecuteScalar());
+                    productId = Convert.ToInt32(command.ExecuteScalar());
                     MSSQLConnectionString.Close();
                 }
                 catch
@@ -37,20 +35,20 @@ namespace Electremia.Dal.Sql
                     MSSQLConnectionString.Close();
                 }
             }
-            return postId;
+            return productId;
         }
 
-        public bool Add(Post entity)
+        public bool Add(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Post entity)
+        public bool Update(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(Post entity)
+        public bool Delete(Product entity)
         {
             throw new NotImplementedException();
         }

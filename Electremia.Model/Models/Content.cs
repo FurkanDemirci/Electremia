@@ -11,7 +11,6 @@ namespace Electremia.Model.Models
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Picture { get; set; }
         public DateTime DateTime { get; set; }
         public bool Active { get; set; }
         public int[] Likes { get; set; }

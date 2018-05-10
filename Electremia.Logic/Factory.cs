@@ -64,5 +64,38 @@ namespace Electremia.Logic
                     return new FriendServices(new RelationshipRepository(new RelationshipMemoryContext()));
             }
         }
+
+        public PostServices PostService()
+        {
+            switch (_context)
+            {
+                case "MSSQL":
+                    return new PostServices(new PostRepository(new PostSqlContext()));
+                default:
+                    return new PostServices(new PostRepository(new PostMemoryContext()));
+            }
+        }
+
+        public ProductServices ProductService()
+        {
+            switch (_context)
+            {
+                case "MSSQL":
+                    return new ProductServices(new ProductRepository(new ProductSqlContext()));
+                default:
+                    return new ProductServices(new ProductRepository(new ProductMemoryContext()));
+            }
+        }
+
+        public PictureServices PictureService()
+        {
+            switch (_context)
+            {
+                case "MSSQL":
+                    return new PictureServices(new Repository<Picture>(new PictureSqlContext()));
+                default:
+                    return new PictureServices(new Repository<Picture>(new PictureMemoryContext()));
+            }
+        }
     }
 }
