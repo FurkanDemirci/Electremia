@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Electremia.Dal.Interfaces;
 using Electremia.Dal.Memory;
 using Electremia.Dal.Sql;
@@ -30,6 +31,9 @@ namespace Electremia.Dal.Repositories
             return RightContext().Add(entity);
         }
 
-
+        public List<Product> GetAllByUserId(int id)
+        {
+            return RightContext().GetAllByUserId(id);
+        }
     }
 }

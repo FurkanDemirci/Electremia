@@ -18,6 +18,11 @@ namespace Electremia.Dal.Memory
             throw new NotImplementedException();
         }
 
+        public List<Post> GetAllByUserId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Add(Post entity)
         {
             throw new NotImplementedException();

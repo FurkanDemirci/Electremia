@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Electremia.Dal.Interfaces;
 using Electremia.Model.Models;
 
@@ -12,6 +13,11 @@ namespace Electremia.Dal.Memory
         }
 
         int IProductRepository.Add(Product entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> GetAllByUserId(int id)
         {
             throw new NotImplementedException();
         }

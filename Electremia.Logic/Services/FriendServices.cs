@@ -14,6 +14,23 @@ namespace Electremia.Logic.Services
             _repo = repo;
         }
 
+        public List<int> GetFriendsId(int id)
+        {
+            if (id <= 0)
+                throw new ExceptionHandler("NotImplemented", "Id is not implemented");
+            var result = _repo.GetFriends(id);
+            if (result.Count == 0)
+                throw new ExceptionHandler("Result", "No results found");
+
+            var userId = new List<int>();
+            foreach (var resultValue in result.Values)
+            {
+                userId.Add(resultValue.UserID_one == id ? resultValue.UserID_two : resultValue.UserID_one);
+            }
+
+            return userId;
+        }
+
         public bool CheckRelationship(int id1, int id2)
         {
             // Check for empty values.

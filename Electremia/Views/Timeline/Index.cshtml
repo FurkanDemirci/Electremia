@@ -1,4 +1,8 @@
-﻿@{ ViewData["Title"] = "Timeline Page"; }
+﻿@using Electremia.ViewModels
+@model TimeLineViewmodel
+@{ ViewData["Title"] = "Timeline Page"; }
+
+<link href="~/css/TimeLine.css" rel="stylesheet" />
 
 <div class="page-header">
     <h1>Timeline page <small>All types of content's </small></h1>
@@ -8,4 +12,65 @@
         <a class="btn btn-primary center-block" asp-area="" asp-controller="Timeline" asp-action="CreateContent">Create content</a>
     </div>
 </div>
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a href="#post" data-toggle="tab" aria-expanded="true">Post</a>
+    </li>
+    <li class="">
+        <a href="#product" data-toggle="tab" aria-expanded="false">Product</a>
+    </li>
+</ul>
+<div class="row">
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade active in" id="post">
+            <div class="Tabdiv col-lg-12">
+                @{
+                    foreach (var post in Model.Posts)
+                    {
+                        <form method="get" asp-action="Content">
+                            <div class="list-group">
+                                <button class="list-group-item btn-default">
+                                    <div class="ImgDiv media-left">
+                                        <img class="ImgSize media-object" src="~/images/@post.Pictures[0].Url"/>
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="list-group-item-heading" id="">@post.Title</h4>
+                                        <p class="list-group-item-text">@post.Description</p>
+                                    </div>
+                                </button>
+                                <input type="number" name="postId" value="@post.PostId" hidden/>
+                            </div>
+                        </form>
+                    }
+                }
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product">
+            <div class="Tabdiv col-lg-12">
+                @{
+                    foreach (var product in Model.Products)
+                    {
+                        <form method="get" asp-action="Content">
+                            <div class="list-group">
+                                <button class="list-group-item btn-default">
+                                    <div class="ImgDiv media-left">
+                                        <img class="ImgSize media-object" src="~/images/@product.Pictures[0].Url"/>
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="list-group-item-heading" id="">@product.Title</h4>
+                                        <p class="list-group-item-text">@product.Description</p>
+                                        <h5 class="list-group-item-heading text-right">€ @product.Price</h5>
+                                    </div>
+                                </button>
+                                <input type="number" name="productId" value="@product.ProductId" hidden/>
+                            </div>
+                        </form>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @TempData["Message"]

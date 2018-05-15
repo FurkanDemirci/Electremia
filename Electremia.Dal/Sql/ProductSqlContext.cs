@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Electremia.Dal.Interfaces;
@@ -36,6 +37,37 @@ namespace Electremia.Dal.Sql
                 }
             }
             return productId;
+        }
+
+        public List<Product> GetAllByUserId(int id)
+        {
+            var products = new List<Product>();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spProduct_GetAllByUserId", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var product = new Product
+                        {
+                            ProductId = reader.GetInt32(0),
+                            UserId = reader.GetInt32(1),
+                            Title = reader.GetString(2),
+                            Description = reader.GetString(3),
+                            Price = reader.GetDecimal(4),
+                            DateTime = reader.GetDateTime(5),
+                            Active = reader.GetBoolean(6)
+                        };
+                        product.Pictures.Add(new Picture { Url = reader.GetString(7) });
+                        products.Add(product);
+                    }
+                }
+            }
+            MSSQLConnectionString.Close();
+            return products;
         }
 
         public bool Add(Product entity)

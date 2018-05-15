@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Electremia.Dal.Memory;
 using Electremia.Dal.Repositories;
 using Electremia.Dal.Sql;
@@ -25,6 +26,23 @@ namespace Electremia.Logic.Services
                 throw new ExceptionHandler("Database", "Could not upload to database");
             return id;
         }
+
+        public List<Post> GetFriendsPosts(List<int> friendsId)
+        {
+            if (friendsId.Count == 0)
+                throw new ExceptionHandler("Friends", "It seems like you have no friend's.");
+
+            var allPosts = new List<Post>();
+            foreach (var id in friendsId)
+            {
+                var posts = _repo.GetAllByUserId(id);
+                allPosts.AddRange(posts);
+            }
+
+            allPosts.Sort((y, x) => DateTime.Compare(x.DateTime, y.DateTime));
+            return allPosts;
+        }
+
         // GetPost(id)
         // Add(model)
         // Edit(model)

@@ -21,6 +21,7 @@ namespace Electremia.Controllers
         private readonly PostServices _postServices;
         private readonly ProductServices _productServices;
         private readonly PictureServices _pictureServices;
+        private readonly FriendServices _friendServices;
 
         public TimelineController(IConfiguration config, IHostingEnvironment environment)
         {
@@ -29,12 +30,28 @@ namespace Electremia.Controllers
             _postServices = new Factory(config).PostService();
             _productServices = new Factory(config).ProductService();
             _pictureServices = new Factory(config).PictureService();
+            _friendServices = new Factory(config).FriendService();
         }
 
         [Authorize]
         public IActionResult Index()
         {
             //TODO Krijg alle content van je zelf en je vrienden te zien in Index.
+
+            var friendsId = _friendServices.GetFriendsId(Cookies.GetId(User));
+            friendsId.Add(Cookies.GetId(User));
+
+            var timeLine = new TimeLineViewmodel
+            {
+                Posts = _postServices.GetFriendsPosts(friendsId),
+                Products = _productServices.GetFriendsProducts(friendsId)
+            };
+
+            return View(timeLine);
+        }
+
+        public IActionResult Content(int postId, int productId)
+        {
             return View();
         }
 
