@@ -92,9 +92,31 @@ namespace Electremia.Logic
             switch (_context)
             {
                 case "MSSQL":
-                    return new PictureServices(new Repository<Picture>(new PictureSqlContext()));
+                    return new PictureServices(new PictureRepository(new PictureSqlContext()));
                 default:
-                    return new PictureServices(new Repository<Picture>(new PictureMemoryContext()));
+                    return new PictureServices(new PictureRepository(new PictureMemoryContext()));
+            }
+        }
+
+        public LikeServices LikeService()
+        {
+            switch (_context)
+            {
+                case "MSSQL":
+                    return new LikeServices(new LikeRepository(new LikeSqlContext()));
+                default:
+                    return new LikeServices(new LikeRepository(new LikeMemoryContext()));
+            }
+        }
+
+        public CommentServices CommentService()
+        {
+            switch (_context)
+            {
+                case "MSSQL":
+                    return new CommentServices(new CommentRepository(new CommentSqlContext()));
+                default:
+                    return new CommentServices(new CommentRepository(new CommentMemoryContext()));
             }
         }
     }

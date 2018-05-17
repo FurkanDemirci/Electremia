@@ -8,5 +8,7 @@ namespace Electremia.Model.Models
     {
         public int LikeId { get; set; }
         public int UserId { get; set; }
+        public int Id { get; set; }
+        public int Type { get; set; }
     }
 }

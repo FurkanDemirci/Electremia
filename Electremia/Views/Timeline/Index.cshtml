@@ -12,6 +12,7 @@
         <a class="btn btn-primary center-block" asp-area="" asp-controller="Timeline" asp-action="CreateContent">Create content</a>
     </div>
 </div>
+@ViewData["Message"]
 <ul class="nav nav-tabs">
     <li class="active">
         <a href="#post" data-toggle="tab" aria-expanded="true">Post</a>
@@ -20,6 +21,7 @@
         <a href="#product" data-toggle="tab" aria-expanded="false">Product</a>
     </li>
 </ul>
+@TempData["Message"]
 <div class="row">
     <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade active in" id="post">
@@ -31,14 +33,15 @@
                             <div class="list-group">
                                 <button class="list-group-item btn-default">
                                     <div class="ImgDiv media-left">
-                                        <img class="ImgSize media-object" src="~/images/@post.Pictures[0].Url"/>
+                                        <img class="ImgSize media-object" src="~/images/@post.Pictures[0].Url" />
                                     </div>
                                     <div class="media-body">
                                         <h4 class="list-group-item-heading" id="">@post.Title</h4>
                                         <p class="list-group-item-text">@post.Description</p>
                                     </div>
                                 </button>
-                                <input type="number" name="postId" value="@post.PostId" hidden/>
+                                <input type="number" name="id" value="@post.PostId" hidden />
+                                <input type="number" name="type" value="0" hidden />
                             </div>
                         </form>
                     }
@@ -54,7 +57,7 @@
                             <div class="list-group">
                                 <button class="list-group-item btn-default">
                                     <div class="ImgDiv media-left">
-                                        <img class="ImgSize media-object" src="~/images/@product.Pictures[0].Url"/>
+                                        <img class="ImgSize media-object" src="~/images/@product.Pictures[0].Url" />
                                     </div>
                                     <div class="media-body">
                                         <h4 class="list-group-item-heading" id="">@product.Title</h4>
@@ -62,7 +65,8 @@
                                         <h5 class="list-group-item-heading text-right">€ @product.Price</h5>
                                     </div>
                                 </button>
-                                <input type="number" name="productId" value="@product.ProductId" hidden/>
+                                <input type="number" name="id" value="@product.ProductId" hidden />
+                                <input type="number" name="type" value="1" hidden />
                             </div>
                         </form>
                     }
@@ -71,6 +75,3 @@
         </div>
     </div>
 </div>
-
-
-@TempData["Message"]

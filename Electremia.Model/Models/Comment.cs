@@ -1,15 +1,20 @@
-﻿namespace Electremia.Model.Models
+﻿using System.Collections.Generic;
+
+namespace Electremia.Model.Models
 {
     public class Comment
     {
         public int CommentId { get; set; }
         public int UserId { get; set; }
-        public int[] Likes { get; set; }
-        public string Text { get; }
+        public int Id { get; set; }
+        public int Type { get; set; }
+        public string Text { get; set; }
+        public List<int> Likes { get; set; }
 
-        public Comment(string text)
+
+        public Comment()
         {
-            Text = text;
+            Likes = new List<int>();
         }
     }
 }

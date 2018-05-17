@@ -13,12 +13,13 @@ namespace Electremia.Model.Models
         public string Description { get; set; }
         public DateTime DateTime { get; set; }
         public bool Active { get; set; }
-        public int[] Likes { get; set; }
+        public List<int> Likes { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Picture> Pictures { get; set; }
 
         protected Content()
         {
+            Likes = new List<int>();
             Comments = new List<Comment>();
             Pictures = new List<Picture>();
         }

@@ -13,7 +13,30 @@ namespace Electremia.Dal.Sql
     {
         public Post GetById(int id)
         {
-            throw new NotImplementedException();
+            var post = new Post();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spPost_GetById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        post = new Post
+                        {
+                            PostId = reader.GetInt32(0),
+                            UserId = reader.GetInt32(1),
+                            Title = reader.GetString(2),
+                            Description = reader.GetString(3),
+                            DateTime = reader.GetDateTime(4),
+                            Active = reader.GetBoolean(5)
+                        };
+                    }
+                }
+            }
+            MSSQLConnectionString.Close();
+            return post;
         }
 
         int IPostRepository.Add(Post entity)

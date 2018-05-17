@@ -1,23 +1,24 @@
-﻿using Electremia.Dal.Repositories;
+﻿using System.Collections.Generic;
+using Electremia.Dal.Repositories;
 using Electremia.Model.Models;
 
 namespace Electremia.Logic.Services
 {
     public class CommentServices
     {
-        private readonly Repository<Comment> _repo;
+        private readonly CommentRepository _repo;
 
-        public CommentServices(string context)
+        public CommentServices(CommentRepository repo)
         {
-            //switch (context)
-            //{
-            //    case "MSSQL":
-            //        _repo = new Repository<Comment>();
-            //        break;
-            //    default:
-            //        _repo = new Repository<Comment>();
-            //        break;
-            //}
+            _repo = repo;
+        }
+
+        public List<Comment> GetAll(int id, int type)
+        {
+            if ((id <= 0) && (type < 0))
+                throw new ExceptionHandler("NotImplemented", "Not all parameterd are filled");
+
+            return _repo.GetAll(id, type);
         }
 
         // GetComments(id)

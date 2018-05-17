@@ -11,7 +11,31 @@ namespace Electremia.Dal.Sql
     {
         public Product GetById(int id)
         {
-            throw new NotImplementedException();
+            var product = new Product();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spProduct_GetById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        product = new Product
+                        {
+                            ProductId = reader.GetInt32(0),
+                            UserId = reader.GetInt32(1),
+                            Title = reader.GetString(2),
+                            Description = reader.GetString(3),
+                            Price = reader.GetDecimal(4),
+                            DateTime = reader.GetDateTime(5),
+                            Active = reader.GetBoolean(6)
+                        };
+                    }
+                }
+            }
+            MSSQLConnectionString.Close();
+            return product;
         }
 
         int IProductRepository.Add(Product entity)

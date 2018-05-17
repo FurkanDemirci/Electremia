@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Electremia.Dal.Interfaces;
 using Electremia.Model.Models;
 
 namespace Electremia.Dal.Memory
 {
-    public class PictureMemoryContext : IRepository<Picture>
+    public class PictureMemoryContext : IPictureRepository
     {
         public Picture GetById(int id)
         {
@@ -22,6 +23,11 @@ namespace Electremia.Dal.Memory
         }
 
         public bool Delete(Picture entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Picture> GetAll(int id, int type)
         {
             throw new NotImplementedException();
         }

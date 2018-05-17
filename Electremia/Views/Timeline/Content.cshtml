@@ -1,5 +1,76 @@
-﻿@{ ViewData["Title"] = "Timeline Page"; }
+﻿@using Electremia.ViewModels
+@model SelectedContentViewModel
+@{ ViewData["Title"] = "Timeline Page"; }
 
 <div class="page-header">
     <h1>Content page <small>Selected content: </small></h1>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-10">
+            <h4>@Model.Title</h4>
+        </div>
+        <div class="col-lg-2">
+            <label>@Model.Price</label>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="jumbotron">
+            <label>@Model.Description</label>
+        </div>
+        @{
+            foreach (var picture in Model.Pictures)
+            {
+                <div class="col-xs-6 col-md-3">
+                    <a href="../images/@picture.Url" class="thumbnail">
+                        <img src="~/images/@picture.Url" alt="...">
+                    </a>
+                </div>
+            }
+        }
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-2">
+            <div class="col-lg-6">
+                <form method="post" asp-action="Like">
+                    <input name="id" value="@Model.Id" hidden/>
+                    <input name="type" value="@Model.Type" hidden/>
+                    <button type="submit" class="btn btn-info">Like</button>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <h4><span class="glyphicon glyphicon-thumbs-up"></span> @Model.Likes.Count</h4>
+            </div>
+        </div>
+        <div class="col-lg-10">
+            <form method="post">
+                <textarea class="form-control" rows="1" placeholder="Write comment" name="comment"></textarea>
+                <input type="number" name="id" value="@Model.Id" hidden/>
+                <input type="number" name="type" value="@Model.Type" hidden/>
+                <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <h4>Comments: </h4>
+        @{
+            foreach (var comment in Model.Comments)
+            {
+                <div class="list-group">
+                    <button class="list-group-item btn-default">
+                        <div class="ImgDiv media-left">
+                            <img class="ImgSize media-object" src="~/images/Blank-profile.png" style="width: 60px;"/>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="list-group-item-heading" id="">@comment.UserId</h4>
+                            <p class="list-group-item-text">@comment.Text</p>
+                        </div>
+                    </button>
+                    <input type="number" name="id" value="@comment.UserId" hidden />
+                    <input type="number" name="type" value="1" hidden />
+                </div>
+            }
+        }
+        
+    </div>
 </div>

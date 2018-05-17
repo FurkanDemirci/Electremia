@@ -40,6 +40,14 @@ namespace Electremia.Logic.Services
             allProducts.Sort((y, x) => DateTime.Compare(x.DateTime, y.DateTime));
             return allProducts;
         }
+
+        public Product GetById(int id)
+        {
+            if (id <= 0)
+                throw new ExceptionHandler("NotImplemented", "Id parameter not given");
+
+            return _repo.GetById(id);
+        }
         // GetProduct(id)
         // Add(model)
         // Edit(model)
