@@ -103,18 +103,25 @@ namespace Electremia.Controllers
         {
             var liked = false;
             try { liked = _likeServices.Add(id, Cookies.GetId(User), type); }
-            catch (ExceptionHandler e) { ViewData["Message"] = e.Message; }
+            catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
 
             if (!liked)
-                ViewData["Message"] = "Something went wrong";
+                TempData["Message"] = "Something went wrong";
 
             return RedirectToAction("Content", "Timeline", new { id = id, type = type});
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Comment(int id, int type)
+        public IActionResult Comment(int id, int type, string comment)
         {
+            var commented = false;
+            try { commented = _commentServices.Add(id, Cookies.GetId(User), type, comment); }
+            catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
+
+            if (!commented)
+                TempData["Message"] = "Something went wrong";
+
             return RedirectToAction("Content", "Timeline", new { id = id, type = type});
         }
 

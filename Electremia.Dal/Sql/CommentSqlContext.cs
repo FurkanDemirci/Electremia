@@ -16,7 +16,27 @@ namespace Electremia.Dal.Sql
 
         public bool Add(Comment entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spComment_Add", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.Id;
+                command.Parameters.AddWithValue("@UserId", SqlDbType.Int).Value = entity.UserId;
+                command.Parameters.AddWithValue("@Type", SqlDbType.Int).Value = entity.Type;
+                command.Parameters.AddWithValue("@Text", SqlDbType.VarChar).Value = entity.Text;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
 
         public bool Update(Comment entity)
@@ -48,7 +68,8 @@ namespace Electremia.Dal.Sql
                             UserId = reader.GetInt32(1),
                             Id = reader.GetInt32(2),
                             Type = reader.GetInt32(3),
-                            Text = reader.GetString(4)
+                            Text = reader.GetString(4),
+                            Username = reader.GetString(5)
                         };
                         comments.Add(comment);
                     }

@@ -21,7 +21,7 @@ namespace Electremia.Dal.Sql
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.Id;
-                command.Parameters.AddWithValue("@UserId", SqlDbType.VarChar).Value = entity.UserId;
+                command.Parameters.AddWithValue("@UserId", SqlDbType.Int).Value = entity.UserId;
                 command.Parameters.AddWithValue("@Type", SqlDbType.Int).Value = entity.Type;
 
                 try
