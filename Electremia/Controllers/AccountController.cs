@@ -121,10 +121,23 @@ namespace Electremia.Controllers
             if (usr == null)
                 usr = User.Identity.Name;
 
+            var userId = 0;
             User fullUser;
             var isFriendsWith = true;
 
-            try { fullUser = _accountServices.GetFullUser(_accountServices.GetUser(usr).UserId); }
+            try
+            {
+                var user = _accountServices.GetUser(usr);
+                if (user != null)
+                    userId = user.UserId;
+                else
+                {
+                    TempData["Message"] = "No user found by the name: " + usr;
+                    return RedirectToAction("Index", "Search");
+                }
+            }
+            catch (ExceptionHandler e) { return BadRequest(e.Message); }
+            try { fullUser = _accountServices.GetFullUser(userId); }
             catch (ExceptionHandler e) { return BadRequest(e.Message); }
 
             if (usr != User.Identity.Name)

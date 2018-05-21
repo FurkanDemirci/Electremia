@@ -8,6 +8,11 @@ namespace Electremia.Controllers
 {
     public class SearchController : Controller
     {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Search(string search)
         {
@@ -25,8 +30,7 @@ namespace Electremia.Controllers
                 case "home":
                     return RedirectToAction("Index", "Home");
                 default:
-                    ViewData["Error"] = "Nothing found";
-                    return View();
+                    return RedirectToAction("Profile", "Account", new {usr = search});
             }
         }
     }
