@@ -15,15 +15,25 @@ namespace Electremia.Logic.Services
             _repo = repo;
         }
 
+        /// <summary>
+        /// Get all schools.
+        /// </summary>
+        /// <param name="id">UserId</param>
+        /// <returns>IEnumerable of schools</returns>
         public IEnumerable<School> GetAll(int id)
         {
+            // Check for empty values
+            if (id <= 0)
+                throw new ExceptionHandler("NotImplemented", "Not all parameters are filled");
+
             return _repo.GetAll(id);
         }
 
-        // GetSchools(id)
-        // Add(model)
-
-        // Edit(model)
+        /// <summary>
+        /// Edit the schools.
+        /// </summary>
+        /// <param name="schools">List of schools</param>
+        /// <returns>Boolean</returns>
         public bool Edit(List<School> schools)
         {
             foreach (var school in schools)
@@ -35,7 +45,5 @@ namespace Electremia.Logic.Services
             }
             return true;
         }
-
-        // Delete(model)
     }
 }

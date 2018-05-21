@@ -16,8 +16,16 @@ namespace Electremia.Logic.Services
             _repo = repo;
         }
 
+        /// <summary>
+        /// Create a post.
+        /// </summary>
+        /// <param name="userId">UserId</param>
+        /// <param name="title">Post title</param>
+        /// <param name="description">Post description</param>
+        /// <returns>Created PostId int</returns>
         public int CreatePost(int userId, string title, string description)
         {
+            // Check for empty values.
             if (title == null || description == null)
                 throw new ExceptionHandler("NotImplemented", "Not all fields are implemented");
 
@@ -27,8 +35,14 @@ namespace Electremia.Logic.Services
             return id;
         }
 
+        /// <summary>
+        /// Get all posts of your friends.
+        /// </summary>
+        /// <param name="friendsId">List of Friend UserId</param>
+        /// <returns>List of Posts</returns>
         public List<Post> GetFriendsPosts(List<int> friendsId)
         {
+            // Check for empty values.
             if (friendsId.Count == 0)
                 throw new ExceptionHandler("Friends", "It seems like you have no friend's.");
 
@@ -39,36 +53,51 @@ namespace Electremia.Logic.Services
                 allPosts.AddRange(posts);
             }
 
+            // Sorts the post by new to old.
             allPosts.Sort((y, x) => DateTime.Compare(x.DateTime, y.DateTime));
             return allPosts;
         }
 
+        /// <summary>
+        /// Get post by id.
+        /// </summary>
+        /// <param name="id">Post id</param>
+        /// <returns>Post model</returns>
         public Post GetById(int id)
         {
+            // Check for empty values.
             if (id <= 0)
                 throw new ExceptionHandler("NotImplemented", "Id parameter not given");
 
             return _repo.GetById(id);
         }
 
+        /// <summary>
+        /// Delete post by id.
+        /// </summary>
+        /// <param name="id">Post id</param>
+        /// <returns>Boolean</returns>
         public bool DeleteById(int id)
         {
+            // Check for empty values.
             if (id <= 0)
                 throw new ExceptionHandler("NotImplemented", "Id parameter not given");
 
             return _repo.Delete(new Post {PostId = id});
         }
 
+        /// <summary>
+        /// Get the count of posts from user.
+        /// </summary>
+        /// <param name="id">UserId</param>
+        /// <returns>value of posts as int</returns>
         public int GetCountByUserId(int id)
         {
+            // Check for empty values.
             if (id <= 0)
                 throw new ExceptionHandler("NotImplemented", "Id parameter not given");
 
             return _repo.GetCountByUserId(id);
         }
-        // GetPost(id)
-        // Add(model)
-        // Edit(model)
-        // Delete(model)
     }
 }

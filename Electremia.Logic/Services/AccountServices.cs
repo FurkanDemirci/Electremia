@@ -97,6 +97,7 @@ namespace Electremia.Logic.Services
         /// <returns>Bool</returns>
         public bool Edit(User model)
         {
+            // Checking for null values.
             if (model == null)
                 throw new ExceptionHandler("NotImplemented", "User model not implemented");
             var user = _repo.GetById(model.UserId);
@@ -125,6 +126,7 @@ namespace Electremia.Logic.Services
         /// <returns>User</returns>
         public User GetUser(string username)
         {
+            // Checking for null values.
             if (username == null)
                 throw new ExceptionHandler("NotImplemented", "Username not implemented");
 
@@ -139,6 +141,7 @@ namespace Electremia.Logic.Services
         /// <returns>User</returns>
         public User GetUser(int id)
         {
+            // Checking for null values.
             if (id == 0)
                 throw new ExceptionHandler("NotImplemented", "Id not implemented");
 
@@ -153,6 +156,7 @@ namespace Electremia.Logic.Services
         /// <returns>User filled with jobs and schools</returns>
         public User GetFullUser(int id)
         {
+            // Checking for null values.
             if (id == 0)
                 throw new ExceptionHandler("NotImplemented", "Id not implemented");
 

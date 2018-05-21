@@ -11,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Electremia.Logic
 {
+    /// <summary>
+    /// Factory class that initializes wich context class to use for the services.
+    /// </summary>
     public class Factory
     {
         //private readonly string _connectionString;

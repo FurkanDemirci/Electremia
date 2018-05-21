@@ -15,19 +15,35 @@ namespace Electremia.Logic.Services
             _repo = repo;
         }
 
-        // GetAll(id)
+        /// <summary>
+        /// Get all jobs from user.
+        /// </summary>
+        /// <param name="id">UserId int</param>
+        /// <returns>IEnumarable of Jobs.</returns>
         public IEnumerable<Job> GetAll(int id)
         {
+            // Check for empty values
+            if (id <= 0)
+                throw new ExceptionHandler("NotImplemented", "Not all parameters are filled");
+
             return _repo.GetAll(id);
         }
 
-        // GetJobs(id)
+        /// <summary>
+        /// Add job.
+        /// </summary>
+        /// <param name="model">Job model</param>
+        /// <returns>Boolean</returns>
         public bool Add(Job model)
         {
             return _repo.Add(model);
         }
 
-        // Add(model)
+        /// <summary>
+        /// Add list of jobs.
+        /// </summary>
+        /// <param name="jobs">List of jobs</param>
+        /// <returns>Boolean</returns>
         public bool Add(List<Job> jobs)
         {
             foreach (var job in jobs)
@@ -40,7 +56,11 @@ namespace Electremia.Logic.Services
             return true;
         }
         
-        // Edit(model)
+        /// <summary>
+        /// Edit the jobs.
+        /// </summary>
+        /// <param name="jobs">List of Jobs</param>
+        /// <returns>Boolean</returns>
         public bool Edit(List<Job> jobs)
         {
             foreach (var job in jobs)
@@ -52,7 +72,5 @@ namespace Electremia.Logic.Services
             }
             return true;
         }
-
-        // Delete(model)
     }
 }
