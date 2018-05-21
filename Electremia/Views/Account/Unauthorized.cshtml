@@ -1,1 +1,9 @@
-﻿<h3>Unauthorized</h3>
+﻿@{ ViewData["Title"] = "Unauthorized"; }
+
+<div class="page-header">
+    <h1>Unauthorized <small>Authorization required </small></h1>
+</div>
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Danger!</strong> It looks like you have tried to access a page that requires high level authorization.
+</div>

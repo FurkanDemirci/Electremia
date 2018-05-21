@@ -10,54 +10,52 @@
     <h1>Profile <small>Account information </small></h1>
 </div>
 <div class="row">
-    <div class="col-lg-12">
-        <div class="col-lg-4">
-            <div class="thumbnail">
-                <img class="ProfileStyle" src="~/images/@Model.ProfilePicture"/>
-                <div class="caption">
-                    <h3>@Model.Firstname @Model.Lastname</h3>
+    <div class="col-lg-4">
+        <div class="thumbnail">
+            <img class="ProfileStyle" src="~/images/@Model.ProfilePicture"/>
+            <div class="caption">
+                <h3>@Model.Firstname @Model.Lastname</h3>
+                @{
+                    if (Model.Admin)
+                    {
+                        <p>Administrator</p>
+                    }
+                    else
+                    {
+                        <p>Regular user</p>
+                    }
+                }
+                <p>
                     @{
-                        if (Model.Admin)
+                        if (!Model.IsFriendsWith)
                         {
-                            <p>Administrator</p>
+                            <form asp-controller="Relationship" asp-action="AddFriend" method="post">
+                                <input type="text" name="username" value="@Model.Username" hidden/>
+                                <input type="number" name="id" value="@Model.UserId" hidden/>
+                                <button class="btn btn-info" type="submit">Add friend</button>
+                            </form>
                         }
-                        else
+
+                        @TempData["Message"]
+                        ;
+                        if (Model.Username == User.Identity.Name)
                         {
-                            <p>Regular user</p>
+                            <a class="btn btn-info" asp-area="" asp-controller="Account" asp-action="Edit">Edit</a>
+                        }
+                        else if (Cookies.GetRole(User) == "Admin")
+                        {
+                            <form asp-controller="Account" asp-action="Edit" method="get">
+                                <input type="number" name="id" value="@Model.UserId" readonly/>
+                                <button class="btn btn-info" type="submit">Edit</button>
+                            </form>
                         }
                     }
-                    <p>
-                        @{
-                            if (!Model.IsFriendsWith)
-                            {
-                                <form asp-controller="Relationship" asp-action="AddFriend" method="post">
-                                    <input type="text" name="username" value="@Model.Username" hidden/>
-                                    <input type="number" name="id" value="@Model.UserId" hidden/>
-                                    <button class="btn btn-info" type="submit">Add friend</button>
-                                </form>
-                            }
-
-                            @TempData["Message"]
-                            ;
-                            if (Model.Username == User.Identity.Name)
-                            {
-                                <a class="btn btn-info" asp-area="" asp-controller="Account" asp-action="Edit">Edit</a>
-                            }
-                            else if (Cookies.GetRole(User) == "Admin")
-                            {
-                                <form asp-controller="Account" asp-action="Edit" method="get">
-                                    <input type="number" name="id" value="@Model.UserId" readonly/>
-                                    <button class="btn btn-info" type="submit">Edit</button>
-                                </form>
-                            }
-                        }
-                    </p>
-                </div>
+                </p>
             </div>
         </div>
-        <div class="col-lg-8">
-            <img class="CoverStyle" src="~/images/@Model.CoverPicture"/>
-        </div>
+    </div>
+    <div class="col-lg-8">
+        <img class="CoverStyle" src="~/images/@Model.CoverPicture"/>
     </div>
     <div class="col-lg-12">
         <div class="panel panel-default">

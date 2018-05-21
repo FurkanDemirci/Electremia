@@ -7,12 +7,20 @@
 <div class="page-header">
     <h1>Timeline page <small>All types of content's </small></h1>
 </div>
+@{
+    if (ViewData["Message"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @ViewData["Message"]
+        </div>
+    }
+}
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <a class="btn btn-primary center-block" asp-area="" asp-controller="Timeline" asp-action="CreateContent">Create content</a>
     </div>
 </div>
-@ViewData["Message"]
 <ul class="nav nav-tabs">
     <li class="active">
         <a href="#post" data-toggle="tab" aria-expanded="true">Post</a>
@@ -21,7 +29,12 @@
         <a href="#product" data-toggle="tab" aria-expanded="false">Product</a>
     </li>
 </ul>
-@TempData["Message"]
+@{
+    if (TempData["Message"] != null)
+    {
+        <div class="alert alert-warning" role="alert">@TempData["Message"]</div>
+    }
+}
 <div class="row">
     <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade active in" id="post">

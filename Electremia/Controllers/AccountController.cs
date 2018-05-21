@@ -81,6 +81,7 @@ namespace Electremia.Controllers
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
+            TempData["Message"] = "Succesfully logged out";
             return RedirectToAction("Index", "Home");
         }
 
@@ -191,7 +192,7 @@ namespace Electremia.Controllers
             if (model.User.Schools.Count != 0)
                 _schoolServices.Edit(model.User.Schools);
 
-            ViewData["Worked"] = "Account successfully updated!";
+            ViewData["Message"] = "Account successfully updated!";
             return View(model);
         }
 

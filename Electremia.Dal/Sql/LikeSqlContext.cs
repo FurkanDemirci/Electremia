@@ -45,7 +45,26 @@ namespace Electremia.Dal.Sql
 
         public bool Delete(Like entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spLike_DeleteByIdAndType", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.Id;
+                command.Parameters.AddWithValue("@UserId", SqlDbType.Int).Value = entity.UserId;
+                command.Parameters.AddWithValue("@Type", SqlDbType.Int).Value = entity.Type;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
 
         public List<int> GetAll(int id, int type)

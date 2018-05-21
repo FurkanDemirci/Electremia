@@ -5,10 +5,18 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
 
-@ViewData["Message"]
 <div class="page-header">
     <h1>Create content page <small>Create your content </small></h1>
 </div>
+@{
+    if (ViewData["Message"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @ViewData["Message"]
+        </div>
+    }
+}
 <ul class="nav nav-tabs">
     <li class="active">
         <a href="#post" data-toggle="tab" aria-expanded="true">Post</a>
@@ -20,7 +28,7 @@
 <div id="myTabContent" class="tab-content">
     <div class="tab-pane fade active in" id="post">
         <div class="page-header">
-            <h4>Create post <small>See bottom for preview </small></h4>
+            <h4>Create post <small>A standart post </small></h4>
         </div>
         <div class="jumbotron">
             <form method="post" enctype="multipart/form-data">
@@ -37,32 +45,16 @@
                 <div class="form-group">
                     <label asp-for="PostViewModel.Picture"></label>
                     <input asp-for="PostViewModel.Picture" class="form-control" accept="image/*" multiple />
-                    <img src="~/images/post.png"/>
                     <p class="help-block">Upload images for your post's.</p>
                 </div>
                 <button type="reset" class="btn btn-default">Reset</button>
                 <button type="submit" class="btn btn-info">Submit</button>
             </form>
         </div>
-        <div class="row">
-            <div class="col-lg-6 col-lg-offset-3">
-                <div class="media center-block">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object" src="~/images/post.png"/>
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading" id="mediaTitle">...</h4>
-                        <p id="mediaDescription">...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="tab-pane fade" id="product">
         <div class="page-header">
-            <h4>Create product <small>See bottom for preview </small></h4>
+            <h4>Create product <small>to sell to your friends </small></h4>
         </div>
         <div class="jumbotron">
             <form method="post" enctype="multipart/form-data">
@@ -87,7 +79,6 @@
                 <div class="form-group">
                     <label asp-for="ProductViewModel.Picture"></label>
                     <input asp-for="ProductViewModel.Picture" class="form-control" accept="image/*" multiple />
-                    <img src="~/images/post.png" />
                     <p class="help-block">Upload images of your product</p>
                 </div>
                 <button type="reset" class="btn btn-default">Reset</button>
@@ -96,12 +87,3 @@
         </div>
     </div>
 </div>
-
-<script>
-//    $(document).ready(function() {
-//        $('#PostTitle').onchange(function() {
-//            var title = $(this).val();
-//            alert(title);
-//        });
-//    });
-</script>

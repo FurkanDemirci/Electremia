@@ -28,6 +28,14 @@ namespace Electremia.Logic.Services
 
             return _repo.Add(new Like {Id = id, UserId = userId, Type = type});
         }
+
+        public bool Delete(int id, int userId, int type)
+        {
+            if ((id <= 0) && (userId <= 0) && (type < 0))
+                throw new ExceptionHandler("NotImplemented", "Not all parameterd are filled");
+
+            return _repo.Delete(new Like {Id = id, UserId = userId, Type = type});
+        }
         // GetLikes(id)
         // Add(model)
         // Edit(model)

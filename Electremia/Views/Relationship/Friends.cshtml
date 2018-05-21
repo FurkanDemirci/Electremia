@@ -1,42 +1,52 @@
 ﻿@using Electremia.ViewModels
 @model List<RelationshipViewModel>
+@{ ViewData["Title"] = "Friends Page"; }
 
 <link href="~/css/Relationship.css" rel="stylesheet" />
 
 <div class="page-header">
     <h1>Friends <small>Your friends list</small></h1>
 </div>
-@TempData["Message"]
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <h4>Friends</h4>
-            @{
-                foreach (var relationshipViewModel in Model)
-                {
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="col-lg-6">
-                                <h4>@relationshipViewModel.Username</h4>
-                                <span>Are friends with.</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="panelDiv col-lg-12">
-                                    <form method="post">
-                                        <input type="number" name="id1" value="@relationshipViewModel.Relationship.UserID_one" hidden />
-                                        <input type="number" name="id2" value="@relationshipViewModel.Relationship.UserID_two" hidden />
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </div>
+@{
+    if (TempData["Message"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @TempData["Message"]
+        </div>
+    }
+}
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <a class="btn btn-primary center-block" asp-area="" asp-controller="Relationship" asp-action="Requests">Requests</a>
+    </div>
+    <div class="col-lg-12">
+        <h4>Friends</h4>
+        @{
+            foreach (var relationshipViewModel in Model)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-6">
+                            <h4>@relationshipViewModel.Username</h4>
+                            <span>Are friends with.</span>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="panelDiv col-lg-12">
+                                <form method="post">
+                                    <input type="number" name="id1" value="@relationshipViewModel.Relationship.UserID_one" hidden />
+                                    <input type="number" name="id2" value="@relationshipViewModel.Relationship.UserID_two" hidden />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                }
-                if (ViewData["Message"] != null)
-                {
-                    <div class="alert alert-info" role="alert">@ViewData["Message"]</div>
-                }
+                </div>
             }
-        </div>
+            if (ViewData["Message"] != null)
+            {
+                <div class="alert alert-info" role="alert">@ViewData["Message"]</div>
+            }
+        }
     </div>
 </div>

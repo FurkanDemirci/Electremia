@@ -99,14 +99,25 @@ namespace Electremia.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Like(int id, int type)
+        public IActionResult Like(int id, int type, int isLiked)
         {
             var liked = false;
-            try { liked = _likeServices.Add(id, Cookies.GetId(User), type); }
-            catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
+            var deleted = false;
 
-            if (!liked)
-                TempData["Message"] = "Something went wrong";
+            if (isLiked == 1)
+            {
+                try { deleted = _likeServices.Delete(id, Cookies.GetId(User), type); }
+                catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
+                if (!deleted)
+                    ViewData["Message"] = "Could not delete like";
+            }
+            else
+            {
+                try { liked = _likeServices.Add(id, Cookies.GetId(User), type); }
+                catch (ExceptionHandler e) { TempData["Message"] = e.Message; }
+                if (!liked)
+                    ViewData["Message"] = "Could not like content";
+            }
 
             return RedirectToAction("Content", "Timeline", new { id = id, type = type});
         }
