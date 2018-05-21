@@ -106,7 +106,24 @@ namespace Electremia.Dal.Sql
 
         public bool Delete(Product entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spProduct_DeleteById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.ProductId;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
     }
 }

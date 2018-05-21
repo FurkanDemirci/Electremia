@@ -51,6 +51,14 @@ namespace Electremia.Logic.Services
             return _repo.GetById(id);
         }
 
+        public bool DeleteById(int id)
+        {
+            if (id <= 0)
+                throw new ExceptionHandler("NotImplemented", "Id parameter not given");
+
+            return _repo.Delete(new Post {PostId = id});
+        }
+
         // GetPost(id)
         // Add(model)
         // Edit(model)

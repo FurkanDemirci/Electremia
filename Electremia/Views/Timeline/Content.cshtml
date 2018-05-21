@@ -26,6 +26,14 @@
             {
                 <label>@Model.Price</label>
             }
+            if (Model.UserId == Cookies.GetId(User))
+            {
+                <form method="post" asp-action="DeleteContent">
+                    <input name="id" value="@Model.Id" hidden />
+                    <input name="type" value="@Model.Type" hidden />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            }
         }
     </div>
     <div class="col-lg-12">

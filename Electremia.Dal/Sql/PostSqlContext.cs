@@ -105,7 +105,24 @@ namespace Electremia.Dal.Sql
 
         public bool Delete(Post entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spPost_DeleteById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.PostId;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
     }
 }

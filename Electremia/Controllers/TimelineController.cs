@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Configuration;
 
 namespace Electremia.Controllers
@@ -66,6 +67,7 @@ namespace Electremia.Controllers
                     selected = new SelectedContentViewModel
                     {
                         Id = post.PostId,
+                        UserId = post.UserId,
                         Type = 0,
                         Title = post.Title,
                         Description = post.Description,
@@ -80,6 +82,7 @@ namespace Electremia.Controllers
                     selected = new SelectedContentViewModel
                     {
                         Id = product.ProductId,
+                        UserId = product.UserId,
                         Type = 1,
                         Title = product.Title,
                         Description = product.Description,
@@ -167,6 +170,34 @@ namespace Electremia.Controllers
                     _pictureServices.AddPicture(new Picture { Id = id, Url = FileUpload(formFile), Type = 1 });
             }
             TempData["Message"] = "Content created successfully";
+            return RedirectToAction("Index", "Timeline");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteContent(int id, int type)
+        {
+            var deleted = false;
+            switch (type)
+            {
+                case 0:
+                    try { deleted = _postServices.DeleteById(id); }
+                    catch (ExceptionHandler e) { TempData["Message"] = e; }
+                    if (deleted)
+                        TempData["Message"] = "Successfully deleted post.";
+                    break;
+                case 1:
+                    try { deleted = _productServices.DeleteById(id); } 
+                    catch (ExceptionHandler e) { TempData["Message"] = e; }
+                    if (deleted)
+                        TempData["Message"] = "Successfully deleted product.";
+                    break;
+                default:
+                    TempData["Message"] = "No type of content given.";
+                    break;
+            }
+
+            if (!deleted)
+                TempData["Message"] = "Could not delete.";
             return RedirectToAction("Index", "Timeline");
         }
 
