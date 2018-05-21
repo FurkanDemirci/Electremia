@@ -94,6 +94,26 @@ namespace Electremia.Dal.Sql
             return products;
         }
 
+        public int GetCountByUserId(int id)
+        {
+            var count = 0;
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spProduct_GetCountByUserId", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", SqlDbType.Int).Value = id;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        count = reader.GetInt32(0);
+                    }
+                }
+            }
+            MSSQLConnectionString.Close();
+            return count;
+        }
+
         public bool Add(Product entity)
         {
             throw new NotImplementedException();

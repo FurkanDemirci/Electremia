@@ -25,6 +25,8 @@ namespace Electremia.Controllers
         private readonly JobServices _jobServices;
         private readonly SchoolServices _schoolServices;
         private readonly FriendServices _friendServices;
+        private readonly PostServices _postServices;
+        private readonly ProductServices _productServices;
 
         // Getting the HostingEnviroment for media purposes.
         private readonly IHostingEnvironment _environment;
@@ -38,6 +40,8 @@ namespace Electremia.Controllers
             _jobServices = new Factory(config).JobService();
             _schoolServices = new Factory(config).SchoolService();
             _friendServices = new Factory(config).FriendService();
+            _postServices = new Factory(config).PostService();
+            _productServices = new Factory(config).ProductService();
         }
 
         [Authorize]
@@ -121,7 +125,9 @@ namespace Electremia.Controllers
             if (usr == null)
                 usr = User.Identity.Name;
 
-            var userId = 0;
+            int userId;
+            int posts;
+            int products;
             User fullUser;
             var isFriendsWith = true;
 
@@ -138,6 +144,10 @@ namespace Electremia.Controllers
             }
             catch (ExceptionHandler e) { return BadRequest(e.Message); }
             try { fullUser = _accountServices.GetFullUser(userId); }
+            catch (ExceptionHandler e) { return BadRequest(e.Message); }
+            try { posts = _postServices.GetCountByUserId(userId); }
+            catch (ExceptionHandler e) { return BadRequest(e.Message); }
+            try { products = _productServices.GetCountByUserId(userId); }
             catch (ExceptionHandler e) { return BadRequest(e.Message); }
 
             if (usr != User.Identity.Name)
@@ -158,7 +168,9 @@ namespace Electremia.Controllers
                 Admin = fullUser.Admin,
                 Jobs = fullUser.Jobs,
                 Schools = fullUser.Schools,
-                IsFriendsWith = isFriendsWith
+                IsFriendsWith = isFriendsWith,
+                Posts = posts,
+                Products = products
             };
 
             return View(profile);

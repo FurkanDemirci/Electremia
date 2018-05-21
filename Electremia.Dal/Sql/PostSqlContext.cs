@@ -93,6 +93,26 @@ namespace Electremia.Dal.Sql
             return posts;
         }
 
+        public int GetCountByUserId(int id)
+        {
+            var count = 0;
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spPost_GetCountByUserId", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", SqlDbType.Int).Value = id;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        count = reader.GetInt32(0);
+                    }
+                }
+            }
+            MSSQLConnectionString.Close();
+            return count;
+        }
+
         public bool Add(Post entity)
         {
             throw new NotImplementedException();

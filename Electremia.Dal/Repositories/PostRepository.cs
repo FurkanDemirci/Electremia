@@ -35,5 +35,10 @@ namespace Electremia.Dal.Repositories
         {
             return RightContext().GetAllByUserId(id);
         }
+
+        public int GetCountByUserId(int id)
+        {
+            return RightContext().GetCountByUserId(id);
+        }
     }
 }

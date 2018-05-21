@@ -22,6 +22,11 @@ namespace Electremia.Dal.Memory
             throw new NotImplementedException();
         }
 
+        public int GetCountByUserId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Add(Product entity)
         {
             throw new NotImplementedException();

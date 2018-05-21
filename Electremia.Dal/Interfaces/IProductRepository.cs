@@ -7,5 +7,6 @@ namespace Electremia.Dal.Interfaces
     {
         new int Add(Product entity);
         List<Product> GetAllByUserId(int id);
+        int GetCountByUserId(int id);
     }
 }
