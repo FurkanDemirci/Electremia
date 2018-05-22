@@ -1,0 +1,17 @@
+﻿@using Electremia.Model.Models
+@using HtmlHelpers.BeginCollectionItemCore
+@model School
+
+<tr class="editorRowSchool">
+    @{
+        using (Html.BeginCollectionItem("schools"))
+        {
+            <td>@Model.SchoolId</td>
+            <input asp-for="SchoolId" hidden />
+            <td><input asp-for="Name" /></td>
+            <td><input asp-for="Years" /></td>
+            <td><input asp-for="AttendedFor" /></td>
+            <td><a class="deleteRowSchool btn btn-danger btn-sm">Delete</a></td>
+        }
+    }
+</tr>

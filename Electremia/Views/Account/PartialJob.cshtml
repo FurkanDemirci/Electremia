@@ -1,0 +1,19 @@
+﻿@using Electremia.Model.Models
+@using HtmlHelpers.BeginCollectionItemCore
+@model Job
+
+<tr class="editorRowJob">
+    @{
+        using (Html.BeginCollectionItem("jobs"))
+        {
+            <td>@Model.JobId</td>
+            <input asp-for="JobId" hidden />
+            <td><input asp-for="Name" /></td>
+            <td><input asp-for="Position" /></td>
+            <td><input asp-for="Description" /></td>
+            <td><input asp-for="StartDate" /></td>
+            <td><input asp-for="EndDate" /></td>
+            <td><a class="deleteRowJob btn btn-danger btn-sm">Delete</a></td>
+        }
+    }
+</tr>

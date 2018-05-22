@@ -42,12 +42,28 @@ namespace Electremia.Dal.Sql
                     return false;
                 }
             }
-            throw new NotImplementedException();
         }
 
         public bool Delete(School entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spSchool_DeleteById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.SchoolId;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
 
         public IEnumerable<School> GetAll(int id)
@@ -77,6 +93,28 @@ namespace Electremia.Dal.Sql
                 }
             }
             return schools;
+        }
+
+        public bool DeleteAll(int id)
+        {
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spSchool_DeleteByUserId", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
     }
 }

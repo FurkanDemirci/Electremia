@@ -64,7 +64,24 @@ namespace Electremia.Dal.Sql
 
         public bool Delete(Job entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spJob_DeleteById", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = entity.JobId;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
 
         public IEnumerable<Job> GetAll(int id)
@@ -96,6 +113,28 @@ namespace Electremia.Dal.Sql
                 }
             }
             return jobs;
+        }
+
+        public bool DeleteAll(int id)
+        {
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spJob_DeleteByUserId", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = id;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
     }
 }

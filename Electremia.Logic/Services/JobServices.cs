@@ -55,7 +55,31 @@ namespace Electremia.Logic.Services
             }
             return true;
         }
-        
+
+        /// <summary>
+        /// Delete job.
+        /// </summary>
+        /// <param name="model">Job model</param>
+        /// <returns>Boolean</returns>
+        public bool Delete(Job model)
+        {
+            return _repo.Delete(model);
+        }
+
+        /// <summary>
+        /// Delete all jobs from user.
+        /// </summary>
+        /// <param name="id">UserId int</param>
+        /// <returns>Boolean</returns>
+        public bool DeleteAll(int id)
+        {
+            // Check for empty values
+            if (id <= 0)
+                throw new ExceptionHandler("NotImplemented", "Not all parameters are filled");
+
+            return _repo.DeleteAll(id);
+        }
+
         /// <summary>
         /// Edit the jobs.
         /// </summary>

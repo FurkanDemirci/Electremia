@@ -31,5 +31,10 @@ namespace Electremia.Dal.Memory
         {
             throw new NotImplementedException();
         }
+
+        public bool DeleteAll(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

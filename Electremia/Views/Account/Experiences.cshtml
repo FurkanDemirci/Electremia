@@ -1,0 +1,86 @@
+﻿@using Electremia.Model.Models
+@using Electremia.ViewModels
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model ExperiencesViewModel
+@{ ViewData["Title"] = "Experiences"; }
+
+<div class="page-header">
+    <h1>Experiences <small>All the jobs and schools </small></h1>
+</div>
+@{
+    if (TempData["Message"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @TempData["Message"]
+        </div>
+    }
+}
+<div class="row">
+    <form method="post" asp-action="Experiences">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h4>Jobs <small>Edit, add or delete </small></h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>JobId</th>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Description</th>
+                            <th>StartDate</th>
+                            <th>EndDate</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="editorRowsJob">
+                        @{
+                            foreach (var job in Model.Jobs)
+                            {
+                                Html.RenderPartial("PartialJob", job);
+                            }
+                        }
+                    </tbody>
+                </table>
+                <a class="btn btn-primary" asp-action="BlankEditorRowJob" id="addItemJob">Add another</a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h4>Schools <small>Edit, add or delete </small></h4>
+            </div>
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>SchoolId</th>
+                        <th>Name</th>
+                        <th>Years</th>
+                        <th>AttendedFor</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="editorRowsSchool">
+                    @{
+                        foreach (var school in Model.Schools)
+                        {
+                            Html.RenderPartial("PartialSchool", school);
+                        }
+                    }
+                    </tbody>
+                </table>
+                <a class="btn btn-primary" asp-action="BlankEditorRowSchool" id="addItemSchool">Add another</a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-lg-offset-4">
+            <button class="btn btn-info center-block" type="submit">Finished</button>
+        </div>
+    </form>
+</div>
+
+<script src="~/js/Experiences.js"></script>

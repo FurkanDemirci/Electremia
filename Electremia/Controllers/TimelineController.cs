@@ -43,7 +43,7 @@ namespace Electremia.Controllers
         {
             var friendsId = new List<int>();
             try { friendsId = _friendServices.GetFriendsId(Cookies.GetId(User)); }
-            catch (ExceptionHandler e) { ViewData["Message"] = "It seems like you have no friend's."; }
+            catch { ViewData["Message"] = "It seems like you have no friend's."; }
             friendsId.Add(Cookies.GetId(User));
 
             var timeLine = new TimeLineViewmodel
@@ -122,7 +122,7 @@ namespace Electremia.Controllers
                     ViewData["Message"] = "Could not like content";
             }
 
-            return RedirectToAction("Content", "Timeline", new { id = id, type = type});
+            return RedirectToAction("Content", "Timeline", new { id, type});
         }
 
         [HttpPost]
@@ -136,7 +136,7 @@ namespace Electremia.Controllers
             if (!commented)
                 TempData["Message"] = "Something went wrong";
 
-            return RedirectToAction("Content", "Timeline", new { id = id, type = type});
+            return RedirectToAction("Content", "Timeline", new { id, type});
         }
 
         [Authorize]

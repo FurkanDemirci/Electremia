@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace Electremia.Controllers
@@ -210,15 +211,81 @@ namespace Electremia.Controllers
 
             try { _accountServices.Edit(model.User); }
             catch (ExceptionHandler e) { return BadRequest(e.Message); }
-            
-            // Check if jobs and schools aren't empty.
-            if (model.User.Jobs.Count != 0)
-                _jobServices.Edit(model.User.Jobs);
-            if (model.User.Schools.Count != 0)
-                _schoolServices.Edit(model.User.Schools);
 
             ViewData["Message"] = "Account successfully updated!";
             return View(model);
+        }
+
+        [Authorize]
+        public IActionResult Experiences()
+        {
+            var experiences = new ExperiencesViewModel
+            {
+                Jobs = _jobServices.GetAll(Cookies.GetId(User)),
+                Schools = _schoolServices.GetAll(Cookies.GetId(User))
+            };
+            return View(experiences);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Experiences(ExperiencesViewModel model)
+        {
+            var jobDeleted = false;
+            var jobAdded = false;
+
+            var schoolDeleted = false;
+            var schoolAdded = false;
+
+            // Delete all jobs.
+            try { jobDeleted = _jobServices.DeleteAll(Cookies.GetId(User)); }
+            catch (ExceptionHandler e) { TempData["Message"] = e; }
+            if (!jobDeleted)
+            {
+                TempData["Message"] = "Could not delete Jobs";
+                return RedirectToAction("Experiences", "Account");
+            }
+
+            // Delete all schools
+            try { schoolDeleted = _schoolServices.DeleteAll(Cookies.GetId(User)); } 
+            catch (ExceptionHandler e) { TempData["Message"] = e; }
+            if (!schoolDeleted)
+            {
+                TempData["Message"] = "Could not delete Schools";
+                return RedirectToAction("Experiences", "Account");
+            }
+
+            //TODO Fix error!
+            // Re-add all jobs
+            try { jobAdded = _jobServices.Add(model.Jobs.ToList()); }
+            catch (ExceptionHandler e) { TempData["Message"] = e; }
+            if (!jobAdded)
+            {
+                TempData["Message"] = "Could not add Jobs";
+                return RedirectToAction("Experiences", "Account");
+            }
+
+            // Re-add all schools
+            try { schoolAdded = _schoolServices.Add(model.Schools.ToList()); }
+            catch (ExceptionHandler e) { TempData["Message"] = e; }
+            if (!schoolAdded)
+            {
+                TempData["Message"] = "Could not add Schools";
+                return RedirectToAction("Experiences", "Account");
+            }
+
+            TempData["Message"] = "Succesfully updated";
+            return RedirectToAction("Experiences", "Account");
+        }
+
+        public IActionResult BlankEditorRowJob()
+        {
+            return PartialView("PartialJob", new Job());
+        }
+
+        public IActionResult BlankEditorRowSchool()
+        {
+            return PartialView("PartialSchool", new School());
         }
 
         public string FileUpload(IFormFile formFile)

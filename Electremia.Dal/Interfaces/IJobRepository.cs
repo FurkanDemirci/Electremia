@@ -6,5 +6,6 @@ namespace Electremia.Dal.Interfaces
     public interface IJobRepository : IRepository<Job>
     {
         IEnumerable<Job> GetAll(int id);
+        bool DeleteAll(int id);
     }
 }

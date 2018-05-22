@@ -19,9 +19,14 @@
     }
 }
 <div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <a class="btn btn-info center-block" asp-area="" asp-action="Experiences">Experiences</a>
+    </div>
     <form method="post" enctype="multipart/form-data">
         <div class="col-lg-6">
-            <h4>Account</h4>
+            <div class="page-header">
+                <h4>Account <small>Credentials </small></h4>
+            </div>
             <div class="form-group">
                 <label asp-for="@Model.User.UserId"></label>
                 <input asp-for="@Model.User.UserId" class="form-control" readonly/>
@@ -60,7 +65,9 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <h4>Pictures</h4>
+            <div class="page-header">
+                <h4>Pictures <small>Profile view </small></h4>
+            </div>
             <div class="form-group">
                 <label asp-for="@Model.User.ProfilePicture"></label>
                 <input asp-for="@Model.ProfileFormFile" class="form-control" accept="image/*"/>
@@ -73,92 +80,6 @@
                 <img src="~/images/@Model.User.CoverPicture" style="width: 50%; height: 50%;"/>
                 <p class="help-block">Upload new cover picture or leave empty if you dont want to change it.</p>
             </div>
-        </div>
-        <div class="col-lg-6">
-            <h4>Jobs</h4>
-            @{
-                for (int i = 0; i < @Model.User.Jobs.Count; i++)
-                {
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <input asp-for="@Model.User.Jobs[i].JobId" class="form-control" readonly/>
-                        </div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label asp-for="@Model.User.Jobs[i].Name"></label>
-                                <input asp-for="@Model.User.Jobs[i].Name" class="form-control" data-val="true" data-val-required="The Name field is required."/>
-                                <span class="text-danger field-validation-valid"
-                                      asp-validation-for="@Model.User.Jobs[i].Name" data-valmsg-replace="true">
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@Model.User.Jobs[i].Position"></label>
-                                <input asp-for="@Model.User.Jobs[i].Position" class="form-control" data-val="true" data-val-required="The Position field is required."/>
-                                <span class="text-danger field-validation-valid"
-                                      asp-validation-for="@Model.User.Jobs[i].Position" data-valmsg-replace="true">
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@Model.User.Jobs[i].Description"></label>
-                                <input asp-for="@Model.User.Jobs[i].Description" class="form-control" data-val="true" data-val-required="The Description field is required."/>
-                                <span class="text-danger field-validation-valid"
-                                      asp-validation-for="@Model.User.Jobs[i].Description" data-valmsg-replace="true">
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@Model.User.Jobs[i].StartDate"></label>
-                                <input asp-for="@Model.User.Jobs[i].StartDate" class="form-control" data-val="true" data-val-required="The StartDate field is required."/>
-                                <span class="text-danger field-validation-valid"
-                                      asp-validation-for="@Model.User.Jobs[i].StartDate" data-valmsg-replace="true">
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@Model.User.Jobs[i].EndDate"></label>
-                                <input asp-for="@Model.User.Jobs[i].EndDate" class="form-control" data-val="true" data-val-required="The EndDate field is required."/>
-                                <span class="text-danger field-validation-valid"
-                                      asp-validation-for="@Model.User.Jobs[i].EndDate" data-valmsg-replace="true">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-        <div class="col-lg-6">
-            <h4>Schools</h4>
-            @{
-                for (int i = 0; i < @Model.User.Schools.Count; i++)
-                {
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <input asp-for="@Model.User.Schools[i].SchoolId" class="form-control" readonly/>
-                        </div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label asp-for="@Model.User.Schools[i].Name"></label>
-                                <input asp-for="@Model.User.Schools[i].Name" class="form-control" data-val="true" data-val-required="The Name field is required."/>
-                                <span class="text-danger field-validation-valid"
-                                      asp-validation-for="@Model.User.Schools[i].Name" data-valmsg-replace="true">
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@Model.User.Schools[i].Years"></label>
-                                <input asp-for="@Model.User.Schools[i].Years" class="form-control" data-val="true" data-val-required="The Years field is required."/>
-                                <span class="text-danger field-validation-valid"
-                                      asp-validation-for="@Model.User.Schools[i].Years" data-valmsg-replace="true">
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@Model.User.Schools[i].AttendedFor"></label>
-                                <input asp-for="@Model.User.Schools[i].AttendedFor" class="form-control" data-val="true" data-val-required="The AttendedFor field is required."/>
-                                <span class="text-danger field-validation-valid"
-                                      asp-validation-for="@Model.User.Schools[i].AttendedFor" data-valmsg-replace="true">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
         </div>
         <div class="col-lg-12 text-center">
             <button type="submit" class="btn btn-info">Submit</button>

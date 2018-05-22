@@ -6,5 +6,6 @@ namespace Electremia.Dal.Interfaces
     public interface ISchoolRepository : IRepository<School>
     {
         IEnumerable<School> GetAll(int id);
+        bool DeleteAll(int id);
     }
 }

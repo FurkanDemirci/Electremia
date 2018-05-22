@@ -18,6 +18,11 @@ namespace Electremia.Dal.Repositories
             return RightContext().GetAll(id);
         }
 
+        public bool DeleteAll(int id)
+        {
+            return RightContext().DeleteAll(id);
+        }
+
         private IJobRepository RightContext()
         {
             switch (Context)
