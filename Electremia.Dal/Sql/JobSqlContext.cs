@@ -17,19 +17,26 @@ namespace Electremia.Dal.Sql
 
         public bool Add(Job entity)
         {
-            const string query =
-                "INSERT INTO [Job](UserId, Name, Position, Description, StartDate, EndDate, Active) VALUES({0}, '{1}', '{2}', '{3}', {4}, {5}, 1)";
-            var queryFull = string.Format(query, entity.UserId, entity.Name, entity.Position, entity.Description, entity.StartDate, entity.EndDate);
             MSSQLConnectionString.Open();
-            using (var command = new SqlCommand(queryFull, MSSQLConnectionString))
+            using (var command = new SqlCommand("dbo.spJob_Add", MSSQLConnectionString))
             {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", SqlDbType.Int).Value = entity.UserId;
+                command.Parameters.AddWithValue("@Name", SqlDbType.VarChar).Value = entity.Name;
+                command.Parameters.AddWithValue("@Position", SqlDbType.VarChar).Value = entity.Position;
+                command.Parameters.AddWithValue("@Description", SqlDbType.VarChar).Value = entity.Description;
+                command.Parameters.AddWithValue("@StartDate", SqlDbType.DateTime).Value = entity.StartDate;
+                command.Parameters.AddWithValue("@EndDate", SqlDbType.DateTime).Value = entity.EndDate;
+
                 try
                 {
                     command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
                     return true;
                 }
                 catch
                 {
+                    MSSQLConnectionString.Close();
                     return false;
                 }
             }

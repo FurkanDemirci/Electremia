@@ -231,46 +231,36 @@ namespace Electremia.Controllers
         [Authorize]
         public IActionResult Experiences(ExperiencesViewModel model)
         {
-            var jobDeleted = false;
-            var jobAdded = false;
+            foreach (var job in model.Jobs)
+                job.UserId = Cookies.GetId(User);
+            foreach (var school in model.Schools)
+                school.UserId = Cookies.GetId(User);
 
-            var schoolDeleted = false;
-            var schoolAdded = false;
-
-            // Delete all jobs.
-            try { jobDeleted = _jobServices.DeleteAll(Cookies.GetId(User)); }
-            catch (ExceptionHandler e) { TempData["Message"] = e; }
-            if (!jobDeleted)
+            // Delete all jobs and schools.
+            try
             {
-                TempData["Message"] = "Could not delete Jobs";
+                var jobDeleted = _jobServices.DeleteAll(Cookies.GetId(User));
+                var schoolDeleted = _schoolServices.DeleteAll(Cookies.GetId(User));
+                if (!jobDeleted || !schoolDeleted)
+                    TempData["Message"] = "Could not delete";
+            }
+            catch (ExceptionHandler e)
+            {
+                TempData["Message"] = e;
                 return RedirectToAction("Experiences", "Account");
             }
 
-            // Delete all schools
-            try { schoolDeleted = _schoolServices.DeleteAll(Cookies.GetId(User)); } 
-            catch (ExceptionHandler e) { TempData["Message"] = e; }
-            if (!schoolDeleted)
-            {
-                TempData["Message"] = "Could not delete Schools";
-                return RedirectToAction("Experiences", "Account");
-            }
-
-            //TODO Fix error!
             // Re-add all jobs
-            try { jobAdded = _jobServices.Add(model.Jobs.ToList()); }
-            catch (ExceptionHandler e) { TempData["Message"] = e; }
-            if (!jobAdded)
+            try
             {
-                TempData["Message"] = "Could not add Jobs";
-                return RedirectToAction("Experiences", "Account");
+                var jobAdded = _jobServices.Add(model.Jobs.ToList());
+                var schoolAdded = _schoolServices.Add(model.Schools.ToList());
+                if (!jobAdded || !schoolAdded)
+                    TempData["Message"] = "Could not add";
             }
-
-            // Re-add all schools
-            try { schoolAdded = _schoolServices.Add(model.Schools.ToList()); }
-            catch (ExceptionHandler e) { TempData["Message"] = e; }
-            if (!schoolAdded)
+            catch (ExceptionHandler e)
             {
-                TempData["Message"] = "Could not add Schools";
+                TempData["Message"] = e;
                 return RedirectToAction("Experiences", "Account");
             }
 
@@ -280,12 +270,12 @@ namespace Electremia.Controllers
 
         public IActionResult BlankEditorRowJob()
         {
-            return PartialView("PartialJob", new Job());
+            return PartialView("PartialJob", new Job { UserId = Cookies.GetId(User) });
         }
 
         public IActionResult BlankEditorRowSchool()
         {
-            return PartialView("PartialSchool", new School());
+            return PartialView("PartialSchool", new School { UserId = Cookies.GetId(User) });
         }
 
         public string FileUpload(IFormFile formFile)

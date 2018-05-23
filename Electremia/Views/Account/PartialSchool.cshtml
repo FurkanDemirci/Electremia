@@ -6,7 +6,7 @@
     @{
         using (Html.BeginCollectionItem("schools"))
         {
-            <td>@Model.SchoolId</td>
+            <td>@Model.SchoolId - @Model.UserId</td>
             <input asp-for="SchoolId" hidden />
             <td><input asp-for="Name" /></td>
             <td><input asp-for="Years" /></td>

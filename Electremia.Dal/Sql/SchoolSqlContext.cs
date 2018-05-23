@@ -16,7 +16,27 @@ namespace Electremia.Dal.Sql
 
         public bool Add(School entity)
         {
-            throw new NotImplementedException();
+            MSSQLConnectionString.Open();
+            using (var command = new SqlCommand("dbo.spSchool_Add", MSSQLConnectionString))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", SqlDbType.Int).Value = entity.UserId;
+                command.Parameters.AddWithValue("@Name", SqlDbType.VarChar).Value = entity.Name;
+                command.Parameters.AddWithValue("@Years", SqlDbType.VarChar).Value = entity.Years;
+                command.Parameters.AddWithValue("@AttendedFor", SqlDbType.VarChar).Value = entity.AttendedFor;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MSSQLConnectionString.Close();
+                    return true;
+                }
+                catch
+                {
+                    MSSQLConnectionString.Close();
+                    return false;
+                }
+            }
         }
 
         public bool Update(School entity)
