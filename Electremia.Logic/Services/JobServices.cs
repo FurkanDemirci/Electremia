@@ -30,16 +30,6 @@ namespace Electremia.Logic.Services
         }
 
         /// <summary>
-        /// Add job.
-        /// </summary>
-        /// <param name="model">Job model</param>
-        /// <returns>Boolean</returns>
-        public bool Add(Job model)
-        {
-            return _repo.Add(model);
-        }
-
-        /// <summary>
         /// Add list of jobs.
         /// </summary>
         /// <param name="jobs">List of jobs</param>

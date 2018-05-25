@@ -16,13 +16,11 @@ namespace Electremia.Model.Models
 		public bool Admin { get; set; }
 		public List<Job> Jobs { get; set; }
 		public List<School> Schools { get; set; }
-		public List<Relationship> Relationships { get; set; }
 
 		public User()
 		{
 			Jobs = new List<Job>();
 			Schools = new List<School>();
-			Relationships = new List<Relationship>();
 		}
 	}
 }

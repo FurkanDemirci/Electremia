@@ -30,16 +30,6 @@ namespace Electremia.Logic.Services
         }
 
         /// <summary>
-        /// Add school.
-        /// </summary>
-        /// <param name="model">School model</param>
-        /// <returns>Boolean</returns>
-        public bool Add(School model)
-        {
-            return _repo.Add(model);
-        }
-
-        /// <summary>
         /// Add list of schools
         /// </summary>
         /// <param name="schools">List of schools</param>
