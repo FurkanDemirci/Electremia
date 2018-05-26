@@ -4,6 +4,7 @@ using Electremia.Dal.Interfaces;
 
 namespace Electremia.Dal.Repositories
 {
+    /// <inheritdoc />
     /// <summary>
     /// Repository class to initialse context and to use CRUD.
     /// </summary>

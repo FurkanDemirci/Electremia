@@ -7,7 +7,7 @@ namespace Electremia.Dal.Interfaces
     /// <summary>
     /// CRUD Operations
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Model</typeparam>
     public interface IRepository<T>
     {
         T GetById(int id); // READ
