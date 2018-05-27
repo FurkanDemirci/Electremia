@@ -9,7 +9,7 @@ namespace Electremia.Dal
     public abstract class Connection
     {
         // Hard coded connectionstring.
-        public readonly SqlConnection MSSQLConnectionString;
+        protected readonly SqlConnection MSSQLConnectionString;
 
         protected Connection()
         {
