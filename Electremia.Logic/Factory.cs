@@ -19,6 +19,11 @@ namespace Electremia.Logic
         //private readonly string _connectionString;
         private readonly string _context;
 
+        public Factory()
+        {
+            _context = null;
+        }
+
         public Factory(IConfiguration config)
         {
             _context = config.GetSection("Database")["Type"];

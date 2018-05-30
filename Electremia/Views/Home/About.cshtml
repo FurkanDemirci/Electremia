@@ -1,10 +1,36 @@
-﻿@{
-    ViewData["Title"] = "About Page";
-}
+﻿@{ ViewData["Title"] = "About Page"; }
+<link href="~/css/About.css" rel="stylesheet" />
 
 <div class="page-header">
     <h1>About <small>Company Redcloaks.</small></h1>
 </div>
-<div class="well">
-    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Locations:</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-lg-6">
+                    <div class="jumbotron">
+                        <p>Location 1: Fontys Rachelsmolen 1, Helmond, The Netherlands</p>
+                        <button class="btn btn-info" onclick="moveToFontys()">1ste location</button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="jumbotron">
+                        <p>Location 2: 1e Haagstraat 51a, Eindhoven, The Netherlands</p>
+                        <button class="btn btn-info" onclick="moveToHaagstraat()">2nd location</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div style="width: 100%; height: 600px;" id="map"></div>
+    </div>
 </div>
+
+<script src="~/js/About.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyjWlHhjQo_yhP0M21i0yx_NTLAgp5NnA&callback=initMap"
+        async defer></script>
