@@ -2,7 +2,7 @@
 @model SelectedContentViewModel
 @{ ViewData["Title"] = "Timeline Page"; }
 
-<link href="~/css/Content.css" rel="stylesheet" />
+<link href="~/css/Content.css" rel="stylesheet"/>
 
 <div class="page-header">
     <h1>Content page <small>Selected content: </small></h1>
@@ -11,16 +11,18 @@
     if (ViewData["Message"] != null)
     {
         <div class="alert alert-warning alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             @ViewData["Message"]
         </div>
     }
 }
 <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-11">
         <h4>@Model.Title</h4>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-1">
         @{
             if (Model.Price != 0)
             {
@@ -29,14 +31,14 @@
             if (Model.UserId == Cookies.GetId(User))
             {
                 <form method="post" asp-action="DeleteContent">
-                    <input name="id" value="@Model.Id" hidden />
-                    <input name="type" value="@Model.Type" hidden />
+                    <input name="id" value="@Model.Id" hidden/>
+                    <input name="type" value="@Model.Type" hidden/>
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             }
         }
     </div>
-    <div class="col-lg-12">
+    <div class="descContent col-lg-12">
         <div class="jumbotron">
             <label>@Model.Description</label>
         </div>
@@ -51,31 +53,35 @@
             }
         }
     </div>
-    <div class="col-lg-11">
-        <form method="post" asp-action="Comment">
+    <form method="post" asp-action="Comment">
+        <div class="col-lg-11">
             <div class="form-group">
                 <textarea class="form-control" rows="1" placeholder="Write comment" name="comment"></textarea>
                 <input type="number" name="id" value="@Model.Id" hidden/>
                 <input type="number" name="type" value="@Model.Type" hidden/>
             </div>
-            <button type="submit" class="btn btn-info">Submit</button>
-        </form>
-    </div>
-    <div class="col-lg-1">
+        </div>
+        <div class="col-lg-1">
+            <div class="form-group">
+                <button type="submit" class="btn btn-info">Submit</button>
+            </div>
+        </div>
+    </form>
+    <div class="col-lg-12 text-center">
         <form method="post" asp-action="Like">
-            <input name="id" value="@Model.Id" hidden />
-            <input name="type" value="@Model.Type" hidden />
+            <input name="id" value="@Model.Id" hidden/>
+            <input name="type" value="@Model.Type" hidden/>
             @{
                 if (Model.Likes.IndexOf(Cookies.GetId(User)) != -1)
                 {
-                    <input name="isLiked" value="1" hidden />
+                    <input name="isLiked" value="1" hidden/>
                     <button type="submit" class="btn btn-info">
                         <b>Liked</b> @Model.Likes.Count
                     </button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary">Like @Model.Likes.Count</button>
+                    <button type="submit" style="width: 50%;" class="btn btn-primary">Like @Model.Likes.Count</button>
                 }
             }
         </form>
