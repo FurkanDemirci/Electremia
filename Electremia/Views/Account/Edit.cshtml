@@ -29,36 +29,36 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.User.UserId"></label>
-                <input asp-for="@Model.User.UserId" class="form-control" readonly/>
+                <input asp-for="@Model.User.UserId" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.User.Username"></label>
-                <input asp-for="@Model.User.Username" class="form-control" data-val="true" data-val-required="The Username field is required."/>
+                <input asp-for="@Model.User.Username" class="form-control" data-val="true" data-val-required="The Username field is required." />
                 <span class="text-danger field-validation-valid"
                       asp-validation-for="@Model.User.Username" data-valmsg-replace="true">
                 </span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.User.Password"></label>
-                <input asp-for="@Model.User.Password" type="password" placeholder="Leave empty if you dont want to change it." class="form-control"/>
+                <input asp-for="@Model.User.Password" type="password" placeholder="Leave empty if you dont want to change it." class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.User.Firstname"></label>
-                <input asp-for="@Model.User.Firstname" class="form-control" data-val="true" data-val-required="The Firstname field is required."/>
+                <input asp-for="@Model.User.Firstname" class="form-control" data-val="true" data-val-required="The Firstname field is required." />
                 <span class="text-danger field-validation-valid"
                       asp-validation-for="@Model.User.Firstname" data-valmsg-replace="true">
                 </span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.User.Lastname"></label>
-                <input asp-for="@Model.User.Lastname" class="form-control" data-val="true" data-val-required="The Lastname field is required."/>
+                <input asp-for="@Model.User.Lastname" class="form-control" data-val="true" data-val-required="The Lastname field is required." />
                 <span class="text-danger field-validation-valid"
                       asp-validation-for="@Model.User.Lastname" data-valmsg-replace="true">
                 </span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.User.Certificate"></label>
-                <input asp-for="@Model.User.Certificate" class="form-control" data-val="true" data-val-required="The Certificate field is required."/>
+                <input asp-for="@Model.User.Certificate" class="form-control" data-val="true" data-val-required="The Certificate field is required." />
                 <span class="text-danger field-validation-valid"
                       asp-validation-for="@Model.User.Certificate" data-valmsg-replace="true">
                 </span>
@@ -70,14 +70,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.User.ProfilePicture"></label>
-                <input asp-for="@Model.ProfileFormFile" class="form-control" accept="image/*"/>
-                <img src="~/images/@Model.User.ProfilePicture" style="width: 50%; height: 50%;"/>
+                <input asp-for="@Model.ProfileFormFile" class="form-control" accept="image/*" />
+                <img src="~/images/@Model.User.ProfilePicture" style="width: 50%; height: 50%;" />
                 <p class="help-block">Upload new profile picture or leave empty if you dont want to change it.</p>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.User.CoverPicture"></label>
-                <input asp-for="@Model.CoverFormFile" class="form-control"/>
-                <img src="~/images/@Model.User.CoverPicture" style="width: 50%; height: 50%;"/>
+                <input asp-for="@Model.CoverFormFile" class="form-control" />
+                <img src="~/images/@Model.User.CoverPicture" style="width: 50%; height: 50%;" />
                 <p class="help-block">Upload new cover picture or leave empty if you dont want to change it.</p>
             </div>
         </div>

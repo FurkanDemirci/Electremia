@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Electremia.Dal.Interfaces
+﻿namespace Electremia.Dal.Interfaces
 {
     /// <summary>
     /// CRUD Operations

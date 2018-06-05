@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Electremia.Controllers
 {
@@ -33,7 +29,7 @@ namespace Electremia.Controllers
                     TempData["Message"] = "Dont leave empty!";
                     return RedirectToAction("Index", "Search");
                 default:
-                    return RedirectToAction("Profile", "Account", new {usr = search});
+                    return RedirectToAction("Profile", "Account", new { usr = search });
             }
         }
     }

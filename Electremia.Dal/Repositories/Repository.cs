@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using Electremia.Dal.Interfaces;
+﻿using Electremia.Dal.Interfaces;
 
 namespace Electremia.Dal.Repositories
 {
@@ -9,7 +7,7 @@ namespace Electremia.Dal.Repositories
     /// Repository class to initialse context and to use CRUD.
     /// </summary>
     /// <typeparam name="TEntity">Class model</typeparam>
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class 
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         // Data context needed.
         protected readonly IRepository<TEntity> Context;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Electremia.Logic;
+﻿using Electremia.Logic;
 using Electremia.Logic.Services;
 using Electremia.Model.Models;
 using Electremia.ViewModels;
@@ -11,8 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Electremia.Controllers
 {
@@ -96,7 +93,7 @@ namespace Electremia.Controllers
                 default:
                     selected = new SelectedContentViewModel();
                     break;
-            }           
+            }
             return View(selected);
         }
 
@@ -122,7 +119,7 @@ namespace Electremia.Controllers
                     ViewData["Message"] = "Could not like content";
             }
 
-            return RedirectToAction("Content", "Timeline", new { id, type});
+            return RedirectToAction("Content", "Timeline", new { id, type });
         }
 
         [HttpPost]
@@ -136,7 +133,7 @@ namespace Electremia.Controllers
             if (!commented)
                 TempData["Message"] = "Something went wrong";
 
-            return RedirectToAction("Content", "Timeline", new { id, type});
+            return RedirectToAction("Content", "Timeline", new { id, type });
         }
 
         [Authorize]
@@ -158,7 +155,7 @@ namespace Electremia.Controllers
 
                 if (model.PostViewModel.Picture == null) return View();
                 foreach (var formFile in model.PostViewModel.Picture)
-                    _pictureServices.AddPicture(new Picture { Id = id, Url = FileUpload(formFile), Type = 0});
+                    _pictureServices.AddPicture(new Picture { Id = id, Url = FileUpload(formFile), Type = 0 });
             }
             else if (model.ProductViewModel != null)
             {
@@ -186,7 +183,7 @@ namespace Electremia.Controllers
                         TempData["Message"] = "Successfully deleted post.";
                     break;
                 case 1:
-                    try { deleted = _productServices.DeleteById(id); } 
+                    try { deleted = _productServices.DeleteById(id); }
                     catch (ExceptionHandler e) { TempData["Message"] = e; }
                     if (deleted)
                         TempData["Message"] = "Successfully deleted product.";

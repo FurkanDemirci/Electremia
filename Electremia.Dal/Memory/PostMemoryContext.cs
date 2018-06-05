@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Electremia.Dal.Interfaces;
+﻿using Electremia.Dal.Interfaces;
 using Electremia.Model.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Electremia.Dal.Memory
 {

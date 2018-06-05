@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Electremia.Model.Models
+﻿namespace Electremia.Model.Models
 {
     public class Like
     {

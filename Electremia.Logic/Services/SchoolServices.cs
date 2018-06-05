@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using Electremia.Dal.Memory;
-using Electremia.Dal.Repositories;
-using Electremia.Dal.Sql;
+﻿using Electremia.Dal.Repositories;
 using Electremia.Model.Models;
+using System.Collections.Generic;
 
 namespace Electremia.Logic.Services
 {
@@ -82,7 +80,7 @@ namespace Electremia.Logic.Services
                 if (!_repo.Update(school))
                 {
                     return false;
-                }                
+                }
             }
             return true;
         }

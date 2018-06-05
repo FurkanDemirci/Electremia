@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Electremia.Dal.Interfaces;
+using Electremia.Model.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Security.Cryptography;
-using System.Text;
-using Electremia.Dal.Interfaces;
-using Electremia.Model.Models;
 
 namespace Electremia.Dal.Sql
 {
@@ -50,7 +47,7 @@ namespace Electremia.Dal.Sql
             using (var command = new SqlCommand("dbo.spUser_CheckUsrAndPass", MSSQLConnectionString))
             {
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Username" , SqlDbType.VarChar).Value = username;
+                command.Parameters.AddWithValue("@Username", SqlDbType.VarChar).Value = username;
                 command.Parameters.AddWithValue("@Password", SqlDbType.VarChar).Value = password;
                 using (var reader = command.ExecuteReader())
                 {

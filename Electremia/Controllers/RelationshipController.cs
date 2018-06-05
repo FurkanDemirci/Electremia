@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Electremia.Logic;
+﻿using Electremia.Logic;
 using Electremia.Logic.Services;
 using Electremia.Model.Models;
 using Electremia.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace Electremia.Controllers
 {
@@ -33,7 +29,7 @@ namespace Electremia.Controllers
             List<RelationshipViewModel> friends;
 
             try { friends = RelationshipDicToList(_friendServices.GetAllFriends(Cookies.GetId(User))); }
-            catch (ExceptionHandler e) { ViewData["Message"] = e.Message; friends = new List<RelationshipViewModel>();}
+            catch (ExceptionHandler e) { ViewData["Message"] = e.Message; friends = new List<RelationshipViewModel>(); }
 
             return View(friends);
         }
@@ -74,7 +70,7 @@ namespace Electremia.Controllers
             else
                 TempData["Message"] = "Failed to send friend request";
 
-            return RedirectToAction("Profile", "Account", new {usr = username});
+            return RedirectToAction("Profile", "Account", new { usr = username });
         }
 
         public IActionResult Requests()

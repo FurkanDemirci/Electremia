@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace Electremia.Controllers
@@ -14,7 +7,7 @@ namespace Electremia.Controllers
     {
         public HomeController(IConfiguration config)
         {
-            
+
         }
 
         public IActionResult Index()

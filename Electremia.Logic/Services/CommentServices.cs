@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Electremia.Dal.Repositories;
+﻿using Electremia.Dal.Repositories;
 using Electremia.Model.Models;
+using System.Collections.Generic;
 
 namespace Electremia.Logic.Services
 {
@@ -45,7 +44,7 @@ namespace Electremia.Logic.Services
             if ((id <= 0) && (userId <= 0) && (type < 0) && (text == null))
                 throw new ExceptionHandler("NotImplemented", "Not all parameterd are filled");
 
-            return _repo.Add(new Comment { Id = id, UserId = userId, Type = type, Text = text});
+            return _repo.Add(new Comment { Id = id, UserId = userId, Type = type, Text = text });
         }
 
         // GetComments(id)

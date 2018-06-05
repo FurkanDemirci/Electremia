@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Electremia.Dal.Repositories;
-using Electremia.Logic.Services;
-using Electremia.Model.Models;
+﻿using Electremia.Model.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace Electremia.ViewModels

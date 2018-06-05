@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using Electremia.Logic;
 using Electremia.Logic.Services;
 using Electremia.Model.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace UnitTestElectremia
 {
@@ -69,7 +69,7 @@ namespace UnitTestElectremia
         public void GetFriendsPostsTest()
         {
             // Own userId and friends id
-            var friendsId = new List<int> {1, 2};
+            var friendsId = new List<int> { 1, 2 };
 
             var posts = _postServices.GetFriendsPosts(friendsId);
             Assert.AreEqual(posts.Count, 2);

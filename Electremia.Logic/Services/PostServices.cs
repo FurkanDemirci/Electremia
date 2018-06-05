@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Electremia.Dal.Memory;
-using Electremia.Dal.Repositories;
-using Electremia.Dal.Sql;
+﻿using Electremia.Dal.Repositories;
 using Electremia.Model.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Electremia.Logic.Services
 {
@@ -29,7 +27,7 @@ namespace Electremia.Logic.Services
             if (title == null || description == null)
                 throw new ExceptionHandler("NotImplemented", "Not all fields are implemented");
 
-            var id =_repo.Add(new Post { UserId = userId, Title = title, Description = description });
+            var id = _repo.Add(new Post { UserId = userId, Title = title, Description = description });
             if (id == -1)
                 throw new ExceptionHandler("Database", "Could not upload to database");
             return id;
@@ -83,7 +81,7 @@ namespace Electremia.Logic.Services
             if (id <= 0)
                 throw new ExceptionHandler("NotImplemented", "Id parameter not given");
 
-            return _repo.Delete(new Post {PostId = id});
+            return _repo.Delete(new Post { PostId = id });
         }
 
         /// <summary>

@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Electremia.Dal.Interfaces;
+using Electremia.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
-using Electremia.Dal.Interfaces;
-using Electremia.Dal.Repositories;
-using Electremia.Model.Models;
 
 namespace Electremia.Dal.Sql
 {
@@ -84,7 +82,7 @@ namespace Electremia.Dal.Sql
                             DateTime = reader.GetDateTime(4),
                             Active = reader.GetBoolean(5)
                         };
-                        post.Pictures.Add(new Picture { Url = reader.GetString(6)});
+                        post.Pictures.Add(new Picture { Url = reader.GetString(6) });
                         posts.Add(post);
                     }
                 }

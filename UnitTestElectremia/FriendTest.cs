@@ -1,7 +1,5 @@
-using System;
 using Electremia.Logic;
 using Electremia.Logic.Services;
-using Electremia.Model.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTestElectremia

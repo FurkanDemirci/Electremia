@@ -57,21 +57,21 @@
 
                 <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th>SchoolId</th>
-                        <th>Name</th>
-                        <th>Years</th>
-                        <th>AttendedFor</th>
-                        <th>Action</th>
-                    </tr>
+                        <tr>
+                            <th>SchoolId</th>
+                            <th>Name</th>
+                            <th>Years</th>
+                            <th>AttendedFor</th>
+                            <th>Action</th>
+                        </tr>
                     </thead>
                     <tbody id="editorRowsSchool">
-                    @{
-                        foreach (var school in Model.Schools)
-                        {
-                            Html.RenderPartial("PartialSchool", school);
+                        @{
+                            foreach (var school in Model.Schools)
+                            {
+                                Html.RenderPartial("PartialSchool", school);
+                            }
                         }
-                    }
                     </tbody>
                 </table>
                 <a class="btn btn-primary" asp-action="BlankEditorRowSchool" id="addItemSchool">Add another</a>

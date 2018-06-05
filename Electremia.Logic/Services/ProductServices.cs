@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Electremia.Dal.Repositories;
+﻿using Electremia.Dal.Repositories;
 using Electremia.Model.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Electremia.Logic.Services
 {

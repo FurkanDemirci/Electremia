@@ -1,14 +1,9 @@
-﻿using System;
+﻿using Electremia.Dal.Repositories;
+using Electremia.Model.Models;
+using System;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Security.Cryptography;
 using System.Text;
-using Electremia.Dal.Memory;
-using Electremia.Dal.Repositories;
-using Electremia.Dal.Sql;
-using Electremia.Model.Models;
-using Microsoft.AspNetCore.Cryptography;
-using Microsoft.Extensions.Configuration;
 
 namespace Electremia.Logic.Services
 {
@@ -52,7 +47,7 @@ namespace Electremia.Logic.Services
             // Checking for null values.
             if ((firstname == null) || (lastname == null) || (username == null) || (password == null) || (certificate == null))
                 throw new ExceptionHandler("NotImplemented", "Not all fields are inserted");
-            
+
             // Creating User model.
             var model = new User
             {
@@ -133,7 +128,7 @@ namespace Electremia.Logic.Services
             var user = _repo.GetByUsername(username);
             return user ?? null;
         }
-        
+
         /// <summary>
         /// Get account by id.
         /// </summary>

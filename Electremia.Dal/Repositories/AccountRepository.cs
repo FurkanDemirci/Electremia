@@ -1,8 +1,8 @@
-﻿using System;
-using Electremia.Dal.Interfaces;
+﻿using Electremia.Dal.Interfaces;
 using Electremia.Dal.Memory;
 using Electremia.Dal.Sql;
 using Electremia.Model.Models;
+using System;
 
 namespace Electremia.Dal.Repositories
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Electremia.Model.Models
+﻿namespace Electremia.Model.Models
 {
     public class School
     {

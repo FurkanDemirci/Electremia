@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Electremia.Dal.Repositories;
+﻿using Electremia.Dal.Repositories;
 using Electremia.Model.Models;
+using System.Collections.Generic;
 
 namespace Electremia.Logic.Services
 {
@@ -41,7 +41,7 @@ namespace Electremia.Logic.Services
             if ((id <= 0) && (userId <= 0) && (type < 0))
                 throw new ExceptionHandler("NotImplemented", "Not all parameterd are filled");
 
-            return _repo.Add(new Like {Id = id, UserId = userId, Type = type});
+            return _repo.Add(new Like { Id = id, UserId = userId, Type = type });
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Electremia.Logic.Services
             if ((id <= 0) && (userId <= 0) && (type < 0))
                 throw new ExceptionHandler("NotImplemented", "Not all parameterd are filled");
 
-            return _repo.Delete(new Like {Id = id, UserId = userId, Type = type});
+            return _repo.Delete(new Like { Id = id, UserId = userId, Type = type });
         }
     }
 }

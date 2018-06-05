@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Electremia.Dal.Interfaces;
-using Electremia.Dal.Memory;
+﻿using Electremia.Dal.Memory;
 using Electremia.Dal.Repositories;
 using Electremia.Dal.Sql;
 using Electremia.Logic.Services;
-using Electremia.Model.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace Electremia.Logic
@@ -35,7 +30,7 @@ namespace Electremia.Logic
             {
                 case "MSSQL":
                     return new AccountServices(new AccountRepository(new AccountSqlContext()));
-                default: 
+                default:
                     return new AccountServices(new AccountRepository(new AccountMemoryContext()));
             }
         }
@@ -46,7 +41,7 @@ namespace Electremia.Logic
             {
                 case "MSSQL":
                     return new JobServices(new JobRepository(new JobSqlContext()));
-                default: 
+                default:
                     return new JobServices(new JobRepository(new JobMemoryContext()));
             }
         }
@@ -57,7 +52,7 @@ namespace Electremia.Logic
             {
                 case "MSSQL":
                     return new SchoolServices(new SchoolRepository(new SchoolSqlContext()));
-                default: 
+                default:
                     return new SchoolServices(new SchoolRepository(new SchoolMemoryContext()));
             }
         }
@@ -68,7 +63,7 @@ namespace Electremia.Logic
             {
                 case "MSSQL":
                     return new FriendServices(new RelationshipRepository(new RelationshipSqlContext()));
-                default: 
+                default:
                     return new FriendServices(new RelationshipRepository(new RelationshipMemoryContext()));
             }
         }

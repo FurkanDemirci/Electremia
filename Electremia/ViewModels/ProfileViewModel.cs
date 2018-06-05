@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Electremia.Model.Models;
+﻿using Electremia.Model.Models;
+using System.Collections.Generic;
 
 namespace Electremia.ViewModels
 {

@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Electremia.Dal.Interfaces;
+using Electremia.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Dynamic;
-using Electremia.Dal.Interfaces;
-using Electremia.Model.Models;
 
 namespace Electremia.Dal.Sql
 {

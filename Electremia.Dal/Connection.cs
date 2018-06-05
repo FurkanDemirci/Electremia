@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Text;
+﻿using System.Data.SqlClient;
 
 namespace Electremia.Dal
 {
@@ -13,7 +10,7 @@ namespace Electremia.Dal
 
         protected Connection()
         {
-            MSSQLConnectionString = 
+            MSSQLConnectionString =
                 new SqlConnection("Data Source=mssql.fhict.local;Initial Catalog=dbi388198;Persist Security Info=True;User ID=dbi388198;Password=Demirci1");
         }
     }
